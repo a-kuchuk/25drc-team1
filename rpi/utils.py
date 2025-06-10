@@ -44,3 +44,4 @@ def trackbar_val(wt=480, ht=240):
                          (width_bottom, height_bottom), (wt - width_bottom, height_bottom)])
 
     return points
+
