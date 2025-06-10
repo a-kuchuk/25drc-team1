@@ -6,6 +6,14 @@ from ObjectDetection import *
 import utils
 
 def main():
+    '''
+    main function
+    current steps:
+        - read image
+        - resize image
+        - warp image
+    '''
+
     success, img = cap.read()
     img = cv2.resize(img, (480, 240))
     cv2.imshow('vid', img)
@@ -20,7 +28,7 @@ def main():
 
 if __name__ == '__main__':
     cap = cv2.VideoCapture(0)
-    init_trackbar_vals = [171, 103, 000, 240]
+    init_trackbar_vals = [100, 103, 000, 240]
     utils.trackbar_init(init_trackbar_vals)
     while True:
         main()
