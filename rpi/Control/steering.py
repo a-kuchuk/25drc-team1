@@ -2,7 +2,7 @@ import math
 
 class SteeringController:
     def __init__(self, wheelbase_mm=220, track_width_mm=151,
-                 max_pwm=10.0, min_pwm=5.0, servo_center_pwm=7.5):
+                 max_pwm=67.3, min_pwm=34.0, servo_center_pwm=50.7):
         self.L = wheelbase_mm
         self.w = track_width_mm
         self.servo_pwm_min = min_pwm
