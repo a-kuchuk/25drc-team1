@@ -1,5 +1,7 @@
 import cv2
 import numpy as np
+import imutils
+import colours
 
 def img_warp(img, points, w, h):
     '''
@@ -45,3 +47,10 @@ def trackbar_val(wt=480, ht=240):
 
     return points
 
+# def detect_arrow(img, arrow):
+
+
+def thresholding(img, colour):
+    imgHsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    testBlue = cv2.inRange(imgHsv, colour.lower, colour.upper)
+    return testBlue

@@ -1,9 +1,10 @@
 import cv2
 import numpy as np
 from Control import *
-from LaneDetection import *
+from LaneDetection.lane_detection import *
 from ObjectDetection import *
 import utils
+import colours
 
 def main():
     '''
@@ -24,11 +25,23 @@ def main():
     points = utils.trackbar_val()
     img_warp = utils.img_warp(img, points, w, h)
     cv2.imshow('warp', img_warp)
+
+    # LANE DETECTION STEP
+    leftLane = getLane(img_warp, colours.TapeBlue, "left")
+    rightLane = getLane(img_warp, colours.TapeYellow, "right")
+
+    # OVJECT DETECTION (might need to be modified)
+    leftLane = getLane(img_warp, colours.HighlighterPink, "object")
+
+    # ARROW DETECTION STEP
+    
     
 
 if __name__ == '__main__':
     cap = cv2.VideoCapture(0)
-    init_trackbar_vals = [100, 103, 000, 240]
+    init_trackbar_vals = [93, 188, 000, 240]
     utils.trackbar_init(init_trackbar_vals)
     while True:
         main()
+    cap.release()
+    cv2.destroyAllWindows()
