@@ -42,9 +42,8 @@ class SteeringController:
         #return max(self.servo_pwm_min, min(self.servo_pwm_max, pwm))
 
     def set_steering_angle(self, angle_deg):
-        pulse_width = self.angle_to_pulse(angle_deg)
+        pulse_width = self.angle_to_pwm(angle_deg)
         self.pi.set_servo_pulsewidth(GPIO_PIN, pulse_width)
-
 
     def curvature_to_angle(self, curvature):
         """

@@ -32,7 +32,19 @@ class Motor:
         self.left_pwm.start(0)
         self.right_pwm.start(0)
 
-    
+    def move_scaled(self, steering_angle, max_steering_angle):
+        """
+        Adjust motor speed based on steering angle
+        """
+        factor = 1 - (abs(steering_angle) / max_steering_angle)
+        speed = self.base_speed * factor
+        speed = max(self.min_speed, min(self.base_speed, speed))
+
+        GPIO.output(DIR_LEFT, GPIO.HIGH)
+        GPIO.output(DIR_RIGHT, GPIO.HIGH)
+        self.left_pwm.ChangeDutyCycle(speed)
+        self.right_pwm.ChangeDutyCycle(speed)
+
     def forward(self, speed):
         speed = max(0, min(100, speed))  # clamp
         GPIO.output(self.left_dir,GPIO.HIGH)
