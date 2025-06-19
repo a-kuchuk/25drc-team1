@@ -3,6 +3,9 @@ import numpy as np
 import imutils
 import colours
 
+LOOKAHEAD_Y = 150  # Y-coordinate to calculate steering target
+FRAME_HEIGHT = 240
+
 def img_warp(img, points, w, h):
     '''
     main warping function using transformation matrix built into cv2
@@ -54,3 +57,64 @@ def thresholding(img, colour):
     imgHsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     testBlue = cv2.inRange(imgHsv, colour.lower, colour.upper)
     return testBlue
+
+def find_centroid(img):
+    # convert image to greyscale
+    grey = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    # convert grey scale image to binary image
+    ret, thresh = cv2.threshold
+    return
+
+
+# https://learnopencv.com/find-center-of-blob-centroid-using-opencv-cpp-python/
+def get_lane_centroid_x(mask):
+    M = cv2.moments(mask)
+    if M["m00"] > 0:
+        cx = int(M["m10"] / M["m00"])
+        return cx
+    return None
+
+def get_lane_centroid_y(mask):
+    M = cv2.moments(mask)
+    if M["m00"] > 0:
+        cy = int(M["01"] / M["00"])
+        return cy
+    return None
+
+def get_lane_points(mask, step=20):
+    """
+    Sample centroids across multiple horizontal scanlines (y-axis slices)
+    to collect (x, y) points representing the lane.
+    """
+    points = []
+    for y in range(LOOKAHEAD_Y, FRAME_HEIGHT, step):
+        row = mask[y, :]
+        x_vals = np.where(row > 0)[0]
+        if len(x_vals) > 0:
+            cx = int(np.mean(x_vals))
+            points.append((cx, y))
+    return points
+
+def fit_poly(points):
+    """
+    Fit a 2nd degree polynomial to a list of (x, y) points.
+    Returns coefficients of the polynomial x = f(y).
+    """
+    if len(points) >= 3:
+        x, y = zip(*points)
+        return np.polyfit(y, x, 2)
+    return None
+
+def evaluate_poly(poly_coeffs, y):
+    """
+    Evaluate the polynomial at a specific y-value to get x.
+    """
+    return int(np.polyval(poly_coeffs, y))
+
+def derivative_at(poly_coeffs, y):
+    """
+    Get the derivative (dx/dy) at a given y.
+    Used to estimate the heading angle.
+    """
+    d = np.polyder(poly_coeffs)
+    return np.polyval(d, y)
