@@ -62,6 +62,13 @@ def main():
     left_mask = getLane(img_warp, colours.TapeYellow, "left")
     right_mask = getLane(img_warp, colours.TapeBlue, "right")
 
+    # For each frame:
+    #   Apply colour thresholding to extract left (yellow) and right (blue) lane masks.
+    #   For each mask:
+    #       Sample multiple horizontal scanlines (e.g., at 5 or more y-values)
+    #       Extract x-coordinates of centroids at those y-values
+    #       This gives you a set of x-y points per lane → enables curve fitting.
+
     # Get lane point samples
     left_points = utils.get_lane_points(left_mask)
     right_points = utils.get_lane_points(right_mask)
@@ -81,6 +88,8 @@ def main():
         heading_error = np.degrees(np.arctan(heading_gradient))
 
         # PID computation (mix lateral + heading)
+        # Lateral error = horizontal distance between center of image and lane midpoint
+        # Heading error = angle between robot’s current direction and lane tangent
         total_error = lateral_error + heading_error
         correction = pid.compute(total_error)
 
