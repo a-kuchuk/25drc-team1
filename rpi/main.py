@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import time
 from Control import *
-from LaneDetection import *
+from LaneDetection.lane_detection import *
 from ObjectDetection import *
 import utils
 
