@@ -5,10 +5,11 @@ from Control import *
 from LaneDetection.lane_detection import *
 from ObjectDetection import *
 import utils
+import colours
 
-from pid import PID
-from motor import Motor
-from steering import SteeringController
+from Control.pid import PID
+from Control.motor import Motor
+from Control.steering import SteeringController
 
 # --- Constants ---
 BASE_SPEED = 60
@@ -33,18 +34,24 @@ def main():
         return
 
     img = cv2.resize(img, (FRAME_WIDTH, FRAME_HEIGHT))
-    cv2.imshow('Original', img)
+    cv2.imshow('vid', img)
+    cv2.waitKey(1)
 
-    # Image warping for top-down view
+    # IMAGE WARPING STEP
     h, w, c = img.shape
     points = utils.trackbar_val()
     img_warp = utils.img_warp(img, points, w, h)
-    cv2.imshow('Warped', img_warp)
+    cv2.imshow('warp', img_warp)
 
-    # Lane processing
-    left_mask = detect_lane_color(img_warp, color='yellow')  # You implement this
-    right_mask = detect_lane_color(img_warp, color='blue')
+    # LANE DETECTION
+    leftLane = getLane(img_warp, colours.TapeBlue, "left")
+    rightLane = getLane(img_warp, colours.TapeYellow, "right")
 
+    # OVJECT DETECTION (might need to be modified)
+    leftLane = getLane(img_warp, colours.HighlighterPink, "object")
+
+    # ARROW DETECTION STEP
+    
     # Get lane centroids
     left_x = get_lane_centroid_x(left_mask)
     right_x = get_lane_centroid_x(right_mask)
@@ -79,3 +86,11 @@ except KeyboardInterrupt:
     cap.release()
     cv2.destroyAllWindows()
 
+if __name__ == '__main__':
+    cap = cv2.VideoCapture(0)
+    init_trackbar_vals = [93, 188, 000, 240]
+    utils.trackbar_init(init_trackbar_vals)
+    while True:
+        main()
+    cap.release()
+    cv2.destroyAllWindows()

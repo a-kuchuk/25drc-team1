@@ -1,8 +1,3 @@
-# PID tuning
-Kp = 1
-Ki = 1
-Kd = 1
-
 
 class PID:
     def __init__(self, Kp, Ki, Kd):
