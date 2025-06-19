@@ -1,6 +1,4 @@
 import RPi.GPIO as GPIO
-# for time import sleep
-GPIO.setmode(GPIO.BCM)
 
 # Pin defns
 # PWM1: speed control left motor
@@ -15,51 +13,86 @@ PWM_RIGHT = 23
 DIR_RIGHT = 24
 
 class Motor:
-    def __init__(self):
-        self.left_dir = DIR_LEFT
-        self.left_en = PWM_LEFT
-        self.right_dir = DIR_RIGHT
-        self.right_en = PWM_RIGHT   
+    def __init__(self, base_speed, min_speed):
+        """
+        Initialize motor controller
+        Args:
+            base_speed (int): Default speed (0-100)
+            min_speed (int): Minimum speed when turning (0-100)
+        """
+        # Store speed parameters
+        self.base_speed = base_speed
+        self.min_speed = min_speed
 
-        GPIO.setup(self.left_dir,GPIO.OUT)
-        GPIO.setup(self.left_en,GPIO.OUT)
-        GPIO.setup(self.right_dir,GPIO.OUT)
-        GPIO.setup(self.right_en,GPIO.OUT)
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup([PWM_LEFT, DIR_LEFT, PWM_RIGHT, DIR_RIGHT], GPIO.OUT)
 
-        self.left_pwm = GPIO.PWM(self.left_en, 100)     # init pwm for left motor
-        self.right_pwm = GPIO.PWM(self.right_en, 100)   # init pwm for right motor
+        self.left_pwm = GPIO.PWM(PWM_LEFT, 100)     # init pwm for left motor
+        self.right_pwm = GPIO.PWM(PWM_RIGHT, 100)   # init pwm for right motor
 
         self.left_pwm.start(0)
         self.right_pwm.start(0)
 
+        # Set initial direction forward
+        GPIO.output(DIR_LEFT, GPIO.HIGH)
+        GPIO.output(DIR_RIGHT, GPIO.HIGH)
+
     def move_scaled(self, steering_angle, max_steering_angle):
         """
         Adjust motor speed based on steering angle
+        Args:
+            steering_angle (float): Current steering angle
+            max_steering_angle (float): Vehicle's max steering angle
         """
+        # Reduce speed proportionally to steering angle
         factor = 1 - (abs(steering_angle) / max_steering_angle)
-        speed = self.base_speed * factor
-        speed = max(self.min_speed, min(self.base_speed, speed))
+        speed = max(self.min_speed, self.base_speed * factor)
+        self.forward(speed)
+        # speed = max(self.min_speed, min(self.base_speed, speed))
 
-        GPIO.output(DIR_LEFT, GPIO.HIGH)
-        GPIO.output(DIR_RIGHT, GPIO.HIGH)
-        self.left_pwm.ChangeDutyCycle(speed)
-        self.right_pwm.ChangeDutyCycle(speed)
+        # GPIO.output(DIR_LEFT, GPIO.HIGH)
+        # GPIO.output(DIR_RIGHT, GPIO.HIGH)
+        # self.left_pwm.ChangeDutyCycle(speed)
+        # self.right_pwm.ChangeDutyCycle(speed)
 
     def forward(self, speed):
-        speed = max(0, min(100, speed))  # clamp
-        GPIO.output(self.left_dir,GPIO.HIGH)
-        GPIO.output(self.right_dir,GPIO.HIGH)
+        """
+        Move forward at specified speed
+        
+        Args:
+            speed (int): 0-100 percentage of max speed
+        """
+        speed = max(0, min(100, speed))  # clamp to valid range
+        
+        # set direction forward
+        GPIO.output(DIR_LEFT,GPIO.HIGH)
+        GPIO.output(DIR_RIGHT,GPIO.HIGH)
+
+        # set PWM duty cycle
         self.left_pwm.ChangeDutyCycle(speed)
         self.right_pwm.ChangeDutyCycle(speed)
 
     # change the wheel directions in code if the polarity wiring is the other way
 
-    def back(self, speed):
-        GPIO.output(self.left_dir,GPIO.LOW)
-        GPIO.output(self.right_dir,GPIO.HIGH)
-        self.left_pwm.start(speed)
-        self.right_pwm.start(speed)
+    def reverse(self, speed):
+        """
+        Move backward at specified speed
+        
+        Args:
+            speed (int): 0-100 percentage of max speed
+        """
+        speed = max(0, min(100, speed))
+        
+        # Set direction reverse
+        GPIO.output(DIR_LEFT, GPIO.LOW)
+        GPIO.output(DIR_RIGHT, GPIO.LOW)
+        
+        self.left_pwm.ChangeDutyCycle(speed)
 
     def stop(self):
         self.left_pwm.ChangeDutyCycle(0)
         self.right_pwm.ChangeDutyCycle(0)
+
+    def cleanup(self):
+        self.stop()
+        GPIO.cleanup

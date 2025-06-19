@@ -9,13 +9,20 @@ class PID:
         self.Kp = Kp
         self.Ki = Ki
         self.Kd = Kd
+
+        # Controller state
         self.prev_error = 0
         self.integral = 0
-
+      
     def compute(self, error):
+        prop = self.Kp * error 
+        
         self.integral += error
-        derivative = error - self.prev_error
+        integral = self.Ki * self.integral 
 
-        output = self.Kp * error + self.Ki * self.integral + self.Kd * derivative
+        derivative = (error - self.prev_error) * self.Kd
+
+        output = prop + integral + derivative
+
         self.prev_error = error
         return output
