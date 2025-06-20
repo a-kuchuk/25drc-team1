@@ -47,14 +47,14 @@ def main():
         return
 
     img = cv2.resize(img, (FRAME_WIDTH, FRAME_HEIGHT))
-    cv2.imshow('vid', img)
+    # cv2.imshow('vid', img)
     cv2.waitKey(1)
 
     # IMAGE WARPING STEP
     h, w, c = img.shape
     points = utils.trackbar_val()
     img_warp = utils.img_warp(img, points, w, h)
-    cv2.imshow('warp', img_warp)
+    # cv2.imshow('warp', img_warp)
 
     # --- Lane Detection ---
     left_mask = getLane(img_warp, colours.TapeYellow, "left")
@@ -103,7 +103,7 @@ def main():
             cv2.circle(debug, (x, y), 2, (0, 255, 0), -1)
         cv2.line(debug, (lane_center, 0), (lane_center, FRAME_HEIGHT), (0, 255, 255), 2)
         cv2.line(debug, (FRAME_WIDTH // 2, 0), (FRAME_WIDTH // 2, FRAME_HEIGHT), (0, 0, 255), 2)
-        cv2.imshow("Lane Debug", debug)
+        #cv2.imshow("Lane Debug", debug)
 
     else:
         print("Lane fitting failed :(")

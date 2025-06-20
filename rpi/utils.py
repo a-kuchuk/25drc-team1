@@ -37,26 +37,26 @@ def trackbar_init(initTVals, wt=480, ht=240):
         wt (int, optional): width. Defaults to 480.
         ht (int, optional): height. Defaults to 240.
     """
-    cv2.namedWindow("trackbars")
-    cv2.resizeWindow("trackbars", 360, 240)
-    cv2.createTrackbar("width top", "trackbars", initTVals[0], wt//2, nothing)
-    cv2.createTrackbar("height top", "trackbars", initTVals[1], ht, nothing)
-    cv2.createTrackbar("width bottom", "trackbars", initTVals[2], wt//2, nothing)
-    cv2.createTrackbar("height bottom", "trackbars", initTVals[3], ht, nothing)
+    # cv2.namedWindow("trackbars")
+    # cv2.resizeWindow("trackbars", 360, 240)
+    # cv2.createTrackbar("width top", "trackbars", initTVals[0], wt//2, nothing)
+    # cv2.createTrackbar("height top", "trackbars", initTVals[1], ht, nothing)
+    # cv2.createTrackbar("width bottom", "trackbars", initTVals[2], wt//2, nothing)
+    # cv2.createTrackbar("height bottom", "trackbars", initTVals[3], ht, nothing)
 
 def trackbar_val(wt=480, ht=240):
     '''
     retrieves data from trackbars window
     currently only used in perspective warp
     '''
-    width_top = cv2.getTrackbarPos("width top", "trackbars")
-    height_top = cv2.getTrackbarPos("height top", "trackbars")
-    width_bottom = cv2.getTrackbarPos("width bottom", "trackbars")
-    height_bottom = cv2.getTrackbarPos("height bottom", "trackbars")
-    points = np.float32([(width_top, height_top), (wt - width_top, height_top), 
-                         (width_bottom, height_bottom), (wt - width_bottom, height_bottom)])
+    # width_top = cv2.getTrackbarPos("width top", "trackbars")
+    # height_top = cv2.getTrackbarPos("height top", "trackbars")
+    # width_bottom = cv2.getTrackbarPos("width bottom", "trackbars")
+    # height_bottom = cv2.getTrackbarPos("height bottom", "trackbars")
+    # points = np.float32([(width_top, height_top), (wt - width_top, height_top), 
+    #                      (width_bottom, height_bottom), (wt - width_bottom, height_bottom)])
 
-    return points
+    # return points
 
 # def detect_arrow(img, arrow):
 
