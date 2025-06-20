@@ -53,7 +53,7 @@ def main():
     # IMAGE WARPING STEP
     h, w, c = img.shape
     # points = utils.trackbar_val()
-    img_warp = utils.img_warp(img, np.float32([(93, 188), (480 - 93, 188), (0, 240), (480 - 0, 240)]), w, h)
+    img_warp = utils.img_warp(img, np.float32([(122, 188), (480 - 122, 188), (0, 240), (480 - 0, 240)]), w, h)
     if (img_warp):
         print("Great success")
     else:
@@ -136,7 +136,7 @@ def main():
 
 if __name__ == '__main__':
     cap = cv2.VideoCapture(0)
-    init_trackbar_vals = [93, 188, 000, 240]
+    init_trackbar_vals = [122, 188, 000, 240]
     utils.trackbar_init(init_trackbar_vals)
     while True:
         main()
