@@ -118,13 +118,13 @@ def main():
         motor.move_scaled(correction, steering.max_steering_angle_deg)
 
         # --- Visualization ---
-        debug = cv2.cvtColor(img_warp, cv2.COLOR_GRAY2BGR)
-        for x, y in left_points:
-            cv2.circle(debug, (x, y), 2, (255, 0, 0), -1)
-        for x, y in right_points:
-            cv2.circle(debug, (x, y), 2, (0, 255, 0), -1)
-        cv2.line(debug, (lane_center, 0), (lane_center, FRAME_HEIGHT), (0, 255, 255), 2)
-        cv2.line(debug, (FRAME_WIDTH // 2, 0), (FRAME_WIDTH // 2, FRAME_HEIGHT), (0, 0, 255), 2)
+        # debug = cv2.cvtColor(img_warp, cv2.COLOR_GRAY2BGR)
+        # for x, y in left_points:
+        #     cv2.circle(debug, (x, y), 2, (255, 0, 0), -1)
+        # for x, y in right_points:
+        #     cv2.circle(debug, (x, y), 2, (0, 255, 0), -1)
+        # cv2.line(debug, (lane_center, 0), (lane_center, FRAME_HEIGHT), (0, 255, 255), 2)
+        # cv2.line(debug, (FRAME_WIDTH // 2, 0), (FRAME_WIDTH // 2, FRAME_HEIGHT), (0, 0, 255), 2)
         #cv2.imshow("Lane Debug", debug)
 
     else:
