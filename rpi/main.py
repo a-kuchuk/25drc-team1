@@ -27,8 +27,8 @@ pid = PID(Kp=0.6, Ki=0.05, Kd=0.1)
 
 # arrow_mode_triggered = False  # To prevent repeated detection
 # --- OpenCV Camera ---
-cap = cv2.VideoCapture(0)
-utils.trackbar_init([100, 103, 000, 240])
+# cap = cv2.VideoCapture(0)
+#utils.trackbar_init([100, 103, 000, 240])
 
 # --- Main Loop ---
 def main():
@@ -57,8 +57,6 @@ def main():
     cv2.imshow('warp', img_warp)
 
     # --- Lane Detection ---
-    # TODO: should left be colours.TapeYellow????
-    # Changed it rn 
     left_mask = getLane(img_warp, colours.TapeYellow, "left")
     right_mask = getLane(img_warp, colours.TapeBlue, "right")
 
@@ -117,18 +115,13 @@ def main():
     # ARROW DETECTION STEP
     
     cv2.waitKey(1)
+    #except KeyboardInterrupt:
 
-# --- Cleanup and Run ---
-try:
-    while True:
-        main()
+# # --- Cleanup and Run ---
+# try:
+#     while True:
+#         main()
 
-except KeyboardInterrupt:
-    print("Stopping robot...")
-    motor.stop()
-    steering.cleanup()
-    cap.release()
-    cv2.destroyAllWindows()
 
 if __name__ == '__main__':
     cap = cv2.VideoCapture(0)
@@ -136,5 +129,8 @@ if __name__ == '__main__':
     utils.trackbar_init(init_trackbar_vals)
     while True:
         main()
-    cap.release()
-    cv2.destroyAllWindows()
+    # print("Stopping robot...")
+    # motor.stop()
+    # steering.cleanup()
+    # cap.release()
+    # cv2.destroyAllWindows()
