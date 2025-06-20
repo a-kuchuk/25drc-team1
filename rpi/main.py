@@ -62,7 +62,12 @@ def main():
 
     # --- Lane Detection ---
     left_mask = getLane(img_warp, colours.TapeYellow, "left")
+    print("left mask")
+    print(left_mask)
+
     right_mask = getLane(img_warp, colours.TapeBlue, "right")
+    print("right mask")
+    print(right_mask)
 
     # if (left_mask):
     #     print("left lane success")
