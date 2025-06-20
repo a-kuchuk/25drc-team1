@@ -78,3 +78,7 @@ class TapeYellow():
 class HighlighterPink():
     lower = np.array([146, 55, 0]) 
     upper = np.array([179, 255, 255])
+
+class TapeGrey():
+    lower = np.array([82, 0, 146])
+    upper = np.array([106, 47, 255])
