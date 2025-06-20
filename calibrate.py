@@ -7,7 +7,7 @@ def nothing(x):
 # Load image
 img = cv2.VideoCapture(0)
 rert, image = img.read()
-image = cv2.GaussianBlur(image, (13, 13), 0) # for blurring the image, can use if want to
+# image = cv2.GaussianBlur(image, (13, 13), 0) # for blurring the image, can use if want to
 
 # Create a window
 cv2.namedWindow('image')
