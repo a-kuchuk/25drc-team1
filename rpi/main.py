@@ -72,7 +72,7 @@ def main():
     right_points = utils.get_lane_points(right_mask)
     # Fit curves
     left_poly = utils.fit_poly(left_points)
-    right_poly = utils.fit_poly(right_poly)
+    right_poly = utils.fit_poly(right_points)
 
     # Determine lane centre and heading
     if left_poly is not None and right_poly is not None:
