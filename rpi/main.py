@@ -54,11 +54,22 @@ def main():
     h, w, c = img.shape
     # points = utils.trackbar_val()
     img_warp = utils.img_warp(img, np.float32([(93, 188), (480 - 93, 188), (0, 240), (480 - 0, 240)]), w, h)
+    if (img_warp):
+        print("Great success")
+    else:
+        print("kms")
     #cv2.imshow('warp', img_warp)
 
     # --- Lane Detection ---
     left_mask = getLane(img_warp, colours.TapeYellow, "left")
     right_mask = getLane(img_warp, colours.TapeBlue, "right")
+
+    if (left_mask):
+        print("left lane success")
+    if (right_mask):
+        print("right lane succes")
+    else:
+        print("either left or right lane fail")
 
     # For each frame:
     #   Apply colour thresholding to extract left (yellow) and right (blue) lane masks.
