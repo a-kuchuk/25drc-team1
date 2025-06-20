@@ -52,8 +52,8 @@ def main():
 
     # IMAGE WARPING STEP
     h, w, c = img.shape
-    points = utils.trackbar_val()
-    img_warp = utils.img_warp(img, points, w, h)
+    # points = utils.trackbar_val()
+    img_warp = utils.img_warp(img, [93, 188, 000, 240], w, h)
     # cv2.imshow('warp', img_warp)
 
     # --- Lane Detection ---
