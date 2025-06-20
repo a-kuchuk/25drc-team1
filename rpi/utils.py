@@ -65,6 +65,9 @@ def thresholding(img, colour):
     imgHsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     testBlue = cv2.inRange(imgHsv, colour.lower, colour.upper)
     return testBlue
+    if img is None:
+        print("Warning: input image to thresholding() is None")
+        return None
 
 def find_centroid(img):
     # convert image to greyscale
@@ -94,6 +97,9 @@ def get_lane_points(mask, step=20):
     Sample centroids across multiple horizontal scanlines (y-axis slices)
     to collect (x, y) points representing the lane.
     """
+    if mask is None:
+        return []
+
     points = []
     for y in range(LOOKAHEAD_Y, FRAME_HEIGHT, step):
         row = mask[y, :]
