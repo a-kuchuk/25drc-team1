@@ -1,5 +1,5 @@
 from time import sleep
-from steering import SteeringController  # assuming your class is in steering.py
+from Control import *  # assuming your class is in steering.py
 
 def main():
     steering = SteeringController()

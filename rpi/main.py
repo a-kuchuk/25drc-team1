@@ -65,6 +65,7 @@ def main():
 
     # --- Lane Detection ---
     print("LEFT LANE")
+    # replace with img for non warmped get lane 
     left_mask = getLane(img_warp, left, "left")
     print("left mask")
     print(left_mask)
@@ -73,13 +74,6 @@ def main():
     right_mask = getLane(img_warp, right, "right")
     print("right mask")
     print(right_mask)
-
-    # if (left_mask):
-    #     print("left lane success")
-    # if (right_mask):
-    #     print("right lane succes")
-    # else:
-    #     print("either left or right lane fail")
 
     # For each frame:
     #   Apply colour thresholding to extract left (yellow) and right (blue) lane masks.
