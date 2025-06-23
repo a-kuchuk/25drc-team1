@@ -2,7 +2,7 @@ import math
 import pigpio
 
 # Constants
-GPIO_PIN = 17               # GPIO pin connected to servo
+GPIO_PIN = 26               # GPIO pin connected to servo
 WHEELBASE_MM = 220          # Distance between front and rear axles (mm)
 TRACK_WIDTH_MM = 151        # Distance between left and right wheels (mm)
 
