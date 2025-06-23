@@ -19,7 +19,7 @@ if not pi.connected:
 
 try:
     print("Moving to -50°")
-    pi.set_servo_pulsewidth(SERVO_GPIO, angle_to_pulse(-50))
+    pi.set_servo_pulsewidth(SERVO_GPIO, angle_to_pulse(-10))
     time.sleep(1)
 
     print("Moving to 0°")
@@ -27,7 +27,7 @@ try:
     time.sleep(1)
 
     print("Moving to +50°")
-    pi.set_servo_pulsewidth(SERVO_GPIO, angle_to_pulse(50))
+    pi.set_servo_pulsewidth(SERVO_GPIO, angle_to_pulse(10))
     time.sleep(1)
 
     print("Sweeping...")
