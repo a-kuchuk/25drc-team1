@@ -1,6 +1,5 @@
 import time
-from Control import Motor
-from Control import SteeringController
+from Control import *
 
 def main():
     try:
