@@ -57,14 +57,16 @@ def main():
     # if (img_warp):
     #     print("Great success")
     # else:
-    #     print("kms")
+    #     print("kms")  
     #cv2.imshow('warp', img_warp)
 
     # --- Lane Detection ---
+    print("LEFT LANE")
     left_mask = getLane(img_warp, colours.TapeYellow, "left")
     print("left mask")
     print(left_mask)
 
+    print("RIGHT LANE")
     right_mask = getLane(img_warp, colours.TapeBlue, "right")
     print("right mask")
     print(right_mask)
