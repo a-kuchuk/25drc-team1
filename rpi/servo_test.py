@@ -1,43 +1,45 @@
 import pigpio
 import time
 
-# Constants
-SERVO_GPIO = 26  # Use GPIO18 (PIN 12 on Pi header)
-MIN_PW = 500     # Minimum pulse width in microseconds (~0°)
-MAX_PW = 2500    # Maximum pulse width in microseconds (~180°)
+SERVO_GPIO = 26           # BCM pin 26 (physical pin 37)
+CENTER_PW = 1520          # Neutral pulse width
+DEGREE_SPAN = 100         # Total servo range: ±50° = 100°
+MIN_PW = 1020             # ~-50°
+MAX_PW = 2020             # ~+50°
 
-# Initialize pigpio
+def angle_to_pulse(angle_deg):
+    """Convert angle (-50 to +50) to pulse width in µs."""
+    angle = max(-50, min(50, angle_deg))  # clamp to ±50
+    scale = (MAX_PW - MIN_PW) / DEGREE_SPAN
+    return int(CENTER_PW + angle * scale)
+
 pi = pigpio.pi()
 if not pi.connected:
-    raise RuntimeError("Failed to connect to pigpio daemon. Is 'pigpiod' running?")
+    raise RuntimeError("pigpio daemon not running. Start with: sudo pigpiod")
 
 try:
+    print("Moving to -50°")
+    pi.set_servo_pulsewidth(SERVO_GPIO, angle_to_pulse(-50))
+    time.sleep(1)
+
     print("Moving to 0°")
-    pi.set_servo_pulsewidth(SERVO_GPIO, MIN_PW)
+    pi.set_servo_pulsewidth(SERVO_GPIO, angle_to_pulse(0))
     time.sleep(1)
 
-    print("Moving to 90°")
-    pi.set_servo_pulsewidth(SERVO_GPIO, (MIN_PW + MAX_PW) // 2)
+    print("Moving to +50°")
+    pi.set_servo_pulsewidth(SERVO_GPIO, angle_to_pulse(50))
     time.sleep(1)
 
-    print("Moving to 180°")
-    pi.set_servo_pulsewidth(SERVO_GPIO, MAX_PW)
-    time.sleep(1)
-
-    # Sweep back and forth
     print("Sweeping...")
-    for angle in range(0, 181, 10):
-        pulse = MIN_PW + (MAX_PW - MIN_PW) * angle // 180
-        pi.set_servo_pulsewidth(SERVO_GPIO, pulse)
-        time.sleep(0.05)
+    for angle in range(-50, 51, 5):
+        pi.set_servo_pulsewidth(SERVO_GPIO, angle_to_pulse(angle))
+        time.sleep(0.04)
 
-    for angle in range(180, -1, -10):
-        pulse = MIN_PW + (MAX_PW - MIN_PW) * angle // 180
-        pi.set_servo_pulsewidth(SERVO_GPIO, pulse)
-        time.sleep(0.05)
+    for angle in range(50, -51, -5):
+        pi.set_servo_pulsewidth(SERVO_GPIO, angle_to_pulse(angle))
+        time.sleep(0.04)
 
 finally:
-    # Turn off servo pulses
     pi.set_servo_pulsewidth(SERVO_GPIO, 0)
     pi.stop()
     print("Servo test complete.")
