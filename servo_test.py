@@ -2,7 +2,7 @@ import pigpio
 import time
 
 # Constants
-SERVO_GPIO = 18  # Use GPIO18 (PIN 12 on Pi header)
+SERVO_GPIO = 26  # Use GPIO18 (PIN 12 on Pi header)
 MIN_PW = 500     # Minimum pulse width in microseconds (~0°)
 MAX_PW = 2500    # Maximum pulse width in microseconds (~180°)
 
