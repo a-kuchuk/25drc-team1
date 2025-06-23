@@ -7,15 +7,15 @@ def main():
         # === Init ===
         base_speed = 60     # base motor speed (0-100)
         min_speed = 30      # minimum motor speed when turning
-        motor = Motor(base_speed=base_speed, min_speed=min_speed)
+        motor = Motor(base_speed, min_speed)
         steering = SteeringController()
 
         max_angle = steering.max_steering_angle_deg  # ~27.6 degrees
 
         print("=== Driving forward with center steering ===")
         steering.set_steering_angle(0)  # center
-        motor.move_scaled(steering_angle=0, max_steering_angle=max_angle)
-        time.sleep(3)
+        motor.move_scaled(0, max_angle)
+        time.sleep(1)
         motor.stop()
         time.sleep(1)
 
