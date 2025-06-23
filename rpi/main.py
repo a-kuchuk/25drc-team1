@@ -5,7 +5,7 @@ from Control import *
 from LaneDetection.lane_detection import *
 from ObjectDetection import *
 import utils
-import colours
+from colours import *
 
 from Control.pid import PID
 from Control.motor import Motor
@@ -24,6 +24,9 @@ LOOKAHEAD_Y = 150
 steering = SteeringController()
 motor = Motor(base_speed=BASE_SPEED, min_speed=MIN_SPEED)
 pid = PID(Kp=0.6, Ki=0.05, Kd=0.1)
+
+left = TapeYellow()
+right = TapeBlue()
 
 # arrow_mode_triggered = False  # To prevent repeated detection
 # --- OpenCV Camera ---
@@ -62,12 +65,12 @@ def main():
 
     # --- Lane Detection ---
     print("LEFT LANE")
-    left_mask = getLane(img_warp, colours.TapeYellow, "left")
+    left_mask = getLane(img_warp, left, "left")
     print("left mask")
     print(left_mask)
 
     print("RIGHT LANE")
-    right_mask = getLane(img_warp, colours.TapeBlue, "right")
+    right_mask = getLane(img_warp, right, "right")
     print("right mask")
     print(right_mask)
 
@@ -119,22 +122,12 @@ def main():
         steering.set_steering_angle(correction)
         motor.move_scaled(correction, steering.max_steering_angle_deg)
 
-        # --- Visualization ---
-        # debug = cv2.cvtColor(img_warp, cv2.COLOR_GRAY2BGR)
-        # for x, y in left_points:
-        #     cv2.circle(debug, (x, y), 2, (255, 0, 0), -1)
-        # for x, y in right_points:
-        #     cv2.circle(debug, (x, y), 2, (0, 255, 0), -1)
-        # cv2.line(debug, (lane_center, 0), (lane_center, FRAME_HEIGHT), (0, 255, 255), 2)
-        # cv2.line(debug, (FRAME_WIDTH // 2, 0), (FRAME_WIDTH // 2, FRAME_HEIGHT), (0, 0, 255), 2)
-        #cv2.imshow("Lane Debug", debug)
-
     else:
         print("Lane fitting failed :(")
         motor.stop()
 
     # OVJECT DETECTION (might need to be modified)
-    objectMask = getLane(img_warp, colours.HighlighterPink, "object")
+    # objectMask = getLane(img_warp, colours.HighlighterPink, "object")
 
     # ARROW DETECTION STEP
     

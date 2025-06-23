@@ -63,8 +63,10 @@ def trackbar_val(wt=480, ht=240):
 
 def thresholding(img, colour):
     imgHsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-    testBlue = cv2.inRange(imgHsv, colour.lower, colour.upper)
-    print(f"in utils {testBlue}")
+    lower = np.array([colour.h_min, colour.s_min, colour.v_min])
+    upper = np.array([colour.h_max, colour.s_max, colour.v_max])
+    testBlue = cv2.inRange(imgHsv, lower, upper)
+    print(f"in utils \n {testBlue}")
     return testBlue
 
 
