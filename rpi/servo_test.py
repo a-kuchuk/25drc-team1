@@ -31,7 +31,7 @@ try:
     time.sleep(1)
 
     print("Moving to 0°")
-    pi.set_servo_pulsewidth(SERVO_GPIO, angle_to_pulse(15))
+    pi.set_servo_pulsewidth(SERVO_GPIO, angle_to_pulse(0))
     time.sleep(1)
 
     print("Moving to +45°")
