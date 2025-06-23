@@ -53,7 +53,7 @@ def main():
     # IMAGE WARPING STEP
     h, w, c = img.shape
     # points = utils.trackbar_val()
-    img_warp = utils.img_warp(img, np.float32([(122, 188), (480 - 122, 188), (0, 240), (480 - 0, 240)]), w, h)
+    img_warp = utils.img_warp(img, np.float32([(0, 157), (480, 157), (0, 155), (480, 155)]), w, h)
     # if (img_warp):
     #     print("Great success")
     # else:

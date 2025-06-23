@@ -1,46 +1,58 @@
 import time
-from motor import Motor
-from steering import SteeringController
-from pid import PID
+from Control import Motor
+from Control import SteeringController
 
-# Initialize hardware controllers
-motor = Motor()
-steering = SteeringController()
-pid = PID(Kp=1.0, Ki=0.0, Kd=0.0)  # No integral/derivative for test
+def main():
+    try:
+        # === Init ===
+        base_speed = 60     # base motor speed (0-100)
+        min_speed = 30      # minimum motor speed when turning
+        motor = Motor(base_speed=base_speed, min_speed=min_speed)
+        steering = SteeringController()
 
-# List of test scenarios: (description, steering_angle_in_degrees)
-test_sequence = [
-    ("Straight", 0),
-    ("Gentle Left", -10),
-    ("Gentle Right", 10),
-    ("Sharp Left", -25),
-    ("Sharp Right", 25),
-    ("Straight", 0),
-]
+        max_angle = steering.max_steering_angle_deg  # ~27.6 degrees
 
-def test_drive():
-    print("=== Starting Ackermann Drive Test ===")
-    time.sleep(2)
+        print("=== Driving forward with center steering ===")
+        steering.set_steering_angle(0)  # center
+        motor.move_scaled(steering_angle=0, max_steering_angle=max_angle)
+        time.sleep(3)
+        motor.stop()
+        time.sleep(1)
 
-    for description, angle in test_sequence:
-        print(f"\n[Test] {description} | Steering Angle: {angle:.1f}°")
+        print("=== Steering full left ===")
+        steering.set_steering_angle(-max_angle)
+        time.sleep(1)
 
-        # Apply steering angle
-        steering.set_steering_angle(angle)
+        print("=== Steering center ===")
+        steering.set_steering_angle(0)
+        time.sleep(1)
 
-        # Scale motor speed based on steering angle
-        motor.move_scaled(angle, steering.max_steering_angle_deg)
+        print("=== Steering full right ===")
+        steering.set_steering_angle(max_angle)
+        time.sleep(1)
 
-        time.sleep(3)  # run each scenario for 3 seconds
+        print("=== Steering center ===")
+        steering.set_steering_angle(0)
+        time.sleep(1)
 
-    print("\nTest complete. Stopping motors.")
-    motor.stop()
-    steering.cleanup()
+        print("=== Drive test with left turn ===")
+        steering.set_steering_angle(-max_angle)
+        motor.move_scaled(steering_angle=-max_angle, max_steering_angle=max_angle)
+        time.sleep(2)
+        motor.stop()
+        time.sleep(1)
+
+        print("=== Drive test with right turn ===")
+        steering.set_steering_angle(max_angle)
+        motor.move_scaled(steering_angle=max_angle, max_steering_angle=max_angle)
+        time.sleep(2)
+        motor.stop()
+        time.sleep(1)
+
+    finally:
+        print("=== Cleaning up ===")
+        motor.cleanup()
+        steering.cleanup()
 
 if __name__ == "__main__":
-    try:
-        test_drive()
-    except KeyboardInterrupt:
-        print("\nInterrupted by user. Shutting down...")
-        motor.stop()
-        steering.cleanup()
+    main()
