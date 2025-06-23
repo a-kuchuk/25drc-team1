@@ -35,7 +35,7 @@ try:
     time.sleep(1)
 
     print("Moving to +45°")
-    pi.set_servo_pulsewidth(SERVO_GPIO, angle_to_pulse(45))
+    pi.set_servo_pulsewidth(SERVO_GPIO, angle_to_pulse(50))
     time.sleep(1)
 
     # print("Sweeping between ±45°")
