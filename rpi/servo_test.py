@@ -14,38 +14,23 @@ def angle_to_pulse(angle_deg):
     print(angle)
     scale = (MAX_PW - MIN_PW) / DEGREE_SPAN
     print(scale)
-    return int(CENTER_PW + angle * scale)
+    result = int(CENTER_PW + angle * scale)
+    print(f"wow {result}")
+    return result
 
 pi = pigpio.pi()
 if not pi.connected:
     raise RuntimeError("pigpio daemon not running. Start with: sudo pigpiod")
 
 try:
-    angle_to_pulse(-50)
-    angle_to_pulse(50)
-    angle_to_pulse(-10)
-    angle_to_pulse(10)
-    angle_to_pulse(0)
-    # print("Moving to -50°")
-    # pi.set_servo_pulsewidth(SERVO_GPIO, angle_to_pulse(-10))
-    # time.sleep(1)
-
-    # print("Moving to 0°")
-    # pi.set_servo_pulsewidth(SERVO_GPIO, angle_to_pulse(0))
-    # time.sleep(1)
-
-    # print("Moving to +50°")
-    # pi.set_servo_pulsewidth(SERVO_GPIO, angle_to_pulse(10))
-    # time.sleep(1)
-
-    # print("Sweeping...")
-    # for angle in range(-50, 51, 5):
-    #     pi.set_servo_pulsewidth(SERVO_GPIO, angle_to_pulse(angle))
-    #     time.sleep(0.04)
-
-    # for angle in range(50, -51, -5):
-    #     pi.set_servo_pulsewidth(SERVO_GPIO, angle_to_pulse(angle))
-    #     time.sleep(0.04)
+    # angle_to_pulse(-50)
+    # angle_to_pulse(50)
+    # angle_to_pulse(-10)
+    # angle_to_pulse(10)
+    # angle_to_pulse(0)
+    print("Moving to -50°")
+    pi.set_servo_pulsewidth(SERVO_GPIO, angle_to_pulse(-15))
+    time.sleep(1)
 
 finally:
     pi.set_servo_pulsewidth(SERVO_GPIO, 0)
