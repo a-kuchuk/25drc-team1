@@ -147,7 +147,7 @@ def main():
 
 if __name__ == '__main__':
     cap = cv2.VideoCapture(0)
-    init_trackbar_vals = [122, 188, 000, 240]
+    init_trackbar_vals = [000, 157, 000, 155]
     utils.trackbar_init(init_trackbar_vals)
     while True:
         main()

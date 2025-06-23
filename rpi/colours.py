@@ -68,12 +68,12 @@ class MarkerGreen():
     v_max = 255
 
 class TapeBlue():
-    lower= np.array([93, 56, 0] )
-    upper = np.array([115, 255, 255])
+    lower= np.array([83, 113, 0] )
+    upper = np.array([117, 255, 255])
 
 class TapeYellow():
-    lower = np.array([7, 53, 0])
-    upper = np.array([36, 255, 255])
+    lower = np.array([15, 71, 0])
+    upper = np.array([26, 255, 255])
 
 class HighlighterPink():
     lower = np.array([146, 55, 0]) 
