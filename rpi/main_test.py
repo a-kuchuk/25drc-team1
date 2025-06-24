@@ -57,6 +57,7 @@ def main():
         steering.set_steering_angle(-40)
         time.sleep(1)
         steering.set_steering_angle(0)
+        time.sleep(1)
 
     finally:
         print("=== Cleaning up ===")
