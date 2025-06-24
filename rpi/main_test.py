@@ -10,7 +10,7 @@ def main():
         motor = Motor(base_speed, min_speed)
         steering = SteeringController()
 
-        max_angle = steering.max_steering_angle_deg  # ~27.6 degrees
+        max_angle = steering.max_steering_angle_deg 
 
         print("=== Driving forward with center steering ===")
         steering.set_steering_angle(0)  # center
@@ -19,33 +19,24 @@ def main():
         motor.stop()
         time.sleep(1)
 
-        print("=== Steering full left ===")
-        steering.set_steering_angle(-max_angle)
-        time.sleep(1)
-
-        print("=== Steering center ===")
-        steering.set_steering_angle(0)
-        time.sleep(1)
-
-        print("=== Steering full right ===")
-        steering.set_steering_angle(max_angle)
-        time.sleep(1)
-
-        print("=== Steering center ===")
-        steering.set_steering_angle(0)
-        time.sleep(1)
-
         print("=== Drive test with left turn ===")
         steering.set_steering_angle(-max_angle)
-        motor.move_scaled(steering_angle=-max_angle, max_steering_angle=max_angle)
+        motor.move_scaled(-max_angle, max_angle)
         time.sleep(2)
         motor.stop()
         time.sleep(1)
 
         print("=== Drive test with right turn ===")
         steering.set_steering_angle(max_angle)
-        motor.move_scaled(steering_angle=max_angle, max_steering_angle=max_angle)
+        motor.move_scaled(max_angle, max_angle)
         time.sleep(2)
+        motor.stop()
+        time.sleep(1)
+
+        print("=== Driving forward with center steering ===")
+        steering.set_steering_angle(0)  # center
+        motor.move_scaled(0, max_angle)
+        time.sleep(1)
         motor.stop()
         time.sleep(1)
 

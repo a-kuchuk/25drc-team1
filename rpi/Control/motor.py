@@ -48,12 +48,6 @@ class Motor:
         factor = 1 - (abs(steering_angle) / max_steering_angle)
         speed = max(self.min_speed, self.base_speed * factor)
         self.forward(speed)
-        # speed = max(self.min_speed, min(self.base_speed, speed))
-
-        # GPIO.output(DIR_LEFT, GPIO.HIGH)
-        # GPIO.output(DIR_RIGHT, GPIO.HIGH)
-        # self.left_pwm.ChangeDutyCycle(speed)
-        # self.right_pwm.ChangeDutyCycle(speed)
 
     def forward(self, speed):
         """
