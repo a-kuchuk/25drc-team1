@@ -47,10 +47,15 @@ def main():
         print("dkjlfjkldjfkldf")
         motor.forward(base_speed)
         steering.set_steering_angle(20)
+        time.sleep(1)
         steering.set_steering_angle(40)
+        time.sleep(1)
         steering.set_steering_angle(0)
+        time.sleep(1)
         steering.set_steering_angle(-20)
+        time.sleep(1)
         steering.set_steering_angle(-40)
+        time.sleep(1)
 
     finally:
         print("=== Cleaning up ===")
