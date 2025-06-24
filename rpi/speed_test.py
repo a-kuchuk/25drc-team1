@@ -15,41 +15,22 @@ def main():
 
         print("=== Min speed ===")
         motor.forward(30)
-        time.sleep(2)
+        time.sleep(5)
         motor.stop()
         time.sleep(1)
 
         print("=== base speed ===")
         motor.forward(60)
-        time.sleep(2)
+        time.sleep(5)
         motor.stop()
         time.sleep(1)
 
         print("=== max speed ===")
         motor.forward(90)
-        time.sleep(2)
+        time.sleep(5)
         motor.stop()
         time.sleep(1)
 
-        print("=== wait 20 (turn car) ===")
-        time.sleep(60)
-
-        print("slow acceleration")
-        motor.forward(30)
-        motor.forward(40)
-        motor.forward(50)
-        motor.forward(60)
-        motor.forward(70)
-        time.sleep(2)
-        motor.stop()
-        time.sleep(1)
-
-        print("fast acceleration")
-        motor.forward(30)
-        motor.forward(80)
-        time.sleep(2)
-        motor.stop()
-        time.sleep(1)
 
     finally:
         print("=== Cleaning up ===")
