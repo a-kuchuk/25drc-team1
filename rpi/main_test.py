@@ -5,7 +5,7 @@ from Control.steering import *
 def main():
     try:
         # === Init ===
-        base_speed = 60     # base motor speed (0-100)
+        base_speed = 80     # base motor speed (0-100)
         min_speed = 30      # minimum motor speed when turning
         motor = Motor(base_speed, min_speed)
         steering = SteeringController()
@@ -56,6 +56,7 @@ def main():
         time.sleep(1)
         steering.set_steering_angle(-40)
         time.sleep(1)
+        steering.set_steering_angle(0)
 
     finally:
         print("=== Cleaning up ===")
