@@ -14,31 +14,43 @@ def main():
 
         print("=== Driving forward with center steering ===")
         steering.set_steering_angle(0)  # center
-        motor.move_scaled(0, max_angle)
+        # motor.move_scaled(0, max_angle)
+        motor.forward(base_speed)
         time.sleep(1)
         motor.stop()
         time.sleep(1)
 
         print("=== Drive test with left turn ===")
         steering.set_steering_angle(-max_angle)
-        motor.move_scaled(-max_angle, max_angle)
+        # motor.move_scaled(-max_angle, max_angle)
+        motor.forward(base_speed)
         time.sleep(2)
         motor.stop()
         time.sleep(1)
 
         print("=== Drive test with right turn ===")
         steering.set_steering_angle(max_angle)
-        motor.move_scaled(max_angle, max_angle)
+        # motor.move_scaled(max_angle, max_angle)
+        motor.forward(base_speed)
         time.sleep(2)
         motor.stop()
         time.sleep(1)
 
         print("=== Driving forward with center steering ===")
         steering.set_steering_angle(0)  # center
-        motor.move_scaled(0, max_angle)
+        # motor.move_scaled(0, max_angle)
+        motor.forward(base_speed)
         time.sleep(1)
         motor.stop()
         time.sleep(1)
+
+        print("dkjlfjkldjfkldf")
+        motor.forward(base_speed)
+        steering.set_steering_angle(20)
+        steering.set_steering_angle(40)
+        steering.set_steering_angle(0)
+        steering.set_steering_angle(-20)
+        steering.set_steering_angle(-40)
 
     finally:
         print("=== Cleaning up ===")
