@@ -9,7 +9,6 @@ imutils
 python-math 
 pigpio
 RPi.GPIO
-pigpio
 
 install unzip
 
