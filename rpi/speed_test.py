@@ -13,17 +13,6 @@ def main():
 
         max_angle = steering.max_steering_angle_deg 
 
-        print("=== Min speed ===")
-        motor.forward(30)
-        time.sleep(5)
-        motor.stop()
-        time.sleep(1)
-
-        print("=== base speed ===")
-        motor.forward(60)
-        time.sleep(5)
-        motor.stop()
-        time.sleep(1)
 
         print("=== max speed ===")
         motor.forward(90)
