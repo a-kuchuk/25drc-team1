@@ -106,15 +106,18 @@ def main():
         heading_gradient = (utils.derivative_at(left_poly, LOOKAHEAD_Y) + utils.derivative_at(right_poly, LOOKAHEAD_Y)) / 2
         heading_error = np.degrees(np.arctan(heading_gradient))
 
-        # PID computation (mix lateral + heading)
-        # Lateral error = horizontal distance between center of image and lane midpoint
-        # Heading error = angle between robot’s current direction and lane tangent
-        total_error = lateral_error + heading_error
-        correction = pid.compute(total_error)
+        # # PID computation (mix lateral + heading)
+        # # Lateral error = horizontal distance between center of image and lane midpoint
+        # # Heading error = angle between robot’s current direction and lane tangent
+        # total_error = lateral_error + heading_error
+        # correction = pid.compute(total_error)
 
-        # Driving correction from PID
-        steering.set_steering_angle(correction)
-        motor.move_scaled(correction, steering.max_steering_angle_deg)
+        # # Driving correction from PID
+        # steering.set_steering_angle(correction)
+        # motor.move_scaled(correction, steering.max_steering_angle_deg)
+
+        # Display debugging visuals
+        display_debug(img, left_poly, right_poly, lateral_error, heading_error, LOOKAHEAD_Y)
 
     else:
         print("Lane fitting failed :(")
@@ -132,6 +135,51 @@ def main():
 # try:
 #     while True:
 #         main()
+
+def display_debug(img, left_poly, right_poly, lateral_error, heading_error, lookahead_y=150):
+    debug_img = img.copy()
+    h, w, _ = img.shape
+
+    # Draw fitted polynomials as points
+    for y in range(lookahead_y, h, 5):
+        if left_poly is not None:
+            lx = int(utils.evaluate_poly(left_poly, y))
+            cv2.circle(debug_img, (lx, y), 3, (0, 255, 255), -1)  # yellow
+
+        if right_poly is not None:
+            rx = int(utils.evaluate_poly(right_poly, y))
+            cv2.circle(debug_img, (rx, y), 3, (255, 0, 0), -1)  # blue
+
+    # Draw heading vector (if both polynomials are valid)
+    if left_poly is not None and right_poly is not None:
+        left_x = utils.evaluate_poly(left_poly, lookahead_y)
+        right_x = utils.evaluate_poly(right_poly, lookahead_y)
+        center_x = int((left_x + right_x) // 2)
+        center_y = lookahead_y
+
+        heading_gradient = (utils.derivative_at(left_poly, lookahead_y) + 
+                            utils.derivative_at(right_poly, lookahead_y)) / 2
+        angle_rad = np.arctan(heading_gradient)
+
+        direction_len = 40
+        dx = int(direction_len * np.cos(angle_rad))
+        dy = int(direction_len * np.sin(angle_rad))
+
+        # Draw heading arrow
+        cv2.arrowedLine(debug_img, (center_x, center_y),
+                        (center_x + dx, center_y - dy), (0, 0, 255), 2)
+
+        # Draw center to lookahead point line
+        cv2.line(debug_img, (w // 2, h), (center_x, lookahead_y), (0, 255, 0), 2)
+
+    # Add debug text
+    cv2.putText(debug_img, f"Lateral Error: {lateral_error}", (10, 20),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+    cv2.putText(debug_img, f"Heading Error: {heading_error:.2f}", (10, 40),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+
+    # Show debug window
+    cv2.imshow("Debug View", debug_img)
 
 
 if __name__ == '__main__':
