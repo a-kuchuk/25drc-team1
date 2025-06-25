@@ -27,6 +27,7 @@ pid = PID(Kp=0.6, Ki=0.05, Kd=0.1)
 
 left = TapeYellow()
 right = TapeBlue()
+finish = TapeGreen
 
 # arrow_mode_triggered = False  # To prevent repeated detection
 # --- OpenCV Camera ---
@@ -57,24 +58,12 @@ def main():
     h, w, c = img.shape
     # points = utils.trackbar_val()
     img_warp = utils.img_warp(img, np.float32([(0, 157), (480, 157), (0, 155), (480, 155)]), w, h)
-    # if (img_warp):
-    #     print("Great success")
-    # else:
-    #     print("kms")  
-    #cv2.imshow('warp', img_warp)
 
-    # --- Lane Detection ---
-    print("LEFT LANE")
-    # replace with img for non warmped get lane 
     left_mask = getLane(img_warp, left, "left")
-    print("left mask")
-    print(left_mask)
 
-    print("RIGHT LANE")
     right_mask = getLane(img_warp, right, "right")
-    print("right mask")
-    print(right_mask)
 
+    fin_lane = getLane(img_warp, finish, "finish")
     # For each frame:
     #   Apply colour thresholding to extract left (yellow) and right (blue) lane masks.
     #   For each mask:
@@ -85,16 +74,12 @@ def main():
     # Get lane point samples
     left_points = utils.get_lane_points(left_mask)
     right_points = utils.get_lane_points(right_mask)
-    print("lane points left and right resp")
-    print(left_points)
-    print(right_points)
+
     # Fit curves
     left_poly = utils.fit_poly(left_points)
-    print("left polyu")
-    print(left_poly)
+
     right_poly = utils.fit_poly(right_points)
-    print("right plyu")
-    print(right_poly)
+
     # Determine lane centre and heading
     if left_poly is not None and right_poly is not None:
         left_x = utils.evaluate_poly(left_poly, LOOKAHEAD_Y)
@@ -116,6 +101,12 @@ def main():
         steering.set_steering_angle(correction)
         motor.move_scaled(correction, steering.max_steering_angle_deg)
 
+    # breaks loop if green lane detected
+    if fin_lane:
+        time.sleep(2)
+        return
+    
+
     else:
         print("Lane fitting failed :(")
         motor.stop()
@@ -128,10 +119,6 @@ def main():
     cv2.waitKey(1)
     #except KeyboardInterrupt:
 
-# # --- Cleanup and Run ---
-# try:
-#     while True:
-#         main()
 
 
 if __name__ == '__main__':
@@ -140,8 +127,8 @@ if __name__ == '__main__':
     utils.trackbar_init(init_trackbar_vals)
     while True:
         main()
-    # print("Stopping robot...")
-    # motor.stop()
-    # steering.cleanup()
-    # cap.release()
-    # cv2.destroyAllWindows()
+    print("Stopping robot...")
+    motor.stop()
+    steering.cleanup()
+    cap.release()
+    cv2.destroyAllWindows()
