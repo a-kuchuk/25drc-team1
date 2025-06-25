@@ -144,7 +144,7 @@ def main():
     #except KeyboardInterrupt:
 
 
-def display_debug(img, left_poly, right_poly, lateral_error, heading_error, lookahead_y=150):
+def display_debug(img, left_poly, right_poly, lateral_error, heading_error, lookahead_y):
     debug_img = img.copy()
     h, w, _ = img.shape
 
@@ -169,9 +169,9 @@ def display_debug(img, left_poly, right_poly, lateral_error, heading_error, look
                             utils.derivative_at(right_poly, lookahead_y)) / 2
         angle_rad = np.arctan(heading_gradient)
 
-        direction_len = 40
-        dx = int(direction_len * np.cos(angle_rad))
-        dy = int(direction_len * np.sin(angle_rad))
+        direction_len = 40      # length of red arrow
+        dx = int(direction_len * np.cos(angle_rad))     # horizontal comp of arrow
+        dy = int(direction_len * np.sin(angle_rad))     # vertical comp of arrow
 
         # Draw heading arrow
         cv2.arrowedLine(debug_img, (center_x, center_y),
