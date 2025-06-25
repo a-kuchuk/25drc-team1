@@ -76,12 +76,14 @@ class TapeBlue():
     v_max = 255
 
 class TapeYellow():
-    h_min = 15
-    s_min = 71
-    v_min = 0
-    h_max = 26
-    s_max = 255
+    h_min = 16
+    s_min = 36
+    v_min = 157
+    h_max = 28
+    s_max = 115
     v_max = 255
+
+    [16, 36, 157], [28, 115, 255]
 
 class TapeGreen():
     h_min = 52

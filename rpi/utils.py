@@ -66,7 +66,7 @@ def thresholding(img, colour):
     lower = np.array([colour.h_min, colour.s_min, colour.v_min])
     upper = np.array([colour.h_max, colour.s_max, colour.v_max])
     testBlue = cv2.inRange(imgHsv, lower, upper)
-    print(f"in utils \n {testBlue}")
+    # print(f"in utils \n {testBlue}")
     return testBlue
 
 
