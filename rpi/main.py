@@ -109,7 +109,6 @@ def main():
         time.sleep(2)
         return
     
-
     else:
         print("Lane fitting failed :(")
         motor.stop()
