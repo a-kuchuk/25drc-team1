@@ -84,12 +84,12 @@ class TapeYellow():
     v_max = 168
 
 class TapeGreen():
-    h_min = 52
-    s_min = 30
-    v_min = 0
-    h_max = 86
-    s_max = 255
-    v_max = 255
+    h_min = 39
+    s_min = 28
+    v_min = 125
+    h_max = 73
+    s_max = 77
+    v_max = 182
 
 class HighlighterPink():
     lower = np.array([146, 55, 0]) 

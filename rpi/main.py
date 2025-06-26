@@ -60,31 +60,32 @@ def main():
     # print(points)
     img_warp = utils.img_warp(img, np.float32([(0, 94), (480, 94), (0, 159), (480, 159)]), w, h)
     # img_warp = utils.img_warp(img, points, w, h)
-    cv2.imshow('warp', img_warp)
+    # cv2.imshow('warp', img_warp)
 
-    left_mask = getLane(img_warp, left, "left")
+    left_mask = getLane(img, left, "left")
 
-    right_mask = getLane(img_warp, right, "right")
+    right_mask = getLane(img, right, "right")
 
     # CHANGE LOGIC TO ONLY DETECT SHIT IN NTEH BOTTOM ~1/4OF THE IMAGE TO DISCOUNT RANDOM SHADOWS/ETC
-    # fin_lane = getLane(img, finish, "finish")
+    fin_lane = getLane(img, finish, "finish")
 
-    # # Only consider the bottom 1/4 of the image
-    # height = fin_lane.shape[0]
-    # roi = fin_lane[int(height * 0.75):, :]  # Region Of Interest
+    # Only consider the bottom 1/4 of the image
+    height = fin_lane.shape[0]
+    roi = fin_lane[int(height * 0.75):, :]  # Region Of Interest
 
-    # # Count how many pixels in each row are white (i.e. part of the lane)
-    # row_sums = np.sum(roi == 255, axis=1)
+    # Count how many pixels in each row are white (i.e. part of the lane)
+    row_sums = np.sum(roi == 255, axis=1)
 
-    # # Define a threshold: how wide must a line be to count as a valid lane
-    # # For example, require a white segment that's at least 30% of image width in at least one row
-    # min_width_ratio = 0.3
-    # min_white_pixels = int(fin_lane.shape[1] * min_width_ratio)
+    # Define a threshold: how wide must a line be to count as a valid lane
+    # For example, require a white segment that's at least 30% of image width in at least one row
+    min_width_ratio = 0.3
+    min_white_pixels = int(fin_lane.shape[1] * min_width_ratio)
 
-    # # Trigger only if any row in the ROI has enough contiguous white pixels
-    # if np.any(row_sums >= min_white_pixels):
-    #     time.sleep(2)
-    #     return
+    # Trigger only if any row in the ROI has enough contiguous white pixels
+    if np.any(row_sums >= min_white_pixels):
+        print("FIN")
+        time.sleep(2)
+        return
 
 
 
@@ -126,7 +127,7 @@ def main():
         # motor.forward(BASE_SPEED)
 
         # Display debugging visuals
-        display_debug(img_warp, left_poly, right_poly, lateral_error, heading_error, LOOKAHEAD_Y)
+        display_debug(img, left_poly, right_poly, lateral_error, heading_error, LOOKAHEAD_Y)
 
     # breaks loop if green lane detected
     # if np.any(bottom_quarter):

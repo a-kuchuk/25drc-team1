@@ -71,9 +71,9 @@ def thresholding(img, colour):
     upper = np.array([colour.h_max, colour.s_max, colour.v_max])
     mask = cv2.inRange(imgHsv, lower, upper)
     # print(f"in utils \n {testBlue}")
-    height = mask.shape[0]
-    top_cutoff = int(height / 3)
-    mask[:top_cutoff, :] = 0  # Set top 1/3 to black
+    # height = mask.shape[0]
+    # top_cutoff = int(height / 3)
+    # mask[:top_cutoff, :] = 0  # Set top 1/3 to black
 
     return mask
 
