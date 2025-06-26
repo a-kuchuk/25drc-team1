@@ -2,9 +2,10 @@ import cv2
 import numpy as np
 import imutils
 import colours
+from main import LOOKAHEAD_Y, FRAME_HEIGHT
 
-LOOKAHEAD_Y = 150  # Y-coordinate to calculate steering target
-FRAME_HEIGHT = 240
+# LOOKAHEAD_Y = 150  # Y-coordinate to calculate steering target
+# FRAME_HEIGHT = 240
 
 def img_warp(img, points, w, h):
     """main warping function using transformation matrix built into cv2
@@ -37,26 +38,29 @@ def trackbar_init(initTVals, wt=480, ht=240):
         wt (int, optional): width. Defaults to 480.
         ht (int, optional): height. Defaults to 240.
     """
-    # cv2.namedWindow("trackbars")
-    # cv2.resizeWindow("trackbars", 360, 240)
-    # cv2.createTrackbar("width top", "trackbars", initTVals[0], wt//2, nothing)
-    # cv2.createTrackbar("height top", "trackbars", initTVals[1], ht, nothing)
-    # cv2.createTrackbar("width bottom", "trackbars", initTVals[2], wt//2, nothing)
-    # cv2.createTrackbar("height bottom", "trackbars", initTVals[3], ht, nothing)
+    cv2.namedWindow("trackbars")
+    cv2.resizeWindow("trackbars", 360, 240)
+    cv2.createTrackbar("width top", "trackbars", initTVals[0], wt//2, nothing)
+    cv2.createTrackbar("height top", "trackbars", initTVals[1], ht, nothing)
+    cv2.createTrackbar("width bottom", "trackbars", initTVals[2], wt//2, nothing)
+    cv2.createTrackbar("height bottom", "trackbars", initTVals[3], ht, nothing)
 
 def trackbar_val(wt=480, ht=240):
     '''
     retrieves data from trackbars window
     currently only used in perspective warp
     '''
-    # width_top = cv2.getTrackbarPos("width top", "trackbars")
-    # height_top = cv2.getTrackbarPos("height top", "trackbars")
-    # width_bottom = cv2.getTrackbarPos("width bottom", "trackbars")
-    # height_bottom = cv2.getTrackbarPos("height bottom", "trackbars")
-    # points = np.float32([(width_top, height_top), (wt - width_top, height_top), 
-    #                      (width_bottom, height_bottom), (wt - width_bottom, height_bottom)])
+    width_top = cv2.getTrackbarPos("width top", "trackbars")
+    height_top = cv2.getTrackbarPos("height top", "trackbars")
+    width_bottom = cv2.getTrackbarPos("width bottom", "trackbars")
+    height_bottom = cv2.getTrackbarPos("height bottom", "trackbars")
+    points = np.float32([(width_top, height_top), (wt - width_top, height_top), 
+                         (width_bottom, height_bottom), (wt - width_bottom, height_bottom)])
 
-    # return points
+    # print("POINTS")
+    # print(points)
+    # print(f"POINTS \n {width_top} \n {height_top} \n {width_bottom} \n {height_bottom}")
+    return points
 
 # def detect_arrow(img, arrow):
 
@@ -65,9 +69,13 @@ def thresholding(img, colour):
     imgHsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     lower = np.array([colour.h_min, colour.s_min, colour.v_min])
     upper = np.array([colour.h_max, colour.s_max, colour.v_max])
-    testBlue = cv2.inRange(imgHsv, lower, upper)
-    print(f"in utils \n {testBlue}")
-    return testBlue
+    mask = cv2.inRange(imgHsv, lower, upper)
+    # print(f"in utils \n {testBlue}")
+    height = mask.shape[0]
+    top_cutoff = int(height / 3)
+    mask[:top_cutoff, :] = 0  # Set top 1/3 to black
+
+    return mask
 
 
 def find_centroid(img):
