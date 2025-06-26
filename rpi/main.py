@@ -86,9 +86,7 @@ def main():
         print("FIN")
         time.sleep(2)
         return
-
-
-
+    
     # For each frame:
     #   Apply colour thresholding to extract left (yellow) and right (blue) lane masks.
     #   For each mask:
