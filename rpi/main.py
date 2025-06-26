@@ -138,7 +138,7 @@ def main():
         # motor.forward(BASE_SPEED)
 
         # Display debugging visuals
-        utils.display_debug(img, left_poly, right_poly, lateral_error, heading_error, LOOKAHEAD_Y)
+        utils.display_debug(img, left_poly, right_poly, lateral_error, heading_error, LOOKAHEAD_Y, left_highest_y, right_highest_y)
 
     # breaks loop if green lane detected
     # if np.any(bottom_quarter):
