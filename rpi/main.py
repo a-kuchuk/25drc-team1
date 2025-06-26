@@ -14,7 +14,7 @@ from Control.steering import SteeringController
 from ArrowDetection import *
 
 # --- Constants ---
-BASE_SPEED = 60
+BASE_SPEED = 70
 MIN_SPEED = 30
 FRAME_WIDTH = 480
 FRAME_HEIGHT = 240
@@ -23,7 +23,7 @@ LOOKAHEAD_Y = 150
 # --- Initialize Controllers ---
 steering = SteeringController()
 motor = Motor(base_speed=BASE_SPEED, min_speed=MIN_SPEED)
-pid = PID(Kp=0.6, Ki=0.05, Kd=0.1)
+pid = PID(Kp=0.2, Ki=0, Kd=0)
 
 left = TapeYellow()
 right = TapeBlue()
@@ -77,7 +77,6 @@ def main():
 
     # Fit curves
     left_poly = utils.fit_poly(left_points)
-
     right_poly = utils.fit_poly(right_points)
 
     # Determine lane centre and heading
@@ -91,15 +90,16 @@ def main():
         heading_gradient = (utils.derivative_at(left_poly, LOOKAHEAD_Y) + utils.derivative_at(right_poly, LOOKAHEAD_Y)) / 2
         heading_error = np.degrees(np.arctan(heading_gradient))
 
-        # # PID computation (mix lateral + heading)
-        # # Lateral error = horizontal distance between center of image and lane midpoint
-        # # Heading error = angle between robot’s current direction and lane tangent
-        # total_error = lateral_error + heading_error
-        # correction = pid.compute(total_error)
+        # PID computation (mix lateral + heading)
+        # Lateral error = horizontal distance between center of image and lane midpoint
+        # Heading error = angle between robot’s current direction and lane tangent
+        total_error = lateral_error + heading_error
+        correction = pid.compute(total_error)
 
-        # # Driving correction from PID
-        # steering.set_steering_angle(correction)
+        # Driving correction from PID
+        steering.set_steering_angle(correction)
         # motor.move_scaled(correction, steering.max_steering_angle_deg)
+        motor.forward(BASE_SPEED)
 
         # Display debugging visuals
         display_debug(img, left_poly, right_poly, lateral_error, heading_error, LOOKAHEAD_Y)
