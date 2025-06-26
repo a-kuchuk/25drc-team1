@@ -162,14 +162,16 @@ def get_lane_points(mask,highest_y, step=20):
             points.append((cx, y))
     return points
 
+
+
 def fit_poly(points):
     """
     Fit a 3rd degree polynomial to a list of (x, y) points.
     Returns coefficients of the polynomial x = f(y).
     """
-    if len(points) >= 4:        # Need at least 4 points for cubic
+    if len(points) >= 3:
         x, y = zip(*points)
-        return np.polyfit(y, x, 3)
+        return np.polyfit(y, x, 2)
     return None
 
 def evaluate_poly(poly_coeffs, y):
@@ -186,20 +188,6 @@ def derivative_at(poly_coeffs, y):
     d = np.polyder(poly_coeffs)
     return np.polyval(d, y)
 
-
-def draw_fitted_curve(img, poly, y_start, y_end, color):
-    if poly is None:
-        return
-
-    points = []
-    for y in range(y_start, y_end, 2):  # smooth curve with small step
-        x = evaluate_poly(poly, y)
-        points.append([x, y])
-
-    # Convert to proper shape for cv2.polylines
-    points = np.array(points, dtype=np.int32).reshape((-1, 1, 2))
-    cv2.polylines(img, [points], isClosed=False, color=color, thickness=2)
-
 def display_debug(img, left_poly, right_poly, lateral_error, heading_error, lookahead_y, left_highest_y, right_highest_y):
     debug_img = img.copy()
     h, w, _ = img.shape
@@ -214,19 +202,16 @@ def display_debug(img, left_poly, right_poly, lateral_error, heading_error, look
     #         rx = int(evaluate_poly(right_poly, y))
     #         cv2.circle(debug_img, (rx, y), 3, (255, 0, 0), -1)  # blue
 
-    # for y in range(left_highest_y, lookahead_y, 5):
-    #     if left_poly is not None:
-    #         lx = int(evaluate_poly(left_poly, y))
-    #         cv2.circle(debug_img, (lx, y), 3, (0, 255, 255), -1)  # yellow
+    for y in range(left_highest_y, lookahead_y, 5):
+        if left_poly is not None:
+            lx = int(evaluate_poly(left_poly, y))
+            cv2.circle(debug_img, (lx, y), 3, (0, 255, 255), -1)  # yellow
 
-    # for y in range(right_highest_y, lookahead_y, 5):
-    #     if right_poly is not None:
-    #         rx = int(evaluate_poly(right_poly, y))
-    #         cv2.circle(debug_img, (rx, y), 3, (255, 0, 0), -1)  # blue
+    for y in range(right_highest_y, lookahead_y, 5):
+        if right_poly is not None:
+            rx = int(evaluate_poly(right_poly, y))
+            cv2.circle(debug_img, (rx, y), 3, (255, 0, 0), -1)  # blue
 
-    # Draw smooth polynomial curves using cv2.polylines
-    draw_fitted_curve(debug_img, left_poly, left_highest_y, lookahead_y, (0, 255, 255))  # Yellow
-    draw_fitted_curve(debug_img, right_poly, right_highest_y, lookahead_y, (255, 0, 0))  # Blue
 
     # Draw heading vector (if both polynomials are valid)
     if left_poly is not None and right_poly is not None:
@@ -284,5 +269,5 @@ def detectLinePoly(img, pixel_count=50, min_points=10):
     if len(line) < min_points:
         return None, []
 
-    return line
 
+    return line
