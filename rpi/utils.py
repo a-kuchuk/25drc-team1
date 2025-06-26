@@ -222,8 +222,8 @@ def display_debug(img, left_poly, right_poly, lateral_error, heading_error, look
         angle_rad = np.arctan(heading_gradient)
 
         direction_len = 40      # length of red arrow
-        dx = int(direction_len * np.cos(angle_rad))     # horizontal comp of arrow
-        dy = int(direction_len * np.sin(angle_rad))     # vertical comp of arrow
+        dx = int(direction_len * np.sin(angle_rad))     # horizontal comp of arrow
+        dy = int(direction_len * np.cos(angle_rad))     # vertical comp of arrow
 
         # Draw heading arrow
         cv2.arrowedLine(debug_img, (center_x, center_y),
