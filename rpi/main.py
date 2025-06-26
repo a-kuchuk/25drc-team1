@@ -60,11 +60,11 @@ def main():
     # print(points)
     img_warp = utils.img_warp(img, np.float32([(0, 94), (480, 94), (0, 159), (480, 159)]), w, h)
     # img_warp = utils.img_warp(img, points, w, h)
-    cv2.imshow('warp', img_warp)
+    # cv2.imshow('warp', img_warp)
 
-    left_mask = getLane(img_warp, left, "left")
+    left_mask = getLane(img, left, "left")
 
-    right_mask = getLane(img_warp, right, "right")
+    right_mask = getLane(img, right, "right")
 
     # CHANGE LOGIC TO ONLY DETECT SHIT IN NTEH BOTTOM ~1/4OF THE IMAGE TO DISCOUNT RANDOM SHADOWS/ETC
     # fin_lane = getLane(img, finish, "finish")
@@ -126,7 +126,7 @@ def main():
         # motor.forward(BASE_SPEED)
 
         # Display debugging visuals
-        display_debug(img_warp, left_poly, right_poly, lateral_error, heading_error, LOOKAHEAD_Y)
+        display_debug(img, left_poly, right_poly, lateral_error, heading_error, LOOKAHEAD_Y)
 
     # breaks loop if green lane detected
     # if np.any(bottom_quarter):
