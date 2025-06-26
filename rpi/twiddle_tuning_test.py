@@ -2,8 +2,8 @@ import cv2
 import numpy as np
 import time
 from Control.pid import PID
-from Control.motor import Motor
-from Control.steering import SteeringController
+# from Control.motor import Motor
+# from Control.steering import SteeringController
 from LaneDetection.lane_detection import getLane
 from colours import TapeYellow, TapeBlue, TapeGreen
 import utils
@@ -38,7 +38,7 @@ def run_episode(p):
 
         img = cv2.resize(img, (FRAME_WIDTH, FRAME_HEIGHT))
         h, w, _ = img.shape
-        img_warp = utils.img_warp(img, np.float32([(0, 157), (480, 157), (0, 155), (480, 155)]), w, h)
+        img_warp = utils.img_warp(img, np.float32([(0, 94), (480, 94), (0, 159), (480, 159)]), w, h)
 
         left_mask = getLane(img_warp, left, "left")
         right_mask = getLane(img_warp, right, "right")
@@ -64,7 +64,7 @@ def run_episode(p):
             total_error += abs(error)
 
             if USE_VISUAL_DEBUG:
-                display_debug(img, left_poly, right_poly, lateral_error, heading_error, LOOKAHEAD_Y)
+                display_debug(img_warp, left_poly, right_poly, lateral_error, heading_error, LOOKAHEAD_Y)
 
         frame_count += 1
         cv2.waitKey(1)
