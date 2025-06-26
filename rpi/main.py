@@ -69,6 +69,10 @@ def main():
     left_highest_y = utils.get_highest_lane_y(left_mask)
     right_highest_y = utils.get_highest_lane_y(right_mask)
 
+    if left_highest_y is None or right_highest_y is None:
+        print("Could not find valid lane pixels for one or both sides.")
+        return
+
     print("Highest point (Y) of left lane:", left_highest_y)
     print("Highest point (Y) of right lane:", right_highest_y)
 
@@ -109,6 +113,7 @@ def main():
     left_points = utils.get_lane_points(left_mask, left_highest_y)
     right_points = utils.get_lane_points(right_mask, right_highest_y)
     print(f"POINTS \n {left_points} \n {right_points}")
+    print(f"Left points: {len(left_points)}, Right points: {len(right_points)}")
 
     # Fit curves
     left_poly = utils.fit_poly(left_points)

@@ -151,7 +151,10 @@ def get_lane_points(mask,highest_y, step=20):
     #         cx = int(np.mean(x_vals))
     #         points.append((cx, y))
 
-    for y in range (highest_y, LOOKAHEAD_Y, step):
+    y_start = min(highest_y, LOOKAHEAD_Y)
+    y_end = max(highest_y, LOOKAHEAD_Y)
+
+    for y in range (y_start, y_end, step):
         row = mask[y, :]                                # Takes horizontal row at height y 
         x_vals = np.where(row > 0)[0]                   # Find indices, x coords, where mask is nonzero
         if len(x_vals) > 0:
@@ -161,7 +164,7 @@ def get_lane_points(mask,highest_y, step=20):
 
 def fit_poly(points):
     """
-    Fit a 2nd degree polynomial to a list of (x, y) points.
+    Fit a 3rd degree polynomial to a list of (x, y) points.
     Returns coefficients of the polynomial x = f(y).
     """
     if len(points) >= 4:        # Need at least 4 points for cubic
