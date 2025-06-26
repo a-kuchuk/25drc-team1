@@ -151,3 +151,48 @@ def derivative_at(poly_coeffs, y):
     """
     d = np.polyder(poly_coeffs)
     return np.polyval(d, y)
+
+def display_debug(img, left_poly, right_poly, lateral_error, heading_error, lookahead_y):
+    debug_img = img.copy()
+    h, w, _ = img.shape
+
+    # Draw fitted polynomials as points
+    for y in range(0, h, 5):
+        if left_poly is not None:
+            lx = int(evaluate_poly(left_poly, y))
+            cv2.circle(debug_img, (lx, y), 3, (0, 255, 255), -1)  # yellow
+
+        if right_poly is not None:
+            rx = int(evaluate_poly(right_poly, y))
+            cv2.circle(debug_img, (rx, y), 3, (255, 0, 0), -1)  # blue
+
+    # Draw heading vector (if both polynomials are valid)
+    if left_poly is not None and right_poly is not None:
+        left_x = evaluate_poly(left_poly, lookahead_y)
+        right_x = evaluate_poly(right_poly, lookahead_y)
+        center_x = int((left_x + right_x) // 2)
+        center_y = lookahead_y
+
+        heading_gradient = (derivative_at(left_poly, lookahead_y) + 
+                            derivative_at(right_poly, lookahead_y)) / 2
+        angle_rad = np.arctan(heading_gradient)
+
+        direction_len = 40      # length of red arrow
+        dx = int(direction_len * np.cos(angle_rad))     # horizontal comp of arrow
+        dy = int(direction_len * np.sin(angle_rad))     # vertical comp of arrow
+
+        # Draw heading arrow
+        cv2.arrowedLine(debug_img, (center_x, center_y),
+                        (center_x + dx, center_y - dy), (0, 0, 255), 2)
+
+        # Draw center to lookahead point line
+        cv2.line(debug_img, (w // 2, h), (center_x, lookahead_y), (0, 255, 0), 2)
+
+    # Add debug text
+    cv2.putText(debug_img, f"Lateral Error: {lateral_error}", (10, 20),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+    cv2.putText(debug_img, f"Heading Error: {heading_error:.2f}", (10, 40),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+
+    # Show debug window
+    cv2.imshow("Debug View", debug_img)

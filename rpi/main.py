@@ -127,7 +127,7 @@ def main():
         # motor.forward(BASE_SPEED)
 
         # Display debugging visuals
-        display_debug(img, left_poly, right_poly, lateral_error, heading_error, LOOKAHEAD_Y)
+        utils.display_debug(img, left_poly, right_poly, lateral_error, heading_error, LOOKAHEAD_Y)
 
     # breaks loop if green lane detected
     # if np.any(bottom_quarter):
@@ -146,53 +146,6 @@ def main():
     
     cv2.waitKey(1)
     #except KeyboardInterrupt:
-
-
-def display_debug(img, left_poly, right_poly, lateral_error, heading_error, lookahead_y):
-    debug_img = img.copy()
-    h, w, _ = img.shape
-
-    # Draw fitted polynomials as points
-    for y in range(lookahead_y, h, 5):
-        if left_poly is not None:
-            lx = int(utils.evaluate_poly(left_poly, y))
-            cv2.circle(debug_img, (lx, y), 3, (0, 255, 255), -1)  # yellow
-
-        if right_poly is not None:
-            rx = int(utils.evaluate_poly(right_poly, y))
-            cv2.circle(debug_img, (rx, y), 3, (255, 0, 0), -1)  # blue
-
-    # Draw heading vector (if both polynomials are valid)
-    if left_poly is not None and right_poly is not None:
-        left_x = utils.evaluate_poly(left_poly, lookahead_y)
-        right_x = utils.evaluate_poly(right_poly, lookahead_y)
-        center_x = int((left_x + right_x) // 2)
-        center_y = lookahead_y
-
-        heading_gradient = (utils.derivative_at(left_poly, lookahead_y) + 
-                            utils.derivative_at(right_poly, lookahead_y)) / 2
-        angle_rad = np.arctan(heading_gradient)
-
-        direction_len = 40      # length of red arrow
-        dx = int(direction_len * np.cos(angle_rad))     # horizontal comp of arrow
-        dy = int(direction_len * np.sin(angle_rad))     # vertical comp of arrow
-
-        # Draw heading arrow
-        cv2.arrowedLine(debug_img, (center_x, center_y),
-                        (center_x + dx, center_y - dy), (0, 0, 255), 2)
-
-        # Draw center to lookahead point line
-        cv2.line(debug_img, (w // 2, h), (center_x, lookahead_y), (0, 255, 0), 2)
-
-    # Add debug text
-    cv2.putText(debug_img, f"Lateral Error: {lateral_error}", (10, 20),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
-    cv2.putText(debug_img, f"Heading Error: {heading_error:.2f}", (10, 40),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
-
-    # Show debug window
-    cv2.imshow("Debug View", debug_img)
-
 
 if __name__ == '__main__':
     # ls /dev/video*
