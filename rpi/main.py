@@ -67,24 +67,25 @@ def main():
     right_mask = getLane(img, right, "right")
 
     # CHANGE LOGIC TO ONLY DETECT SHIT IN NTEH BOTTOM ~1/4OF THE IMAGE TO DISCOUNT RANDOM SHADOWS/ETC
-    # fin_lane = getLane(img, finish, "finish")
+    fin_lane = getLane(img, finish, "finish")
 
-    # # Only consider the bottom 1/4 of the image
-    # height = fin_lane.shape[0]
-    # roi = fin_lane[int(height * 0.75):, :]  # Region Of Interest
+    # Only consider the bottom 1/4 of the image
+    height = fin_lane.shape[0]
+    roi = fin_lane[int(height * 0.75):, :]  # Region Of Interest
 
-    # # Count how many pixels in each row are white (i.e. part of the lane)
-    # row_sums = np.sum(roi == 255, axis=1)
+    # Count how many pixels in each row are white (i.e. part of the lane)
+    row_sums = np.sum(roi == 255, axis=1)
 
-    # # Define a threshold: how wide must a line be to count as a valid lane
-    # # For example, require a white segment that's at least 30% of image width in at least one row
-    # min_width_ratio = 0.3
-    # min_white_pixels = int(fin_lane.shape[1] * min_width_ratio)
+    # Define a threshold: how wide must a line be to count as a valid lane
+    # For example, require a white segment that's at least 30% of image width in at least one row
+    min_width_ratio = 0.3
+    min_white_pixels = int(fin_lane.shape[1] * min_width_ratio)
 
-    # # Trigger only if any row in the ROI has enough contiguous white pixels
-    # if np.any(row_sums >= min_white_pixels):
-    #     time.sleep(2)
-    #     return
+    # Trigger only if any row in the ROI has enough contiguous white pixels
+    if np.any(row_sums >= min_white_pixels):
+        print("FIN")
+        time.sleep(2)
+        return
 
 
 
