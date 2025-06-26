@@ -114,16 +114,16 @@ def main():
         heading_gradient = (utils.derivative_at(left_poly, LOOKAHEAD_Y) + utils.derivative_at(right_poly, LOOKAHEAD_Y)) / 2
         heading_error = np.degrees(np.arctan(heading_gradient))
 
-        # PID computation (mix lateral + heading)
-        # Lateral error = horizontal distance between center of image and lane midpoint
-        # Heading error = angle between robot’s current direction and lane tangent
-        total_error = lateral_error + heading_error
-        correction = pid.compute(total_error)
+        # # PID computation (mix lateral + heading)
+        # # Lateral error = horizontal distance between center of image and lane midpoint
+        # # Heading error = angle between robot’s current direction and lane tangent
+        # total_error = lateral_error + heading_error
+        # correction = pid.compute(total_error)
 
-        # Driving correction from PID
-        steering.set_steering_angle(correction)
-        # motor.move_scaled(correction, steering.max_steering_angle_deg)
-        motor.forward(BASE_SPEED)
+        # # Driving correction from PID
+        # steering.set_steering_angle(correction)
+        # # motor.move_scaled(correction, steering.max_steering_angle_deg)
+        # motor.forward(BASE_SPEED)
 
         # Display debugging visuals
         display_debug(img_warp, left_poly, right_poly, lateral_error, heading_error, LOOKAHEAD_Y)
