@@ -66,6 +66,13 @@ def main():
 
     right_mask = getLane(img, right, "right")
 
+    left_highest_y = utils.get_highest_lane_y(left_mask)
+    right_highest_y = utils.get_highest_lane_y(right_mask)
+
+    print("Highest point (Y) of left lane:", left_highest_y)
+    print("Highest point (Y) of right lane:", right_highest_y)
+
+
     # CHANGE LOGIC TO ONLY DETECT SHIT IN NTEH BOTTOM ~1/4OF THE IMAGE TO DISCOUNT RANDOM SHADOWS/ETC
     fin_lane = getLane(img, finish, "finish")
 

@@ -70,12 +70,35 @@ def thresholding(img, colour):
     lower = np.array([colour.h_min, colour.s_min, colour.v_min])
     upper = np.array([colour.h_max, colour.s_max, colour.v_max])
     mask = cv2.inRange(imgHsv, lower, upper)
-    # print(f"in utils \n {testBlue}")
-    # height = mask.shape[0]
-    # top_cutoff = int(height / 3)
-    # mask[:top_cutoff, :] = 0  # Set top 1/3 to black
 
     return mask
+
+import numpy as np
+
+def get_highest_lane_y(mask):
+    """Returns the min (highest on screen) Y coordinate of lane pixels, with outliers removed."""
+    # Get all y-coordinates of white pixels
+    coords = np.column_stack(np.where(mask == 255))
+    
+    if coords.size == 0:
+        return None
+
+    y_coords = coords[:, 0]  # rows are y, cols are x
+
+    # IQR filtering to remove outliers
+    q1 = np.percentile(y_coords, 25)
+    q3 = np.percentile(y_coords, 75)
+    iqr = q3 - q1
+    lower_bound = q1 - 1.5 * iqr
+    upper_bound = q3 + 1.5 * iqr
+
+    filtered_y = y_coords[(y_coords >= lower_bound) & (y_coords <= upper_bound)]
+    
+    if filtered_y.size == 0:
+        return None
+
+    return int(np.min(filtered_y))  # highest point on screen
+
 
 
 def find_centroid(img):
