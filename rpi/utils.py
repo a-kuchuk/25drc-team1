@@ -266,8 +266,5 @@ def detectLinePoly(img, pixel_count=50, min_points=10):
     if len(line) < min_points:
         return None, []
 
-    ys = line[:, 1]
-    xs = line[:, 0]
-    coeffs = np.polyfit(ys, xs, 2)  # Fit x = a*y^2 + b*y + c
 
-    return coeffs, line
+    return line

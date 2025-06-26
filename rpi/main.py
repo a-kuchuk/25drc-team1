@@ -104,10 +104,10 @@ def main():
     # Get lane point samples
 
     # Test code for other lane detection contour method
-    # left_poly, left_points = utils.detectLinePoly(left_mask)
-    # right_poly, right_points = utils.detectLinePoly(right_mask)
-    left_points = utils.get_lane_points(left_mask, left_highest_y)
-    right_points = utils.get_lane_points(right_mask, right_highest_y)
+    left_points = utils.detectLinePoly(left_mask)
+    right_points = utils.detectLinePoly(right_mask)
+    # left_points = utils.get_lane_points(left_mask, left_highest_y)
+    # right_points = utils.get_lane_points(right_mask, right_highest_y)
     print(f"POINTS \n {left_points} \n {right_points}")
 
     # Fit curves
