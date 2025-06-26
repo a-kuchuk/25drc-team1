@@ -110,9 +110,19 @@ def get_lane_points(mask, step=20):
         return []
 
     points = []
-    for y in range(LOOKAHEAD_Y, FRAME_HEIGHT, step):
+
+    # Scaning upwards toward top of image 
+    for y in range(LOOKAHEAD_Y - step, 100, -step):
         row = mask[y, :]
         x_vals = np.where(row > 0)[0]
+        if len(x_vals) > 0:
+            cx = int(np.mean(x_vals))
+            points.append((cx, y))
+
+    # Scanning points from lookahead_y down to bottom of image - increasing y coord 
+    for y in range(LOOKAHEAD_Y, FRAME_HEIGHT-step, step):
+        row = mask[y, :]                                # Takes horizontal row at height y 
+        x_vals = np.where(row > 0)[0]                   # Find indices, x coords, where mask is nonzero
         if len(x_vals) > 0:
             cx = int(np.mean(x_vals))
             points.append((cx, y))
