@@ -79,7 +79,9 @@ def twiddle(tol=0.01):
     print(f"Initial error: {best_err:.2f}")
 
     while sum(dp) > tol:
+        print('inside')
         for i in range(3):
+            print(f"in for loop {i}")
             p[i] += dp[i]
             err = run_episode(p)
 
@@ -98,7 +100,7 @@ def twiddle(tol=0.01):
                     dp[i] *= 0.95
 
             print(f"PID: {p}, Error: {err:.2f}, Best: {best_err:.2f}, Steps: {dp}")
-
+    print("befor ereturn")
     return p
 
 # --- Debug Drawing ---
