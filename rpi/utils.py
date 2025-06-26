@@ -244,10 +244,10 @@ def display_debug(img, left_poly, right_poly, lateral_error, heading_error, look
 
 # Old code from pervious team modified to output polynomial fitting of lane 
 def detectLinePoly(img, pixel_count=50, min_points=10):
-    grey = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    # grey = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     
-    if cv2.countNonZero(grey) < pixel_count:
-        return None, []
+    # if cv2.countNonZero(grey) < pixel_count:
+    #     return None, []
 
     edge_image = cv2.Canny(img, 200, 250)
     contours, _ = cv2.findContours(edge_image, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
