@@ -59,7 +59,7 @@ def trackbar_val(wt=480, ht=240):
 
     # print("POINTS")
     # print(points)
-    print(f"POINTS \n {width_top} \n {height_top} \n {width_bottom} \n {height_bottom}")
+    # print(f"POINTS \n {width_top} \n {height_top} \n {width_bottom} \n {height_bottom}")
     return points
 
 # def detect_arrow(img, arrow):
