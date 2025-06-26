@@ -68,7 +68,7 @@ def run_episode(p):
 
         frame_count += 1
         cv2.waitKey(1)
-
+    print(f"frame_count = {frame_count}")
     return total_error / max(1, frame_count)
 
 # --- Twiddle Optimization ---
@@ -137,6 +137,7 @@ def display_debug(img, left_poly, right_poly, lateral_error, heading_error, look
                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
 
     cv2.imshow("Twiddle Debug", debug_img)
+    cv2.imshow("Og Debug", img)
 
 # --- Run the test ---
 if __name__ == "__main__":
