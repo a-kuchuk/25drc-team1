@@ -185,19 +185,30 @@ def derivative_at(poly_coeffs, y):
     d = np.polyder(poly_coeffs)
     return np.polyval(d, y)
 
-def display_debug(img, left_poly, right_poly, lateral_error, heading_error, lookahead_y):
+def display_debug(img, left_poly, right_poly, lateral_error, heading_error, lookahead_y, left_highest_y, right_highest_y):
     debug_img = img.copy()
     h, w, _ = img.shape
 
     # Draw fitted polynomials as points
-    for y in range(0, h, 5):
+    # for y in range(lookahead_y, h, 5):
+    #     if left_poly is not None:
+    #         lx = int(evaluate_poly(left_poly, y))
+    #         cv2.circle(debug_img, (lx, y), 3, (0, 255, 255), -1)  # yellow
+
+    #     if right_poly is not None:
+    #         rx = int(evaluate_poly(right_poly, y))
+    #         cv2.circle(debug_img, (rx, y), 3, (255, 0, 0), -1)  # blue
+
+    for y in range(left_highest_y, lookahead_y, 5):
         if left_poly is not None:
             lx = int(evaluate_poly(left_poly, y))
             cv2.circle(debug_img, (lx, y), 3, (0, 255, 255), -1)  # yellow
 
+    for y in range(right_highest_y, lookahead_y, 5):
         if right_poly is not None:
             rx = int(evaluate_poly(right_poly, y))
             cv2.circle(debug_img, (rx, y), 3, (255, 0, 0), -1)  # blue
+
 
     # Draw heading vector (if both polynomials are valid)
     if left_poly is not None and right_poly is not None:
