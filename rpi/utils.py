@@ -7,6 +7,7 @@ from main import LOOKAHEAD_Y, FRAME_HEIGHT
 # LOOKAHEAD_Y = 150  # Y-coordinate to calculate steering target
 # FRAME_HEIGHT = 240
 
+
 def img_warp(img, points, w, h):
     """main warping function using transformation matrix built into cv2
 
@@ -124,7 +125,7 @@ def get_lane_centroid_y(mask):
         return cy
     return None
 
-def get_lane_points(mask, step=20):
+def get_lane_points(mask,highest_y, step=20):
     """
     Sample centroids across multiple horizontal scanlines (y-axis slices)
     to collect (x, y) points representing the lane.
@@ -150,7 +151,7 @@ def get_lane_points(mask, step=20):
     #         cx = int(np.mean(x_vals))
     #         points.append((cx, y))
 
-    for y in range (LOOKAHEAD_Y + 50, LOOKAHEAD_Y-50, step):
+    for y in range (highest_y, LOOKAHEAD_Y, step):
         row = mask[y, :]                                # Takes horizontal row at height y 
         x_vals = np.where(row > 0)[0]                   # Find indices, x coords, where mask is nonzero
         if len(x_vals) > 0:
@@ -228,3 +229,34 @@ def display_debug(img, left_poly, right_poly, lateral_error, heading_error, look
 
     # Show debug window
     cv2.imshow("Debug View", debug_img)
+
+
+# Old code from pervious team modified to output polynomial fitting of lane 
+def detectLinePoly(img, pixel_count=50, min_points=10):
+    grey = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    
+    if cv2.countNonZero(grey) < pixel_count:
+        return None, []
+
+    edge_image = cv2.Canny(img, 200, 250)
+    contours, _ = cv2.findContours(edge_image, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+
+    if len(contours) == 0:
+        return None, []
+
+    # Choose longest contour
+    lengths = [len(c) for c in contours]
+    j = np.argmax(lengths)
+    line = contours[j].reshape(-1, 2)
+
+    # Sort points by y (top to bottom)
+    line = line[line[:, 1].argsort()]
+
+    if len(line) < min_points:
+        return None, []
+
+    ys = line[:, 1]
+    xs = line[:, 0]
+    coeffs = np.polyfit(ys, xs, 2)  # Fit x = a*y^2 + b*y + c
+
+    return coeffs, line
