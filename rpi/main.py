@@ -8,8 +8,8 @@ import utils
 from colours import *
 
 # from Control.pid import PID
-# from Control.motor import Motor
-# from Control.steering import SteeringController
+from Control.motor import Motor
+from Control.steering import SteeringController
 
 from ArrowDetection import *
 
@@ -31,6 +31,9 @@ left = TapeYellow()
 right = TapeBlue()
 purple = PaintPurple()
 finish = TapeGreen
+
+steering = SteeringController()
+motor = Motor(BASE_SPEED, MIN_SPEED)
 
 # arrow_mode_triggered = False  # To prevent repeated detection
 # --- OpenCV Camera ---
@@ -69,6 +72,7 @@ def main():
     # img_warp = utils.img_warp(img, points, w, h)
     cv2.imshow('warp', img_warp)
 
+    # Ensuring sees arrow only once
     if arrow_cooldown == 0 and arrow_state is None:
         direction = utils.detect_arrow_direction(img)
         if direction:
@@ -78,8 +82,8 @@ def main():
     if arrow_cooldown > 0:
         arrow_cooldown -= 1
 
+    # --- Lane Detection ---
     left_mask = getLane(img_warp, left, "left")
-
     right_mask = getLane(img_warp, right, "right")
     
     # --- Object Detection ---
@@ -90,21 +94,23 @@ def main():
     if obj_x is not None:
         if obj_x < FRAME_WIDTH // 2:
             print("Object on left — turning right to avoid")
-            # motor.right()
+            drive(30, BASE_SPEED, 0.5)
         else:
             print("Object on right — turning left to avoid")
-            # motor.left()
+            drive(-30,BASE_SPEED,0.5)
         return  # object avoidance overrides lane following
     
+    # --- Turning Challenge ---
     if arrow_state == 'left':
         print("Following arrow left")
-        # motor.left()
+        drive(-30, BASE_SPEED, 1.5)
         return
     elif arrow_state == 'right':
         print("Following arrow right")
-        # motor.right()
+        drive(30,BASE_SPEED,1.5)
         return
 
+    # # --- Finish Lane Detection & Execution ---
     fin_lane = getLane(img_warp, finish, "finish")
     # Only consider the bottom 1/4 of the image
     height = fin_lane.shape[0]
@@ -122,47 +128,46 @@ def main():
     if np.any(row_sums >= min_white_pixels):
         print("FIN")
         print("reset to forward?")
-        time.sleep(2)
+        drive(timeout=2)
         return
 
     # Get centroid X positions
     left_x = utils.get_lane_centroid_x(left_mask[LOOKAHEAD_Y]) if left_mask is not None else None
     right_x = utils.get_lane_centroid_x(right_mask[LOOKAHEAD_Y]) if right_mask is not None else None
-
     frame_center = FRAME_WIDTH // 2
     THRESHOLD = 20
 
+    # --- Bang Bang Control ---
     if left_x is not None and right_x is not None:
         lane_center = (left_x + right_x) // 2
         error = lane_center - frame_center
 
         if error > THRESHOLD:
             print("Slight Right")
-            # motor.right()
+            drive(steering_angle=10)
+
         elif error < -THRESHOLD:
             print("Slight Left")
-            # motor.left()
+            drive(steering_angle=-10)
         else:
             print("Go Straight")
-            # motor.forward(BASE_SPEED)
+            drive()
 
     elif left_x is not None:
         # Only left lane detected → drive **right** until right lane appears
-        print("Only left lane found — turning right")
-        # motor.right()
+        print("Only left lane found — turning right")       # Make full right turn
+        drive(steering_angle=30)
 
     elif right_x is not None:
         # Only right lane detected → drive **left** until left lane appears
         print("Only right lane found — turning left")
-        # motor.left()
+        drive(steering_angle=-30)
 
     else:
         print("No lanes found. slight forward then stop")
-        # motor.stop()
+        drive(speed=MIN_SPEED)
 
-    
     cv2.waitKey(1)
-    #except KeyboardInterrupt:
 
 if __name__ == '__main__':
     # ls /dev/video*
@@ -176,3 +181,9 @@ if __name__ == '__main__':
     # steering.cleanup()
     cap.release()
     cv2.destroyAllWindows()
+
+
+def drive(steering_angle=0, speed=BASE_SPEED, timeout=0.5):
+    steering.set_servo_angle(-steering_angle)
+    motor.forward(speed)
+    time.sleep(timeout)

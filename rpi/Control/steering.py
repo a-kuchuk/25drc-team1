@@ -48,7 +48,7 @@ class SteeringController:
                
         pulse = self.pulse_center + (angle_deg / self.max_steering_angle_deg) * self.pulse_range
         # ensure pulse stays with servo's acceptable range
-        return int(max(self.pulse_min, min(self.pulse_max, pulse)))
+        return int(max(self.pulse_min,xmin(self.pulse_max, pulse)))
 
     def set_steering_angle(self, angle_deg):
         """
