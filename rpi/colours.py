@@ -68,20 +68,20 @@ class MarkerGreen():
     v_max = 255
 
 class TapeBlue():
-    h_min = 68
-    s_min = 39
-    v_min = 115
-    h_max = 126
-    s_max = 168
-    v_max = 179
+    h_min = 96
+    s_min = 78
+    v_min = 95
+    h_max = 123
+    s_max = 225
+    v_max = 186
 
 class TapeYellow():
-    h_min = 13
-    s_min = 57
-    v_min = 132
+    h_min = 20
+    s_min = 88
+    v_min = 106
     h_max = 30
-    s_max = 146
-    v_max = 168
+    s_max = 149
+    v_max = 213
 
 class TapeGreen():
     h_min = 39

@@ -18,7 +18,7 @@ BASE_SPEED = 70
 MIN_SPEED = 30
 FRAME_WIDTH = 480
 FRAME_HEIGHT = 240
-LOOKAHEAD_Y = 150
+LOOKAHEAD_Y = 200
 
 # --- Initialize Controllers ---
 # steering = SteeringController()
@@ -66,20 +66,7 @@ def main():
 
     right_mask = getLane(img, right, "right")
 
-    left_highest_y = utils.get_highest_lane_y(left_mask)
-    right_highest_y = utils.get_highest_lane_y(right_mask)
-
-    if left_highest_y is None or right_highest_y is None:
-        print("Could not find valid lane pixels for one or both sides.")
-        return
-
-    print("Highest point (Y) of left lane:", left_highest_y)
-    print("Highest point (Y) of right lane:", right_highest_y)
-
-
-    # CHANGE LOGIC TO ONLY DETECT SHIT IN NTEH BOTTOM ~1/4OF THE IMAGE TO DISCOUNT RANDOM SHADOWS/ETC
     fin_lane = getLane(img, finish, "finish")
-
     # Only consider the bottom 1/4 of the image
     height = fin_lane.shape[0]
     roi = fin_lane[int(height * 0.75):, :]  # Region Of Interest
@@ -98,67 +85,42 @@ def main():
         time.sleep(2)
         return
     
-    # For each frame:
-    #   Apply colour thresholding to extract left (yellow) and right (blue) lane masks.
-    #   For each mask:
-    #       Sample multiple horizontal scanlines (e.g., at 5 or more y-values)
-    #       Extract x-coordinates of centroids at those y-values
-    #       This gives you a set of x-y points per lane → enables curve fitting.
 
-    # Get lane point samples
+    # Get centroid X positions
+    left_x = utils.get_lane_centroid_x(left_mask[LOOKAHEAD_Y]) if left_mask is not None else None
+    right_x = utils.get_lane_centroid_x(right_mask[LOOKAHEAD_Y]) if right_mask is not None else None
 
-    # Test code for other lane detection contour method
-    left_points = utils.detectLinePoly(left_mask)
-    right_points = utils.detectLinePoly(right_mask)
-    # left_points = utils.get_lane_points(left_mask, left_highest_y)
-    # right_points = utils.get_lane_points(right_mask, right_highest_y)
-    print(f"POINTS \n {left_points} \n {right_points}")
-    print(f"Left points: {len(left_points)}, Right points: {len(right_points)}")
+    frame_center = FRAME_WIDTH // 2
+    THRESHOLD = 20
 
-    # Fit curves
-    left_poly = utils.fit_poly(left_points)
-    right_poly = utils.fit_poly(right_points)
-    # print(f"POLYS \n {left_poly} \n {right_poly}")
-
-    # Determine lane centre and heading
-    if left_poly is not None and right_poly is not None:
-        left_x = utils.evaluate_poly(left_poly, LOOKAHEAD_Y)
-        right_x = utils.evaluate_poly(right_poly, LOOKAHEAD_Y)
+    if left_x is not None and right_x is not None:
         lane_center = (left_x + right_x) // 2
-    
-        # --- Error Calculation ---
-        lateral_error = (FRAME_WIDTH // 2) - lane_center
-        heading_gradient = (utils.derivative_at(left_poly, LOOKAHEAD_Y) + utils.derivative_at(right_poly, LOOKAHEAD_Y)) / 2
-        heading_error = np.degrees(np.arctan(heading_gradient))
+        error = lane_center - frame_center
 
-        # # PID computation (mix lateral + heading)
-        # # Lateral error = horizontal distance between center of image and lane midpoint
-        # # Heading error = angle between robot’s current direction and lane tangent
-        # total_error = lateral_error + heading_error
-        # correction = pid.compute(total_error)
+        if error > THRESHOLD:
+            print("Turn Right")
+            # motor.right()
+        elif error < -THRESHOLD:
+            print("Turn Left")
+            # motor.left()
+        else:
+            print("Go Straight")
+            # motor.forward(BASE_SPEED)
 
-        # # Driving correction from PID
-        # steering.set_steering_angle(correction)
-        # # motor.move_scaled(correction, steering.max_steering_angle_deg)
-        # motor.forward(BASE_SPEED)
+    elif left_x is not None:
+        # Only left lane detected → drive **right** until right lane appears
+        print("Only left lane found — turning right")
+        # motor.right()
 
-        # Display debugging visuals
-        utils.display_debug(img, left_poly, right_poly, lateral_error, heading_error, LOOKAHEAD_Y, left_highest_y, right_highest_y)
+    elif right_x is not None:
+        # Only right lane detected → drive **left** until left lane appears
+        print("Only right lane found — turning left")
+        # motor.left()
 
-    # breaks loop if green lane detected
-    # if np.any(bottom_quarter):
-    #     print("FINISH")
-    #     time.sleep(2)
-    #     return
-    
     else:
-        print("Lane fitting failed :(")
+        print("No lanes found — stopping")
         # motor.stop()
 
-    # OVJECT DETECTION (might need to be modified)
-    # objectMask = getLane(img_warp, colours.HighlighterPink, "object")
-
-    # ARROW DETECTION STEP
     
     cv2.waitKey(1)
     #except KeyboardInterrupt:
