@@ -138,8 +138,8 @@ def display_debug(img, left_poly, right_poly, lateral_error, heading_error, look
     cv2.putText(debug_img, f"Heading Error: {heading_error:.2f}", (10, 40),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
 
-    cv2.imshow("Twiddle Debug", debug_img)
-    cv2.imshow("Og Debug", img)
+    # cv2.imshow("Twiddle Debug", debug_img)
+    # cv2.imshow("Og Debug", img)
 
 # --- Run the test ---
 if __name__ == "__main__":
