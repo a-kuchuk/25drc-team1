@@ -51,7 +51,7 @@ def main_loop():
 
     img = cv2.resize(img, (FRAME_WIDTH, FRAME_HEIGHT))
     # cv2.imshow('vid', img)
-    cv2.waitKey(1)
+    # cv2.waitKey(1)
 
     h, w, c = img.shape
     img_warp = utils.img_warp(img, np.float32([(0, 130), (480, 130), (0, 240), (480, 240)]), w, h)
@@ -153,5 +153,5 @@ if __name__ == '__main__':
         if steering:
             steering.cleanup()
         cap.release()
-        cv2.destroyAllWindows()
+        # cv2.destroyAllWindows()
         sys.exit(0)
