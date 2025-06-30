@@ -132,7 +132,7 @@ def main_loop():
         print("No lanes found. slight forward then stop")
         drive(speed=MIN_SPEED)
 
-    cv2.waitKey(1)
+    # cv2.waitKey(1)
 
 if __name__ == '__main__':
     cap = cv2.VideoCapture(0)
