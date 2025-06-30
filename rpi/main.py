@@ -32,8 +32,7 @@ right = TapeBlue()
 purple = PaintPurple()
 finish = TapeGreen
 
-GPIO.cleanup
-
+# GPIO.cleanup
 steering = SteeringController()
 motor = Motor(BASE_SPEED, MIN_SPEED)
 
