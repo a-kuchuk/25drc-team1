@@ -18,7 +18,9 @@ BASE_SPEED = 70
 MIN_SPEED = 30
 FRAME_WIDTH = 480
 FRAME_HEIGHT = 240
-LOOKAHEAD_Y = 200
+
+# change to 0 when wartping?
+LOOKAHEAD_Y = 100
 
 # --- Initialize Controllers ---
 # steering = SteeringController()
@@ -27,12 +29,16 @@ LOOKAHEAD_Y = 200
 
 left = TapeYellow()
 right = TapeBlue()
+purple = PaintPurple()
 finish = TapeGreen
 
 # arrow_mode_triggered = False  # To prevent repeated detection
 # --- OpenCV Camera ---
 # cap = cv2.VideoCapture(0)
 #utils.trackbar_init([100, 103, 000, 240])
+
+arrow_state = None  # global state to remember arrow direction
+arrow_cooldown = 0
 
 # --- Main Loop ---
 def main():
@@ -44,6 +50,7 @@ def main():
         - warp image
     '''
     # global arrow_mode_triggered
+    global arrow_state, arrow_cooldown
 
     success, img = cap.read()
     if not success:
@@ -58,15 +65,47 @@ def main():
     h, w, c = img.shape
     # points = utils.trackbar_val()
     # print(points)
-    img_warp = utils.img_warp(img, np.float32([(0, 94), (480, 94), (0, 159), (480, 159)]), w, h)
+    img_warp = utils.img_warp(img, np.float32([(0, 130), (480, 130), (0, 240), (480, 240)]), w, h)
     # img_warp = utils.img_warp(img, points, w, h)
-    # cv2.imshow('warp', img_warp)
+    cv2.imshow('warp', img_warp)
 
-    left_mask = getLane(img, left, "left")
+    if arrow_cooldown == 0 and arrow_state is None:
+        direction = utils.detect_arrow_direction(img)
+        if direction:
+            arrow_state = direction
+            arrow_cooldown = 30  # avoid re-detecting for 30 frames
+            print(f"Arrow detected: {direction.upper()}")
+    if arrow_cooldown > 0:
+        arrow_cooldown -= 1
 
-    right_mask = getLane(img, right, "right")
+    left_mask = getLane(img_warp, left, "left")
 
-    fin_lane = getLane(img, finish, "finish")
+    right_mask = getLane(img_warp, right, "right")
+    
+    # --- Object Detection ---
+    object_mask = getLane(img_warp, purple, "object")  # Define TapePurple in colours.py
+    obj_x = utils.get_lane_centroid_x(object_mask[LOOKAHEAD_Y]) if object_mask is not None else None
+
+    # --- Object Avoidance ---
+    if obj_x is not None:
+        if obj_x < FRAME_WIDTH // 2:
+            print("Object on left — turning right to avoid")
+            # motor.right()
+        else:
+            print("Object on right — turning left to avoid")
+            # motor.left()
+        return  # object avoidance overrides lane following
+    
+    if arrow_state == 'left':
+        print("Following arrow left")
+        # motor.left()
+        return
+    elif arrow_state == 'right':
+        print("Following arrow right")
+        # motor.right()
+        return
+
+    fin_lane = getLane(img_warp, finish, "finish")
     # Only consider the bottom 1/4 of the image
     height = fin_lane.shape[0]
     roi = fin_lane[int(height * 0.75):, :]  # Region Of Interest
@@ -82,9 +121,9 @@ def main():
     # Trigger only if any row in the ROI has enough contiguous white pixels
     if np.any(row_sums >= min_white_pixels):
         print("FIN")
+        print("reset to forward?")
         time.sleep(2)
         return
-    
 
     # Get centroid X positions
     left_x = utils.get_lane_centroid_x(left_mask[LOOKAHEAD_Y]) if left_mask is not None else None
@@ -98,10 +137,10 @@ def main():
         error = lane_center - frame_center
 
         if error > THRESHOLD:
-            print("Turn Right")
+            print("Slight Right")
             # motor.right()
         elif error < -THRESHOLD:
-            print("Turn Left")
+            print("Slight Left")
             # motor.left()
         else:
             print("Go Straight")
@@ -118,7 +157,7 @@ def main():
         # motor.left()
 
     else:
-        print("No lanes found — stopping")
+        print("No lanes found. slight forward then stop")
         # motor.stop()
 
     

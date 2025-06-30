@@ -60,7 +60,7 @@ def trackbar_val(wt=480, ht=240):
 
     # print("POINTS")
     # print(points)
-    # print(f"POINTS \n {width_top} \n {height_top} \n {width_bottom} \n {height_bottom}")
+    print(f"POINTS \n {width_top} \n {height_top} \n {width_bottom} \n {height_bottom}")
     return points
 
 # def detect_arrow(img, arrow):
@@ -99,6 +99,36 @@ def get_highest_lane_y(mask):
         return None
 
     return int(np.min(filtered_y))  # highest point on screen
+
+def detect_arrow_direction(img, threshold=50):
+    """
+    Detects if a left or right arrow is present based on black pixel skew.
+    Returns 'left', 'right', or None.
+    """
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    _, binary = cv2.threshold(gray, 60, 255, cv2.THRESH_BINARY_INV)
+
+    h, w = binary.shape
+
+    # Focus only on the center-top region of the image where the arrow appears
+    region = binary[h//4:h//2, w//4:3*w//4]
+
+    left_half = region[:, :region.shape[1]//2]
+    right_half = region[:, region.shape[1]//2:]
+
+    left_black = cv2.countNonZero(left_half)
+    right_black = cv2.countNonZero(right_half)
+
+    if max(left_black, right_black) < threshold:
+        return None  # Not enough black pixels to count as an arrow
+
+    if left_black > right_black * 1.3:  # Significant skew
+        return 'left'
+    elif right_black > left_black * 1.3:
+        return 'right'
+
+    return None
+
 
 
 
