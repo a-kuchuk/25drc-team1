@@ -28,10 +28,10 @@ class Motor:
         GPIO.setmode(GPIO.BCM)
         GPIO.setup([PWM_LEFT, DIR_LEFT, PWM_RIGHT, DIR_RIGHT], GPIO.OUT)
 
-        GPIO.setwarnings(False)
+    
         self.left_pwm = GPIO.PWM(PWM_LEFT, 100)     # init pwm for left motor
 
-        GPIO.setwarnings(False)
+    
         self.right_pwm = GPIO.PWM(PWM_RIGHT, 100)   # init pwm for right motor
 
         self.left_pwm.start(0)
@@ -93,4 +93,4 @@ class Motor:
 
     def cleanup(self):
         self.stop()
-        GPIO.cleanup
+        GPIO.cleanup()
