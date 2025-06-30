@@ -171,16 +171,20 @@ def main():
 
 if __name__ == '__main__':
     # ls /dev/video*
-    cap = cv2.VideoCapture(0)
-    init_trackbar_vals = [000, 157, 000, 155]
-    utils.trackbar_init(init_trackbar_vals)
-    while True:
-        main()
-    print("Stopping robot...")
-    # motor.stop()
-    # steering.cleanup()
-    cap.release()
-    cv2.destroyAllWindows()
+    try:
+        cap = cv2.VideoCapture(0)
+        init_trackbar_vals = [000, 157, 000, 155]
+        utils.trackbar_init(init_trackbar_vals)
+        while True:
+            main()
+    except KeyboardInterrupt:
+        print("Interrupted by user.")
+    finally:
+        print("Stopping robot...")
+        motor.cleanup()
+        steering.cleanup()
+        cap.release()
+        cv2.destroyAllWindows()
 
 
 def drive(steering_angle=0, speed=BASE_SPEED, timeout=0.5):
