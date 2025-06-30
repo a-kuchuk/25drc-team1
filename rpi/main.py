@@ -7,25 +7,22 @@ from ObjectDetection import *
 import utils
 from colours import *
 
-# from Control.pid import PID
+from Control.pid import PID
 from Control.motor import Motor
 from Control.steering import SteeringController
 
 from ArrowDetection import *
 
 # --- Constants ---
-BASE_SPEED = 70
+BASE_SPEED = 50
 MIN_SPEED = 30
 FRAME_WIDTH = 480
 FRAME_HEIGHT = 240
 
 # change to 0 when wartping?
-LOOKAHEAD_Y = 100
+LOOKAHEAD_Y = 50
 
 # --- Initialize Controllers ---
-# steering = SteeringController()
-# motor = Motor(base_speed=BASE_SPEED, min_speed=MIN_SPEED)
-# pid = PID(Kp=0.6, Ki=0.05, Kd=0.1)
 
 left = TapeYellow()
 right = TapeBlue()
@@ -35,13 +32,17 @@ finish = TapeGreen
 steering = SteeringController()
 motor = Motor(BASE_SPEED, MIN_SPEED)
 
-# arrow_mode_triggered = False  # To prevent repeated detection
-# --- OpenCV Camera ---
-# cap = cv2.VideoCapture(0)
-#utils.trackbar_init([100, 103, 000, 240])
 
 arrow_state = None  # global state to remember arrow direction
 arrow_cooldown = 0
+
+def drive(steering_angle=0, speed=BASE_SPEED, timeout=0.5):
+    steering.set_servo_angle(-steering_angle)
+    motor.forward(speed)
+    time.sleep(timeout)
+    # print(f"{steering_angle} {speed} {timeout}")
+    return
+
 
 # --- Main Loop ---
 def main():
@@ -181,9 +182,3 @@ if __name__ == '__main__':
     # steering.cleanup()
     cap.release()
     cv2.destroyAllWindows()
-
-
-def drive(steering_angle=0, speed=BASE_SPEED, timeout=0.5):
-    steering.set_servo_angle(-steering_angle)
-    motor.forward(speed)
-    time.sleep(timeout)
