@@ -6,6 +6,8 @@ from LaneDetection.lane_detection import *
 from ObjectDetection import *
 import utils
 from colours import *
+import signal
+import sys
 
 from Control.pid import PID
 from Control.motor import Motor
@@ -175,10 +177,18 @@ if __name__ == '__main__':
     cap = cv2.VideoCapture(0)
     init_trackbar_vals = [000, 157, 000, 155]
     utils.trackbar_init(init_trackbar_vals)
-    while True:
-        main()
-    print("Stopping robot...")
-    # motor.stop()
-    # steering.cleanup()
-    cap.release()
-    cv2.destroyAllWindows()
+    try:
+        while True:
+            main()
+    except KeyboardInterrupt:
+        print("\nKeyboardInterrupt received. Cleaning up and exiting...")
+    except Exception as e:
+        print(f"\nUnexpected error: {e}")
+    finally:
+        print("Stopping robot and cleaning up GPIO...")
+        motor.stop()
+        motor.cleanup()
+        steering.cleanup()
+        cap.release()
+        cv2.destroyAllWindows()
+        sys.exit(0)
