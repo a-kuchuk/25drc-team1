@@ -12,6 +12,7 @@ import sys
 from Control.pid import PID
 from Control.motor import Motor
 from Control.steering import SteeringController
+import RPi.GPIO as GPIO
 
 from ArrowDetection import *
 
@@ -30,6 +31,8 @@ left = TapeYellow()
 right = TapeBlue()
 purple = PaintPurple()
 finish = TapeGreen
+
+GPIO.cleanup
 
 steering = SteeringController()
 motor = Motor(BASE_SPEED, MIN_SPEED)
