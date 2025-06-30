@@ -60,14 +60,14 @@ def main_loop():
     img_warp = utils.img_warp(img, np.float32([(0, 130), (480, 130), (0, 240), (480, 240)]), w, h)
     # cv2.imshow('warp', img_warp)
 
-    if arrow_cooldown == 0 and arrow_state is None:
-        direction = utils.detect_arrow_direction(img)
-        if direction:
-            arrow_state = direction
-            arrow_cooldown = 30
-            print(f"Arrow detected: {direction.upper()}")
-    if arrow_cooldown > 0:
-        arrow_cooldown -= 1
+    # if arrow_cooldown == 0 and arrow_state is None:
+    #     direction = utils.detect_arrow_direction(img)
+    #     if direction:
+    #         arrow_state = direction
+    #         arrow_cooldown = 30
+    #         print(f"Arrow detected: {direction.upper()}")
+    # if arrow_cooldown > 0:
+    #     arrow_cooldown -= 1
 
     left_mask = getLane(img_warp, left, "left")
     right_mask = getLane(img_warp, right, "right")
@@ -83,14 +83,14 @@ def main_loop():
             drive(-30, BASE_SPEED, 0.5)
         return
 
-    if arrow_state == 'left':
-        print("Following arrow left")
-        drive(-30, BASE_SPEED, 1.5)
-        return
-    elif arrow_state == 'right':
-        print("Following arrow right")
-        drive(30, BASE_SPEED, 1.5)
-        return
+    # if arrow_state == 'left':
+    #     print("Following arrow left")
+    #     drive(-30, BASE_SPEED, 1.5)
+    #     return
+    # elif arrow_state == 'right':
+    #     print("Following arrow right")
+    #     drive(30, BASE_SPEED, 1.5)
+    #     return
 
     fin_lane = getLane(img_warp, finish, "finish")
     height = fin_lane.shape[0]
