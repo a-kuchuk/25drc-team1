@@ -63,8 +63,8 @@ class Motor:
         speed = max(0, min(100, speed))  # clamp to valid range
         
         # set direction forward
-        GPIO.output(DIR_LEFT,GPIO.HIGH)
-        GPIO.output(DIR_RIGHT,GPIO.HIGH)
+        GPIO.output(DIR_LEFT,GPIO.LOW)
+        GPIO.output(DIR_RIGHT,GPIO.LOW)
 
         # set PWM duty cycle
         self.left_pwm.ChangeDutyCycle(speed)
