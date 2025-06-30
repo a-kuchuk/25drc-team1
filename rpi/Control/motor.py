@@ -82,8 +82,8 @@ class Motor:
         speed = max(0, min(100, speed))
         
         # Set direction reverse
-        GPIO.output(DIR_LEFT, GPIO.LOW)
-        GPIO.output(DIR_RIGHT, GPIO.LOW)
+        GPIO.output(DIR_LEFT, GPIO.HIGH)
+        GPIO.output(DIR_RIGHT, GPIO.HIGH)
         
         self.left_pwm.ChangeDutyCycle(speed)
 
