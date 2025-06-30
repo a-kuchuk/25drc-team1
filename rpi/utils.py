@@ -272,7 +272,7 @@ def display_debug(img, left_poly, right_poly, lateral_error, heading_error, look
                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
 
     # Show debug window
-    cv2.imshow("Debug View", debug_img)
+    # cv2.imshow("Debug View", debug_img)
 
 
 # Old code from pervious team modified to output polynomial fitting of lane 
