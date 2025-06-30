@@ -6,42 +6,47 @@ from LaneDetection.lane_detection import *
 from ObjectDetection import *
 import utils
 from colours import *
+import signal
+import sys
 
-# from Control.pid import PID
+from Control.pid import PID
 from Control.motor import Motor
 from Control.steering import SteeringController
+import RPi.GPIO as GPIO
 
 from ArrowDetection import *
 
 # --- Constants ---
-BASE_SPEED = 70
+BASE_SPEED = 50
 MIN_SPEED = 30
 FRAME_WIDTH = 480
 FRAME_HEIGHT = 240
 
 # change to 0 when wartping?
-LOOKAHEAD_Y = 100
+LOOKAHEAD_Y = 50
 
 # --- Initialize Controllers ---
-# steering = SteeringController()
-# motor = Motor(base_speed=BASE_SPEED, min_speed=MIN_SPEED)
-# pid = PID(Kp=0.6, Ki=0.05, Kd=0.1)
 
 left = TapeYellow()
 right = TapeBlue()
 purple = PaintPurple()
 finish = TapeGreen
 
+# GPIO.cleanup
 steering = SteeringController()
 motor = Motor(BASE_SPEED, MIN_SPEED)
 
-# arrow_mode_triggered = False  # To prevent repeated detection
-# --- OpenCV Camera ---
-# cap = cv2.VideoCapture(0)
-#utils.trackbar_init([100, 103, 000, 240])
 
 arrow_state = None  # global state to remember arrow direction
 arrow_cooldown = 0
+
+def drive(steering_angle=0, speed=BASE_SPEED, timeout=0.5):
+    steering.set_servo_angle(-steering_angle)
+    motor.forward(speed)
+    time.sleep(timeout)
+    # print(f"{steering_angle} {speed} {timeout}")
+    return
+
 
 # --- Main Loop ---
 def main():
@@ -171,23 +176,23 @@ def main():
 
 if __name__ == '__main__':
     # ls /dev/video*
+    cap = cv2.VideoCapture(0)
+    init_trackbar_vals = [000, 157, 000, 155]
+    utils.trackbar_init(init_trackbar_vals)
+    motor.cleanup()
+    steering.cleanup()
     try:
-        cap = cv2.VideoCapture(0)
-        init_trackbar_vals = [000, 157, 000, 155]
-        utils.trackbar_init(init_trackbar_vals)
         while True:
             main()
     except KeyboardInterrupt:
-        print("Interrupted by user.")
+        print("\nKeyboardInterrupt received. Cleaning up and exiting...")
+    except Exception as e:
+        print(f"\nUnexpected error: {e}")
     finally:
-        print("Stopping robot...")
+        print("Stopping robot and cleaning up GPIO...")
+        motor.stop()
         motor.cleanup()
         steering.cleanup()
         cap.release()
         cv2.destroyAllWindows()
-
-
-def drive(steering_angle=0, speed=BASE_SPEED, timeout=0.5):
-    steering.set_servo_angle(-steering_angle)
-    motor.forward(speed)
-    time.sleep(timeout)
+        sys.exit(0)

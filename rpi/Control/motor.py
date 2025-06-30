@@ -25,6 +25,8 @@ class Motor:
         self.min_speed = min_speed
 
         GPIO.setwarnings(False)  # Suppress "already in use" warnings
+
+        GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
         GPIO.setup([PWM_LEFT, DIR_LEFT, PWM_RIGHT, DIR_RIGHT], GPIO.OUT)
 
