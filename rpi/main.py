@@ -38,7 +38,7 @@ finish = TapeGreen()
 arrow_state = None
 arrow_cooldown = 0
 
-def drive(steering_angle=0, speed=BASE_SPEED, timeout=0.5):
+def drive(steering_angle=-5, speed=BASE_SPEED, timeout=0.5):
     steering.set_steering_angle(steering_angle)
     motor.forward(speed)
     time.sleep(timeout)
