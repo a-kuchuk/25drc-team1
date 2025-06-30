@@ -50,12 +50,12 @@ def main_loop():
         return
 
     img = cv2.resize(img, (FRAME_WIDTH, FRAME_HEIGHT))
-    cv2.imshow('vid', img)
+    # cv2.imshow('vid', img)
     cv2.waitKey(1)
 
     h, w, c = img.shape
     img_warp = utils.img_warp(img, np.float32([(0, 130), (480, 130), (0, 240), (480, 240)]), w, h)
-    cv2.imshow('warp', img_warp)
+    # cv2.imshow('warp', img_warp)
 
     if arrow_cooldown == 0 and arrow_state is None:
         direction = utils.detect_arrow_direction(img)
