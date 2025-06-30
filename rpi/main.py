@@ -111,17 +111,19 @@ def main_loop():
     THRESHOLD = 20
 
     if left_x is not None and right_x is not None:
-        lane_center = (left_x + right_x) // 2
-        error = lane_center - frame_center
-        if error > THRESHOLD:
-            print("Slight Right")
-            drive(steering_angle=10)
-        elif error < -THRESHOLD:
-            print("Slight Left")
-            drive(steering_angle=-10)
-        else:
-            print("Go Straight")
-            drive()
+        # lane_center = (left_x + right_x) // 2
+        # error = lane_center - frame_center
+        # if error > THRESHOLD:
+        #     print("Slight Right")
+        #     drive(steering_angle=10)
+        # elif error < -THRESHOLD:
+        #     print("Slight Left")
+        #     drive(steering_angle=-10)
+        # else:
+        #     print("Go Straight")
+            # drive()
+        
+        drive()
     elif left_x is not None:
         print("Only left lane found — turning right")
         drive(steering_angle=30)
