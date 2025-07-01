@@ -11,9 +11,9 @@ from LaneDetection.lane_detection import *
 from ObjectDetection import *
 from colours import *
 import utils
-from Control.pid import PID
-from Control.motor import Motor
-from Control.steering import SteeringController
+# from Control.pid import PID
+# from Control.motor import Motor
+# from Control.steering import SteeringController
 from ArrowDetection import *
 
 # import RPi.GPIO as GPIO
@@ -39,9 +39,9 @@ arrow_state = None
 arrow_cooldown = 0
 
 def drive(steering_angle=-5, speed=BASE_SPEED, timeout=0.05):
-    steering.set_steering_angle(steering_angle)
-    motor.forward(speed)
-    time.sleep(timeout)
+    # steering.set_steering_angle(steering_angle)
+    # motor.forward(speed)
+    # time.sleep(timeout)
     return
 
 def main_loop():
@@ -53,15 +53,15 @@ def main_loop():
         return
 
     img = cv2.resize(img, (FRAME_WIDTH, FRAME_HEIGHT))
-    # cv2.imshow('vid', img)
-    # cv2.waitKey(1)
+    cv2.imshow('vid', img)
+    cv2.waitKey(1)
 
     h, w, c = img.shape
     # points = utils.trackbar_val()
     # print(points)
     img_warp = utils.img_warp(img, np.float32([(0, 64), (480, 64), (0, 131), (480, 131)]), w, h)    
     # img_warp = utils.img_warp(img, points, w, h)
-    # cv2.imshow('warp', img_warp)
+    cv2.imshow('warp', img_warp)
 
     # if arrow_cooldown == 0 and arrow_state is None:
     #     direction = utils.detect_arrow_direction(img)
@@ -129,15 +129,15 @@ def main_loop():
         drive()
     elif left_x is not None:
         print("Only left lane found — turning right")
-        drive(steering_angle=15)
+        drive(steering_angle=15, timeout=0.075)
     elif right_x is not None:
         print("Only right lane found — turning left")
-        drive(steering_angle=-15)
+        drive(steering_angle=-15, timeout=0.075)
     else:
         print("No lanes found. slight forward then stop")
         drive(speed=MIN_SPEED, timeout=0.03)
 
-    # cv2.waitKey(1)
+    cv2.waitKey(1)
 
 if __name__ == '__main__':
     cap = cv2.VideoCapture(0)
@@ -145,9 +145,9 @@ if __name__ == '__main__':
     # utils.trackbar_init(init_trackbar_vals)
 
     try:
-        motor = Motor(BASE_SPEED, MIN_SPEED)
-        steering = SteeringController()
-        steering.set_steering_angle(0)
+        # motor = Motor(BASE_SPEED, MIN_SPEED)
+        # steering = SteeringController()
+        # steering.set_steering_angle(0)
         while True:
             main_loop()
     except KeyboardInterrupt:
@@ -156,11 +156,11 @@ if __name__ == '__main__':
         print(f"\nUnexpected error: {e}")
     finally:
         print("Stopping robot and cleaning up GPIO...")
-        if motor:
-            motor.stop()
-            motor.cleanup()
-        if steering:
-            steering.cleanup()
+        # if motor:
+        #     motor.stop()
+        #     motor.cleanup()
+        # if steering:
+        #     steering.cleanup()
         cap.release()
         # cv2.destroyAllWindows()
         sys.exit(0)
