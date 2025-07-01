@@ -59,7 +59,7 @@ def main_loop():
     h, w, c = img.shape
     # points = utils.trackbar_val()
     # print(points)
-    img_warp = utils.img_warp(img, np.float32([(0, 179), (480, 179), (0, 240), (480, 240)]), w, h)    
+    img_warp = utils.img_warp(img, np.float32([(0, 189), (480, 189), (0, 240), (480, 240)]), w, h)    
     # img_warp = utils.img_warp(img, points, w, h)
     # cv2.imshow('warp', img_warp)
 
@@ -133,7 +133,7 @@ def main_loop():
         if min_left_x is not None and min_right_x is not None and min_left_x > min_right_x:
             # print("IN2")
             print("Fork detected — yellow is right of blue. Turning hard left")
-            drive(steering_angle=-25, timeout=0.2)
+            drive(steering_angle=-25, timeout=0.1)
             return
         print("Forward")
         drive()
