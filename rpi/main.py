@@ -151,8 +151,8 @@ def main_loop():
 
 if __name__ == '__main__':
     cap = cv2.VideoCapture(0)
-    init_trackbar_vals = [000, 157, 000, 155]
-    utils.trackbar_init(init_trackbar_vals)
+    # init_trackbar_vals = [000, 157, 000, 155]
+    # utils.trackbar_init(init_trackbar_vals)
 
     try:
         motor = Motor(BASE_SPEED, MIN_SPEED)
