@@ -38,7 +38,7 @@ finish = TapeGreen()
 arrow_state = None
 arrow_cooldown = 0
 
-def drive(steering_angle=-5, speed=BASE_SPEED, timeout=0.1):
+def drive(steering_angle=-5, speed=BASE_SPEED, timeout=0.05):
     steering.set_steering_angle(steering_angle)
     motor.forward(speed)
     time.sleep(timeout)
@@ -135,7 +135,7 @@ def main_loop():
         drive(steering_angle=-15)
     else:
         print("No lanes found. slight forward then stop")
-        drive(speed=MIN_SPEED, timeout=0.05)
+        drive(speed=MIN_SPEED, timeout=0.03)
 
     # cv2.waitKey(1)
 
