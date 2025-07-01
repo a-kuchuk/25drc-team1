@@ -54,14 +54,14 @@ def main_loop():
 
     img = cv2.resize(img, (FRAME_WIDTH, FRAME_HEIGHT))
     # cv2.imshow('vid', img)
-    # cv2.waitKey(1)
+    cv2.waitKey(1)
 
     h, w, c = img.shape
     # points = utils.trackbar_val()
     # print(points)
     img_warp = utils.img_warp(img, np.float32([(0, 189), (480, 189), (0, 240), (480, 240)]), w, h)    
     # img_warp = utils.img_warp(img, points, w, h)
-    # cv2.imshow('warp', img_warp)
+    cv2.imshow('warp', img_warp)
 
     # if arrow_cooldown == 0 and arrow_state is None:
     #     direction = utils.detect_arrow_direction(img)
@@ -151,7 +151,7 @@ def main_loop():
     else:
         print("No lane detected — Move cautiously")
         drive(speed=MIN_SPEED, timeout=0.03)
-    # cv2.waitKey(1)
+    cv2.waitKey(1)
 
 if __name__ == '__main__':
     cap = cv2.VideoCapture(0)
