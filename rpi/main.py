@@ -11,9 +11,9 @@ from LaneDetection.lane_detection import *
 from ObjectDetection import *
 from colours import *
 import utils
-# from Control.pid import PID
-# from Control.motor import Motor
-# from Control.steering import SteeringController
+from Control.pid import PID
+from Control.motor import Motor
+from Control.steering import SteeringController
 from ArrowDetection import *
 
 # import RPi.GPIO as GPIO
@@ -39,9 +39,9 @@ arrow_state = None
 arrow_cooldown = 0
 
 def drive(steering_angle=-5, speed=BASE_SPEED, timeout=0.05):
-    # steering.set_steering_angle(steering_angle)
-    # motor.forward(speed)
-    # time.sleep(timeout)
+    steering.set_steering_angle(steering_angle)
+    motor.forward(speed)
+    time.sleep(timeout)
     return
 
 def main_loop():
@@ -156,11 +156,11 @@ if __name__ == '__main__':
         print(f"\nUnexpected error: {e}")
     finally:
         print("Stopping robot and cleaning up GPIO...")
-        # if motor:
-        #     motor.stop()
-        #     motor.cleanup()
-        # if steering:
-        #     steering.cleanup()
+        if motor:
+            motor.stop()
+            motor.cleanup()
+        if steering:
+            steering.cleanup()
         cap.release()
         # cv2.destroyAllWindows()
         sys.exit(0)
