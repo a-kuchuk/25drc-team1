@@ -145,9 +145,9 @@ if __name__ == '__main__':
     # utils.trackbar_init(init_trackbar_vals)
 
     try:
-        # motor = Motor(BASE_SPEED, MIN_SPEED)
-        # steering = SteeringController()
-        # steering.set_steering_angle(0)
+        motor = Motor(BASE_SPEED, MIN_SPEED)
+        steering = SteeringController()
+        steering.set_steering_angle(0)
         while True:
             main_loop()
     except KeyboardInterrupt:
