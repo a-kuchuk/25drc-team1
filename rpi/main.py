@@ -11,12 +11,12 @@ from LaneDetection.lane_detection import *
 from ObjectDetection import *
 from colours import *
 import utils
-from Control.pid import PID
-from Control.motor import Motor
-from Control.steering import SteeringController
+# from Control.pid import PID
+# from Control.motor import Motor
+# from Control.steering import SteeringController
 from ArrowDetection import *
 
-import RPi.GPIO as GPIO
+# import RPi.GPIO as GPIO
 
 # --- Constants ---
 BASE_SPEED = 50
@@ -39,9 +39,9 @@ arrow_state = None
 arrow_cooldown = 0
 
 def drive(steering_angle=-5, speed=BASE_SPEED, timeout=0.1):
-    steering.set_steering_angle(steering_angle)
-    motor.forward(speed)
-    time.sleep(timeout)
+    # steering.set_steering_angle(steering_angle)
+    # motor.forward(speed)
+    # time.sleep(timeout)
     return
 
 def main_loop():
@@ -53,12 +53,15 @@ def main_loop():
         return
 
     img = cv2.resize(img, (FRAME_WIDTH, FRAME_HEIGHT))
-    # cv2.imshow('vid', img)
+    cv2.imshow('vid', img)
     # cv2.waitKey(1)
 
     h, w, c = img.shape
-    img_warp = utils.img_warp(img, np.float32([(0, 130), (480, 130), (0, 240), (480, 240)]), w, h)
-    # cv2.imshow('warp', img_warp)
+    points = utils.trackbar_val()
+    # print(points)
+    # img_warp = utils.img_warp(img, np.float32([(0, 94), (480, 94), (0, 159), (480, 159)]), w, h)
+    img_warp = utils.img_warp(img, points, w, h)
+    cv2.imshow('warp', img_warp)
 
     # if arrow_cooldown == 0 and arrow_state is None:
     #     direction = utils.detect_arrow_direction(img)
@@ -138,13 +141,13 @@ def main_loop():
 
 if __name__ == '__main__':
     cap = cv2.VideoCapture(0)
-    # init_trackbar_vals = [000, 157, 000, 155]
-    # utils.trackbar_init(init_trackbar_vals)
+    init_trackbar_vals = [000, 157, 000, 155]
+    utils.trackbar_init(init_trackbar_vals)
 
     try:
-        motor = Motor(BASE_SPEED, MIN_SPEED)
-        steering = SteeringController()
-        steering.set_steering_angle(0)
+        # motor = Motor(BASE_SPEED, MIN_SPEED)
+        # steering = SteeringController()
+        # steering.set_steering_angle(0)
         while True:
             main_loop()
     except KeyboardInterrupt:
@@ -153,9 +156,9 @@ if __name__ == '__main__':
         print(f"\nUnexpected error: {e}")
     finally:
         print("Stopping robot and cleaning up GPIO...")
-        if motor:
-            motor.stop()
-            motor.cleanup()
+        # if motor:
+            # motor.stop()
+            # motor.cleanup()
         if steering:
             steering.cleanup()
         cap.release()
