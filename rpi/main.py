@@ -137,10 +137,10 @@ def main_loop():
         drive()
     elif left_x is not None:
         print("Only left lane found — turning right")
-        drive(steering_angle=15, timeout=0.1)
+        drive(steering_angle=15, timeout=0.15)
     elif right_x is not None:
         print("Only right lane found — turning left")
-        drive(steering_angle=-15, timeout=0.1)
+        drive(steering_angle=-15, timeout=0.15)
     else:
         print("No lanes found. slight forward then stop")
         drive(speed=MIN_SPEED, timeout=0.03)
