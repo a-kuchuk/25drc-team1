@@ -23,7 +23,7 @@ BASE_SPEED = 50
 MIN_SPEED = 30
 FRAME_WIDTH = 480
 FRAME_HEIGHT = 240
-LOOKAHEAD_Y = 50
+LOOKAHEAD_Y = 0
 
 # --- Global Controllers ---
 motor = None
