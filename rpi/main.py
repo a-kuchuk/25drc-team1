@@ -58,7 +58,7 @@ def main():
     h, w, c = img.shape
     # points = utils.trackbar_val()
     # print(points)
-    img_warp = utils.img_warp(img, np.float32([(0, 94), (480, 94), (0, 159), (480, 159)]), w, h)
+    img_warp = utils.img_warp(img, np.float32([(0, 64), (480, 64), (0, 177), (480, 177)]), w, h)
     # img_warp = utils.img_warp(img, points, w, h)
     # cv2.imshow('warp', img_warp)
 
