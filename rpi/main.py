@@ -133,10 +133,10 @@ def main_loop():
         if min_left_x is not None and min_right_x is not None and min_left_x > min_right_x:
             # print("IN2")
             print("Fork detected — yellow is right of blue. Turning hard left")
-            drive(steering_angle=-25, timeout=0.03)
+            drive(steering_angle=-25, timeout=0.05)
             return
         print("Forward")
-        drive()
+        drive(timeout=0.03)
     elif left_mask is not None:
         print("Only left lane found — turning right")
         drive(steering_angle=15, timeout=0.2)
