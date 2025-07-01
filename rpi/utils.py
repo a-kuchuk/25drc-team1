@@ -72,11 +72,12 @@ def thresholding(img, colour, frame):
     upper = np.array([colour.h_max, colour.s_max, colour.v_max])
     mask = cv2.inRange(imgHsv, lower, upper)
 
-    if frame == -1:  # left half
-        mask[:, FRAME_WIDTH // 2:] = 0
-    elif frame == 1:  # right half
-        mask[:, :FRAME_WIDTH // 2] = 0
-    # if frame == 0, use the full mask
+    # if frame == -1:  # left half
+    #     mask[:, FRAME_WIDTH // 2:] = 0
+    # elif frame == 1:  # right half
+    #     mask[:, :FRAME_WIDTH // 2] = 0
+    # # if frame == 0, use the full mask
+    # print(mask)
 
     return mask
 
@@ -105,6 +106,31 @@ def get_highest_lane_y(mask):
         return None
 
     return int(np.min(filtered_y))  # highest point on screen
+
+def get_leftmost_lane_x(mask):
+    """Returns the min (leftmost on screen) X coordinate of lane pixels, with outliers removed."""
+    # Get all coordinates of white pixels
+    coords = np.column_stack(np.where(mask == 255))
+    
+    if coords.size == 0:
+        return None
+
+    x_coords = coords[:, 1]  # columns are x, rows are y
+
+    # IQR filtering to remove outliers
+    q1 = np.percentile(x_coords, 25)
+    q3 = np.percentile(x_coords, 75)
+    iqr = q3 - q1
+    lower_bound = q1 - 1.5 * iqr
+    upper_bound = q3 + 1.5 * iqr
+
+    filtered_x = x_coords[(x_coords >= lower_bound) & (x_coords <= upper_bound)]
+    
+    if filtered_x.size == 0:
+        return None
+
+    return int(np.min(filtered_x))  # leftmost point on screen
+
 
 def detect_arrow_direction(img, threshold=50):
     """

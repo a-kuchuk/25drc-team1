@@ -59,7 +59,7 @@ def main_loop():
     h, w, c = img.shape
     # points = utils.trackbar_val()
     # print(points)
-    img_warp = utils.img_warp(img, np.float32([(0, 64), (480, 64), (0, 131), (480, 131)]), w, h)    
+    img_warp = utils.img_warp(img, np.float32([(0, 179), (480, 179), (0, 240), (480, 240)]), w, h)    
     # img_warp = utils.img_warp(img, points, w, h)
     # cv2.imshow('warp', img_warp)
 
@@ -114,19 +114,27 @@ def main_loop():
     THRESHOLD = 20
 
     if left_x is not None and right_x is not None:
-        lane_center = (left_x + right_x) // 2
-        error = lane_center - frame_center
-        if error > THRESHOLD:
-            print("Slight Right")
-            drive(steering_angle=10)
-        elif error < -THRESHOLD:
-            print("Slight Left")
-            drive(steering_angle=-10)
-        else:
-            print("Go Straight")
-            drive()
-        
-        # drive()
+        # lane_center = (left_x + right_x) // 2
+        # error = lane_center - frame_center
+        # if error > THRESHOLD:
+        #     print("Slight Right")
+        #     drive(steering_angle=10)
+        # elif error < -THRESHOLD:
+        #     print("Slight Left")
+        #     drive(steering_angle=-10)
+        # else:
+        #     print("Go Straight")
+            # drive()
+        min_left_x = utils.get_leftmost_lane_x(left_mask)
+        min_right_x = utils.get_leftmost_lane_x(right_mask)
+        print(min_left_x)
+        print(min_right_x)
+        if min_left_x > min_right_x:
+            print("Fork detected — yellow is right of blue. Turning hard left")
+            drive(steering_angle=-15, timeout=0.2)
+        return
+        print("Forward")
+        drive()
     elif left_x is not None:
         print("Only left lane found — turning right")
         drive(steering_angle=15, timeout=0.1)
@@ -141,8 +149,8 @@ def main_loop():
 
 if __name__ == '__main__':
     cap = cv2.VideoCapture(0)
-    # init_trackbar_vals = [000, 157, 000, 155]
-    # utils.trackbar_init(init_trackbar_vals)
+    init_trackbar_vals = [000, 157, 000, 155]
+    utils.trackbar_init(init_trackbar_vals)
 
     try:
         motor = Motor(BASE_SPEED, MIN_SPEED)
