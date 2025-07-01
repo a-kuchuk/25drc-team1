@@ -4,7 +4,7 @@ import imutils
 import utils
 import colours
 
-def getLane(img, colour, name, frame):
+def getLane(img, colour, name, frame=0):
     """generates "lane" based on an isolated colour parameter
 
     Args:

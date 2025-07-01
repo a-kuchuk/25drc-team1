@@ -66,7 +66,7 @@ def trackbar_val(wt=480, ht=240):
 # def detect_arrow(img, arrow):
 
 
-def thresholding(img, colour, frame=0):
+def thresholding(img, colour, frame):
     imgHsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     lower = np.array([colour.h_min, colour.s_min, colour.v_min])
     upper = np.array([colour.h_max, colour.s_max, colour.v_max])
