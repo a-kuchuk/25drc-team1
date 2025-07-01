@@ -54,7 +54,7 @@ def main_loop():
 
     img = cv2.resize(img, (FRAME_WIDTH, FRAME_HEIGHT))
     # cv2.imshow('vid', img)
-    cv2.waitKey(1)
+    # cv2.waitKey(1)
 
     h, w, c = img.shape
     # points = utils.trackbar_val()
@@ -137,7 +137,7 @@ def main_loop():
         print("No lanes found. slight forward then stop")
         drive(speed=MIN_SPEED, timeout=0.05)
 
-    cv2.waitKey(1)
+    # cv2.waitKey(1)
 
 if __name__ == '__main__':
     cap = cv2.VideoCapture(0)
