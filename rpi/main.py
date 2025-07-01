@@ -11,9 +11,9 @@ from LaneDetection.lane_detection import *
 from ObjectDetection import *
 from colours import *
 import utils
-from Control.pid import PID
-from Control.motor import Motor
-from Control.steering import SteeringController
+# from Control.pid import PID
+# from Control.motor import Motor
+# from Control.steering import SteeringController
 from ArrowDetection import *
 
 # import RPi.GPIO as GPIO
@@ -39,9 +39,9 @@ arrow_state = None
 arrow_cooldown = 0
 
 def drive(steering_angle=-5, speed=BASE_SPEED, timeout=0.05):
-    steering.set_steering_angle(steering_angle)
-    motor.forward(speed)
-    time.sleep(timeout)
+    # steering.set_steering_angle(steering_angle)
+    # motor.forward(speed)
+    # time.sleep(timeout)
     return
 
 def main_loop():
@@ -132,10 +132,10 @@ def main_loop():
         lateral_error = lane_center - frame_center
 
         print(f"Lateral Error: {lateral_error}")
-        if lateral_error > THRESHOLD:
+        if lateral_error is not None and lateral_error > THRESHOLD :
             print("Bang-Bang: Steer RIGHT")
             drive(steering_angle=20, timeout=0.03)
-        elif lateral_error < -THRESHOLD:
+        elif lateral_error is not None and lateral_error < -THRESHOLD:
             print("Bang-Bang: Steer LEFT")
             drive(steering_angle=-20, timeout=0.03)
         else:
@@ -159,9 +159,9 @@ if __name__ == '__main__':
     # utils.trackbar_init(init_trackbar_vals)
 
     try:
-        motor = Motor(BASE_SPEED, MIN_SPEED)
-        steering = SteeringController()
-        steering.set_steering_angle(0)
+        # motor = Motor(BASE_SPEED, MIN_SPEED)
+        # steering = SteeringController()
+        # steering.set_steering_angle(0)
         while True:
             main_loop()
     except KeyboardInterrupt:
@@ -170,11 +170,11 @@ if __name__ == '__main__':
         print(f"\nUnexpected error: {e}")
     finally:
         print("Stopping robot and cleaning up GPIO...")
-        if motor:
-            motor.stop()
-            motor.cleanup()
-        if steering:
-            steering.cleanup()
+        # if motor:
+        #     motor.stop()
+        #     motor.cleanup()
+        # if steering:
+        #     steering.cleanup()
         cap.release()
         # cv2.destroyAllWindows()
         sys.exit(0)
