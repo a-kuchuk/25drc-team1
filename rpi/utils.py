@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import imutils
 import colours
-from main import LOOKAHEAD_Y, FRAME_HEIGHT
+from main import LOOKAHEAD_Y, FRAME_HEIGHT, FRAME_WIDTH
 
 # LOOKAHEAD_Y = 150  # Y-coordinate to calculate steering target
 # FRAME_HEIGHT = 240
@@ -66,11 +66,17 @@ def trackbar_val(wt=480, ht=240):
 # def detect_arrow(img, arrow):
 
 
-def thresholding(img, colour):
+def thresholding(img, colour, frame=0):
     imgHsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     lower = np.array([colour.h_min, colour.s_min, colour.v_min])
     upper = np.array([colour.h_max, colour.s_max, colour.v_max])
     mask = cv2.inRange(imgHsv, lower, upper)
+
+    if frame == -1:  # left half
+        mask[:, FRAME_WIDTH // 2:] = 0
+    elif frame == 1:  # right half
+        mask[:, :FRAME_WIDTH // 2] = 0
+    # if frame == 0, use the full mask
 
     return mask
 

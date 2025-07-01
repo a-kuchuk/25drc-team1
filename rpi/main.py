@@ -72,8 +72,8 @@ def main_loop():
     # if arrow_cooldown > 0:
     #     arrow_cooldown -= 1
 
-    left_mask = getLane(img_warp, left, "left")
-    right_mask = getLane(img_warp, right, "right")
+    left_mask = getLane(img_warp, left, "left", -1)
+    right_mask = getLane(img_warp, right, "right", 1)
     object_mask = getLane(img_warp, purple, "object")
     obj_x = utils.get_lane_centroid_x(object_mask[LOOKAHEAD_Y]) if object_mask is not None else None
 
