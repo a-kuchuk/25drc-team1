@@ -90,41 +90,22 @@ def main_loop():
         print("reset to forward?")
         drive(timeout=2)
         return
+    
+    left_points = utils.get_leftmost_lane_x(left_mask)
+    right_points = utils.get_leftmost_lane_x(right_mask)
+    
+    # print(left_points)
+    # print(right_points)
 
-    if left_mask is not None and right_mask is not None:
+    if left_points is not None:
+        print("right")
+        drive(steering_angle=15)
+        return
+    if right_points is not None:
+        print("left")
+        drive(steering_angle=-15)
+        return
 
-        if utils.is_lane_horizontal(left_mask):
-            print("Left lane is horizontal — turning hard right")
-            drive(steering_angle=25, timeout=0.05)
-            return
-        if utils.is_lane_horizontal(right_mask):
-            print("Right lane is horizontal — turning hard left")
-            drive(steering_angle=-25, timeout=0.05)
-            return
-
-        min_left_x = utils.get_leftmost_lane_x(left_mask)
-        min_right_x = utils.get_leftmost_lane_x(right_mask)
-
-        if min_left_x is not None and min_right_x is not None and min_left_x > min_right_x:
-            print("Fork detected — yellow is right of blue. Turning hard left")
-            drive(steering_angle=-25, timeout=0.05)
-            return
-        print("Forward")
-        drive(speed=MIN_SPEED, timeout=0.03)
-        
-    elif left_mask is not None:
-        print("Only left lane found — turning right")
-        drive(steering_angle=15, timeout=0.2)
-
-    elif right_mask is not None:
-        print("Only right lane found — turning left")
-        drive(steering_angle=-15, timeout=0.2)
-
-    else:
-        print("No lanes found. slight forward then stop")
-        drive(speed=MIN_SPEED, timeout=0.03)
-
-    cv2.waitKey(1)
 
 if __name__ == '__main__':
     cap = cv2.VideoCapture(0)
