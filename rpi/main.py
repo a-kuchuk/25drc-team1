@@ -136,7 +136,7 @@ def main_loop():
             drive(steering_angle=-25, timeout=0.05)
             return
         print("Forward")
-        drive(timeout=0.03)
+        drive(speed=MIN_SPEED, timeout=0.03)
     elif left_mask is not None:
         print("Only left lane found — turning right")
         drive(steering_angle=15, timeout=0.2)
