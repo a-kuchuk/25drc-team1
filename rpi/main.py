@@ -113,7 +113,7 @@ def main_loop():
     frame_center = FRAME_WIDTH // 2
     THRESHOLD = 20
 
-    if left_x is not None and right_x is not None:
+    if (left_mask is not None) and (right_mask is not None):
         # lane_center = (left_x + right_x) // 2
         # error = lane_center - frame_center
         # if error > THRESHOLD:
@@ -125,20 +125,22 @@ def main_loop():
         # else:
         #     print("Go Straight")
             # drive()
+        # print("IN1")
         min_left_x = utils.get_leftmost_lane_x(left_mask)
         min_right_x = utils.get_leftmost_lane_x(right_mask)
         # print(min_left_x)
         # print(min_right_x)
-        if min_left_x > min_right_x:
+        if min_left_x is not None and min_right_x is not None and min_left_x > min_right_x:
+            # print("IN2")
             print("Fork detected — yellow is right of blue. Turning hard left")
             drive(steering_angle=-30, timeout=0.3)
             return
         print("Forward")
         drive()
-    elif left_x is not None:
+    elif left_mask is not None:
         print("Only left lane found — turning right")
         drive(steering_angle=15, timeout=0.2)
-    elif right_x is not None:
+    elif right_mask is not None:
         print("Only right lane found — turning left")
         drive(steering_angle=-15, timeout=0.2)
     else:
@@ -149,8 +151,8 @@ def main_loop():
 
 if __name__ == '__main__':
     cap = cv2.VideoCapture(0)
-    # init_trackbar_vals = [000, 157, 000, 155]
-    # utils.trackbar_init(init_trackbar_vals)
+    init_trackbar_vals = [000, 157, 000, 155]
+    utils.trackbar_init(init_trackbar_vals)
 
     try:
         motor = Motor(BASE_SPEED, MIN_SPEED)

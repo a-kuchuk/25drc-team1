@@ -17,5 +17,5 @@ def getLane(img, colour, name, frame=0):
     """
     imgThresh = utils.thresholding(img, colour, frame)
     # print(f"in lane detection {imgThresh}")
-    # cv2.imshow(name, imgThresh)
+    cv2.imshow(name, imgThresh)
     return imgThresh
