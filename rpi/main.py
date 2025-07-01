@@ -127,12 +127,12 @@ def main_loop():
             # drive()
         min_left_x = utils.get_leftmost_lane_x(left_mask)
         min_right_x = utils.get_leftmost_lane_x(right_mask)
-        print(min_left_x)
-        print(min_right_x)
+        # print(min_left_x)
+        # print(min_right_x)
         if min_left_x > min_right_x:
             print("Fork detected — yellow is right of blue. Turning hard left")
             drive(steering_angle=-15, timeout=0.2)
-        return
+            return
         print("Forward")
         drive()
     elif left_x is not None:
@@ -149,8 +149,8 @@ def main_loop():
 
 if __name__ == '__main__':
     cap = cv2.VideoCapture(0)
-    init_trackbar_vals = [000, 157, 000, 155]
-    utils.trackbar_init(init_trackbar_vals)
+    # init_trackbar_vals = [000, 157, 000, 155]
+    # utils.trackbar_init(init_trackbar_vals)
 
     try:
         motor = Motor(BASE_SPEED, MIN_SPEED)
