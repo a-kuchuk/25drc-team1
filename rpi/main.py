@@ -54,14 +54,13 @@ def main_loop():
 
     img = cv2.resize(img, (FRAME_WIDTH, FRAME_HEIGHT))
     cv2.imshow('vid', img)
-    # cv2.waitKey(1)
+    cv2.waitKey(1)
 
     h, w, c = img.shape
-    points = utils.trackbar_val()
+    # points = utils.trackbar_val()
     # print(points)
-    # img_warp = utils.img_warp(img, np.float32([(0, 94), (480, 94), (0, 159), (480, 159)]), w, h)
-    img_warp = utils.img_warp(img, points, w, h)
-    cv2.imshow('warp', img_warp)
+    img_warp = utils.img_warp(img, np.float32([(0, 64), (480, 64), (0, 177), (480, 177)]), w, h)    # img_warp = utils.img_warp(img, points, w, h)
+    # cv2.imshow('warp', img_warp)
 
     # if arrow_cooldown == 0 and arrow_state is None:
     #     direction = utils.detect_arrow_direction(img)
@@ -80,10 +79,10 @@ def main_loop():
     if obj_x is not None:
         if obj_x < FRAME_WIDTH // 2:
             print("Object on left — turning right to avoid")
-            drive(30, BASE_SPEED, 0.5)
+            drive(30, BASE_SPEED, 0.2)
         else:
             print("Object on right — turning left to avoid")
-            drive(-30, BASE_SPEED, 0.5)
+            drive(-30, BASE_SPEED, 0.2)
         return
 
     # if arrow_state == 'left':
@@ -135,9 +134,9 @@ def main_loop():
         drive(steering_angle=-15)
     else:
         print("No lanes found. slight forward then stop")
-        drive(speed=MIN_SPEED)
+        drive(speed=MIN_SPEED, timeout=0.05)
 
-    # cv2.waitKey(1)
+    cv2.waitKey(1)
 
 if __name__ == '__main__':
     cap = cv2.VideoCapture(0)
