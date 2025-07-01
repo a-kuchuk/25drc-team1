@@ -23,7 +23,7 @@ BASE_SPEED = 50
 MIN_SPEED = 30
 FRAME_WIDTH = 480
 FRAME_HEIGHT = 240
-LOOKAHEAD_Y = 0
+LOOKAHEAD_Y = 50
 
 # --- Global Controllers ---
 motor = None
@@ -108,45 +108,49 @@ def main_loop():
         drive(timeout=2)
         return
 
-    left_x = utils.get_lane_centroid_x(left_mask[LOOKAHEAD_Y]) if left_mask is not None else None
-    right_x = utils.get_lane_centroid_x(right_mask[LOOKAHEAD_Y]) if right_mask is not None else None
+    # Polynomial lane fitting and Bang-Bang control
     frame_center = FRAME_WIDTH // 2
-    THRESHOLD = 20
+    THRESHOLD = 15
+    left_poly = None
+    right_poly = None
+    
+    left_highest_y = utils.get_highest_lane_y(left_mask)
+    right_highest_y = utils.get_highest_lane_y(right_mask)
 
-    if (left_mask is not None) and (right_mask is not None):
-        # lane_center = (left_x + right_x) // 2
-        # error = lane_center - frame_center
-        # if error > THRESHOLD:
-        #     print("Slight Right")
-        #     drive(steering_angle=10)
-        # elif error < -THRESHOLD:
-        #     print("Slight Left")
-        #     drive(steering_angle=-10)
-        # else:
-        #     print("Go Straight")
-            # drive()
-        # print("IN1")
-        min_left_x = utils.get_leftmost_lane_x(left_mask)
-        min_right_x = utils.get_leftmost_lane_x(right_mask)
-        # print(min_left_x)
-        # print(min_right_x)
-        if min_left_x is not None and min_right_x is not None and min_left_x > min_right_x:
-            # print("IN2")
-            print("Fork detected — yellow is right of blue. Turning hard left")
-            drive(steering_angle=-25, timeout=0.05)
-            return
-        print("Forward")
-        drive(speed=MIN_SPEED, timeout=0.03)
-    elif left_mask is not None:
-        print("Only left lane found — turning right")
+    left_points = utils.get_lane_points(left_mask, left_highest_y) if left_mask is not None else []
+    right_points = utils.get_lane_points(right_mask, right_highest_y) if right_mask is not None else []
+
+    if left_points:
+        left_poly = utils.fit_poly(left_points)
+    if right_points:
+        right_poly = utils.fit_poly(right_points)
+
+    if (left_poly is not None) and (right_poly is not None):
+        left_x = utils.evaluate_poly(left_poly, LOOKAHEAD_Y)
+        right_x = utils.evaluate_poly(right_poly, LOOKAHEAD_Y)
+        lane_center = (left_x + right_x) // 2
+        lateral_error = lane_center - frame_center
+
+        print(f"Lateral Error: {lateral_error}")
+        if lateral_error > THRESHOLD:
+            print("Bang-Bang: Steer RIGHT")
+            drive(steering_angle=20, timeout=0.03)
+        elif lateral_error < -THRESHOLD:
+            print("Bang-Bang: Steer LEFT")
+            drive(steering_angle=-20, timeout=0.03)
+        else:
+            print("Bang-Bang: Go STRAIGHT")
+            drive(steering_angle=0, timeout=0.03)
+
+    elif left_poly is not None:
+        print("Only LEFT lane detected — Steer RIGHT")
         drive(steering_angle=15, timeout=0.2)
-    elif right_mask is not None:
-        print("Only right lane found — turning left")
+    elif right_poly is not None:
+        print("Only RIGHT lane detected — Steer LEFT")
         drive(steering_angle=-15, timeout=0.2)
     else:
-        print("No lanes found. slight forward then stop")
+        print("No lane detected — Move cautiously")
         drive(speed=MIN_SPEED, timeout=0.03)
-
     # cv2.waitKey(1)
 
 if __name__ == '__main__':

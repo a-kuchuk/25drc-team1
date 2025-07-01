@@ -228,7 +228,7 @@ def get_lane_points(mask,highest_y, step=20):
 
 def fit_poly(points):
     """
-    Fit a 3rd degree polynomial to a list of (x, y) points.
+    Fit a 2nd degree polynomial to a list of (x, y) points.
     Returns coefficients of the polynomial x = f(y).
     """
     if len(points) >= 3:
