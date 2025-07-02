@@ -70,27 +70,27 @@ def main_loop():
     right_mask = getLane(img_warp, right, "right", 1)
     object_mask = getLane(img_warp, purple, "object")
     obj_x = utils.get_lane_centroid_x(object_mask[LOOKAHEAD_Y]) if object_mask is not None else None
-    fin_mask = getLane(img_warp, finish, "object")
+    fin_mask = getLane(img_warp, finish, "finish")
 
     fin_point = utils.get_lane_centroid_x(fin_mask[LOOKAHEAD_Y]) if object_mask is not None else None
 
-    if fin_point is not None:
-        slope = utils.is_lane_horizontal(fin_mask)
-        if slope > 0:
-            print("left fin")
-            drive(timeout=1)
-            time.sleep(1)
-            return
-        elif slope < 0:
-            print("right fin")
-            drive(timeout=1)
-            time.sleep(1)
-            return
-        else:
-            print("straight fin")
-            drive(timeout=0.5)
-            time.sleep(1)
-            return
+    # if fin_point is not None:
+    #     slope = utils.is_lane_horizontal(fin_mask)
+    #     if slope > 0:
+    #         print("left fin")
+    #         drive(timeout=1)
+    #         time.sleep(1)
+    #         return
+    #     elif slope < 0:
+    #         print("right fin")
+    #         drive(timeout=1)
+    #         time.sleep(1)
+    #         return
+    #     else:
+    #         print("straight fin")
+    #         drive(timeout=0.5)
+    #         time.sleep(1)
+    #         return
 
     if obj_x is not None:
         if obj_x < FRAME_WIDTH // 2:
