@@ -128,6 +128,10 @@ def main_loop():
     if (left_poly is not None) and (right_poly is not None):
         left_x = utils.evaluate_poly(left_poly, LOOKAHEAD_Y)
         right_x = utils.evaluate_poly(right_poly, LOOKAHEAD_Y)
+
+        if left_x is None or right_x is None:
+            print("Polynomial evaluation returned None — skipping frame")
+        return
         lane_center = (left_x + right_x) // 2
         lateral_error = lane_center - frame_center
 
