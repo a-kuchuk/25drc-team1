@@ -97,7 +97,7 @@ class Motor:
             self.left_pwm.ChangeDutyCycle(speed)
             self.right_pwm.ChangeDutyCycle(speed)
         else:
-            print("INSIDE DUF RIGHT")
+            # print("INSIDE DUF RIGHT")
             # Right forward, left slower forward
             GPIO.output(DIR_LEFT, GPIO.LOW)
             GPIO.output(DIR_RIGHT, GPIO.LOW)
@@ -114,7 +114,7 @@ class Motor:
             self.left_pwm.ChangeDutyCycle(speed)
             self.right_pwm.ChangeDutyCycle(speed)
         else:
-            print("INSIDE DIF LEFT")
+            # print("INSIDE DIF LEFT")
             # Right forward, left slower forward
             GPIO.output(DIR_LEFT, GPIO.LOW)
             GPIO.output(DIR_RIGHT, GPIO.LOW)
