@@ -92,10 +92,10 @@ def main_loop():
     if obj_x is not None:
         if obj_x < FRAME_WIDTH // 2:
             print("Object on left — turning right to avoid")
-            drive(20, BASE_SPEED, 0.2)
+            drive(30, BASE_SPEED, 0.2)
         else:
             print("Object on right — turning left to avoid")
-            drive(-20, BASE_SPEED, 0.2)
+            drive(-30, BASE_SPEED, 0.2)
         return
     
     left_points = utils.get_leftmost_lane_x(left_mask)
