@@ -104,7 +104,11 @@ def main_loop():
     # print(left_points)
     # print(right_points)
 
-    if left_points is not None:
+    if left_points is not None and right_points is not None:
+        print("forward")
+        drive()
+        return
+    elif left_points is not None:
         print("right")
         drive(steering_angle=15)
         return
