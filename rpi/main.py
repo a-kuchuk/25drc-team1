@@ -39,8 +39,8 @@ arrow_state = None
 arrow_cooldown = 0
 
 def drive(steering_angle=0, speed=BASE_SPEED, timeout=0.05):
-    steering.set_steering_angle(steering_angle-5)
-    motor.forward(speed)
+    # steering.set_steering_angle(steering_angle-5)
+    # motor.forward(speed)
     # time.sleep(timeout)
     return
 
@@ -57,13 +57,11 @@ def main_loop():
     # cv2.waitKey(1)
 
     h, w, c = img.shape
-    # points = utils.trackbar_val()
+    points = utils.trackbar_val()
     # print(points)
     
     # fails at pinhead. works otherwise
     img_warp = utils.img_warp(img, np.float32([(0, 61), (480, 61), (0, 240), (480, 240)]), w, h) 
-
-    # img_warp = utils.img_warp(img, np.float32([(0, 99), (480, 99), (0, 240), (480, 240)]), w, h)    
    
     # img_warp = utils.img_warp(img, points, w, h)
     # cv2.imshow('warp', img_warp)
@@ -103,11 +101,28 @@ def main_loop():
             drive(-35, BASE_SPEED, 0.2)
         return
     
+
+    yellow_left = utils.get_leftmost_lane_x(left_mask)
+    blue_left = utils.get_leftmost_lane_x(right_mask)
+    yellow_right = utils.get_rightmost_lane_x(left_mask)
+    blue_right = utils.get_leftmost_lane_x(right_mask)
+
+    # # right pinhead (yellow outside)
+    # if yellow_left < blue_left < yellow_right:
+    #     print("right pinhead")
+    #     # go left (outside turn)
+    #     # turn rght sharp
+
+    
+    # # left pinhead (yellow outside)
+    # if blue_left < yellow_left < blue_right:
+    #     print("left pinhead")
+    #     # go right (outside turn)
+    #     # turn left sharp
+
+    
     left_points = utils.get_leftmost_lane_x(left_mask)
     right_points = utils.get_leftmost_lane_x(right_mask)
-    
-    # print(left_points)
-    # print(right_points)
 
     if left_points is not None and right_points is not None:
         print("forward")
@@ -117,7 +132,7 @@ def main_loop():
         print("right")
         drive(steering_angle=15)
         return
-    if right_points is not None:
+    elif right_points is not None:
         print("left")
         drive(steering_angle=-15)
         return
