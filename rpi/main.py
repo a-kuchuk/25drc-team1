@@ -44,6 +44,18 @@ def drive(steering_angle=0, speed=BASE_SPEED, timeout=0.05):
     # time.sleep(timeout)
     return
 
+def drive_right(steering_angle=0, speed=BASE_SPEED, timeout=0.05):
+    steering.set_steering_angle(steering_angle-5)
+    motor.right(speed, False)
+    # time.sleep(timeout)
+    return
+
+def drive_left(steering_angle=0, speed=BASE_SPEED, timeout=0.05):
+    steering.set_steering_angle(steering_angle-5)
+    motor.left(speed, False)
+    # time.sleep(timeout)
+    return
+
 def main_loop():
     global arrow_state, arrow_cooldown
 
@@ -127,11 +139,13 @@ def main_loop():
         return
     elif left_points is not None:
         print("right")
-        drive(steering_angle=30)
+        #drive(steering_angle=30)
+        drive_right(steering_angle=30)
         return
     elif right_points is not None:
         print("left")
-        drive(steering_angle=-30)
+        # drive(steering_angle=-30)
+        drive_left(steering_angle=-30)
         return
     
     if obj_x is not None:

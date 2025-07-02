@@ -86,6 +86,44 @@ class Motor:
         GPIO.output(DIR_RIGHT, GPIO.HIGH)
         
         self.left_pwm.ChangeDutyCycle(speed)
+        self.right_pwm.ChangeDutyCycle(speed)
+
+    def right(self, speed, reverse_flag=False):
+        speed = max(0, min(100, speed))
+        if reverse_flag:
+            # Right forward, left reverse
+            GPIO.output(DIR_LEFT, GPIO.HIGH)
+            GPIO.output(DIR_RIGHT, GPIO.LOW)
+            self.left_pwm.ChangeDutyCycle(speed)
+            self.right_pwm.ChangeDutyCycle(speed)
+        else:
+            # Right forward, left slower forward
+            GPIO.output(DIR_LEFT, GPIO.LOW)
+            GPIO.output(DIR_RIGHT, GPIO.LOW)
+            self.left_pwm.ChangeDutyCycle(speed)
+            self.right_pwm.ChangeDutyCycle(speed-10)
+
+    
+    def left(self, speed, reverse_flag=False):
+        speed = max(0, min(100, speed))
+        if reverse_flag:
+            # Right forward, left reverse
+            GPIO.output(DIR_LEFT, GPIO.LOW)
+            GPIO.output(DIR_RIGHT, GPIO.HIGH)
+            self.left_pwm.ChangeDutyCycle(speed)
+            self.right_pwm.ChangeDutyCycle(speed)
+        else:
+            # Right forward, left slower forward
+            GPIO.output(DIR_LEFT, GPIO.LOW)
+            GPIO.output(DIR_RIGHT, GPIO.LOW)
+            self.left_pwm.ChangeDutyCycle(speed-10)
+            self.right_pwm.ChangeDutyCycle(speed)
+
+
+        
+    
+
+        
 
     def stop(self):
         self.left_pwm.ChangeDutyCycle(0)
