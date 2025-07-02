@@ -131,11 +131,14 @@ def get_leftmost_lane_x(mask):
 
     return int(np.min(filtered_x))  # leftmost point on screen
 
-def is_lane_horizontal(mask, min_points=5, step=10):
+def is_lane_horizontal(mask, min_points=10, step=10):
     """
-    Checks if the lane in the mask is mostly horizontal based on fitted poly slope.
+    Analyzes the slope of the lane in the mask.
 
-    Returns True if the average slope is near zero (horizontal), else False.
+    Returns:
+        1  -> Positive slope (rising left to right)
+        -1 -> Negative slope (falling left to right)
+        0  -> Approximately horizontal
     """
     y_coords = np.linspace(LOOKAHEAD_Y, FRAME_HEIGHT - 1, num=min_points, dtype=int)
     x_vals = []
@@ -147,12 +150,18 @@ def is_lane_horizontal(mask, min_points=5, step=10):
             x_vals.append((int(np.mean(xs)), y))
 
     if len(x_vals) < 3:
-        return False  # Not enough points to fit a line
+        return 0  # Not enough points to make a judgment
 
     coeffs = np.polyfit(*zip(*x_vals), deg=1)  # Linear fit: x = m*y + b
     slope = coeffs[0]  # dx/dy
 
-    return abs(slope) < 0.2  # Threshold for near-horizontal
+    if abs(slope) < 0.2:
+        return 0
+    elif slope > 0:
+        return 1
+    else:
+        return -1
+
 
 
 

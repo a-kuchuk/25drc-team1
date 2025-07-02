@@ -53,42 +53,49 @@ def main_loop():
         return
 
     img = cv2.resize(img, (FRAME_WIDTH, FRAME_HEIGHT))
-    cv2.imshow('vid', img)
-    cv2.waitKey(1)
+    # cv2.imshow('vid', img)
+    # cv2.waitKey(1)
 
     h, w, c = img.shape
     # points = utils.trackbar_val()
     # print(points)
-    img_warp = utils.img_warp(img, np.float32([(0, 189), (480, 189), (0, 240), (480, 240)]), w, h)    
+    img_warp = utils.img_warp(img, np.float32([(0, 61), (480, 61), (0, 240), (480, 240)]), w, h)    
     # img_warp = utils.img_warp(img, points, w, h)
-    cv2.imshow('warp', img_warp)
+    # cv2.imshow('warp', img_warp)
 
     left_mask = getLane(img_warp, left, "left", -1)
     right_mask = getLane(img_warp, right, "right", 1)
     object_mask = getLane(img_warp, purple, "object")
     obj_x = utils.get_lane_centroid_x(object_mask[LOOKAHEAD_Y]) if object_mask is not None else None
+    fin_mask = getLane(img_warp, finish, "object")
+
+    fin_point = utils.get_lane_centroid_x(fin_mask[LOOKAHEAD_Y]) if object_mask is not None else None
+
+    if fin_point is not None:
+        slope = utils.is_lane_horizontal(fin_mask)
+        if slope > 0:
+            print("left fin")
+            drive(timeout=1)
+            time.sleep(1)
+            return
+        elif slope < 0:
+            print("right fin")
+            drive(timeout=1)
+            time.sleep(1)
+            return
+        else:
+            print("straight fin")
+            drive(timeout=0.5)
+            time.sleep(1)
+            return
 
     if obj_x is not None:
         if obj_x < FRAME_WIDTH // 2:
             print("Object on left — turning right to avoid")
-            drive(30, BASE_SPEED, 0.2)
+            drive(20, BASE_SPEED, 0.2)
         else:
             print("Object on right — turning left to avoid")
-            drive(-30, BASE_SPEED, 0.2)
-        return
-    
-
-    fin_lane = getLane(img_warp, finish, "finish")
-    height = fin_lane.shape[0]
-    roi = fin_lane[int(height * 0.75):, :]
-    row_sums = np.sum(roi == 255, axis=1)
-    min_width_ratio = 0.3
-    min_white_pixels = int(fin_lane.shape[1] * min_width_ratio)
-
-    if np.any(row_sums >= min_white_pixels):
-        print("FIN")
-        print("reset to forward?")
-        drive(timeout=2)
+            drive(-20, BASE_SPEED, 0.2)
         return
     
     left_points = utils.get_leftmost_lane_x(left_mask)
