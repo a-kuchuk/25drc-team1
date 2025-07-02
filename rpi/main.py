@@ -127,11 +127,11 @@ def main_loop():
         return
     elif left_points is not None:
         print("right")
-        drive(steering_angle=40)
+        drive(steering_angle=35)
         return
     elif right_points is not None:
         print("left")
-        drive(steering_angle=-40)
+        drive(steering_angle=-35)
         return
     
     if obj_x is not None:
