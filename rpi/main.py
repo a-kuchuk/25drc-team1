@@ -59,9 +59,14 @@ def main_loop():
     h, w, c = img.shape
     # points = utils.trackbar_val()
     # print(points)
-    img_warp = utils.img_warp(img, np.float32([(0, 61), (480, 61), (0, 240), (480, 240)]), w, h)    
+    
+    # fails at pinhead. works otherwise
+    # img_warp = utils.img_warp(img, np.float32([(0, 61), (480, 61), (0, 240), (480, 240)]), w, h) 
+
+    img_warp = utils.img_warp(img, np.float32([(0, 99), (480, 99), (0, 240), (480, 240)]), w, h)    
+   
     # img_warp = utils.img_warp(img, points, w, h)
-    # cv2.imshow('warp', img_warp)
+    cv2.imshow('warp', img_warp)
 
     left_mask = getLane(img_warp, left, "left", -1)
     right_mask = getLane(img_warp, right, "right", 1)
@@ -120,8 +125,8 @@ def main_loop():
 
 if __name__ == '__main__':
     cap = cv2.VideoCapture(0)
-    # init_trackbar_vals = [000, 157, 000, 155]
-    # utils.trackbar_init(init_trackbar_vals)
+    init_trackbar_vals = [000, 157, 000, 155]
+    utils.trackbar_init(init_trackbar_vals)
 
     try:
         motor = Motor(BASE_SPEED, MIN_SPEED)
