@@ -57,7 +57,7 @@ def main_loop():
     # cv2.waitKey(1)
 
     h, w, c = img.shape
-    points = utils.trackbar_val()
+    # points = utils.trackbar_val()
     # print(points)
     
     # fails at pinhead. works otherwise
