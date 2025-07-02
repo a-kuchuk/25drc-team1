@@ -74,23 +74,23 @@ def main_loop():
 
     fin_point = utils.get_lane_centroid_x(fin_mask[LOOKAHEAD_Y]) if object_mask is not None else None
 
-    # if fin_point is not None:
-    #     slope = utils.is_lane_horizontal(fin_mask)
-    #     if slope > 0:
-    #         print("left fin")
-    #         drive(timeout=1)
-    #         time.sleep(1)
-    #         return
-    #     elif slope < 0:
-    #         print("right fin")
-    #         drive(timeout=1)
-    #         time.sleep(1)
-    #         return
-    #     else:
-    #         print("straight fin")
-    #         drive(timeout=0.5)
-    #         time.sleep(1)
-    #         return
+    if fin_point is not None:
+        slope = utils.is_lane_horizontal(fin_mask)
+        if slope > 0:
+            print("left fin")
+            drive(timeout=1)
+            time.sleep(1)
+            return
+        elif slope < 0:
+            print("right fin")
+            drive(timeout=1)
+            time.sleep(1)
+            return
+        else:
+            print("straight fin")
+            drive(timeout=0.5)
+            # time.sleep(1)
+            return
 
     if obj_x is not None:
         if obj_x < FRAME_WIDTH // 2:
