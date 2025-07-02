@@ -46,13 +46,13 @@ def drive(steering_angle=0, speed=BASE_SPEED, timeout=0.05):
 
 def drive_right(steering_angle=0, speed=BASE_SPEED, timeout=0.05):
     steering.set_steering_angle(steering_angle-5)
-    motor.right(speed, True)
+    motor.right(speed, False)
     # time.sleep(timeout)
     return
 
 def drive_left(steering_angle=0, speed=BASE_SPEED, timeout=0.05):
     steering.set_steering_angle(steering_angle-5)
-    motor.left(speed, True)
+    motor.left(speed, False)
     # time.sleep(timeout)
     return
 
