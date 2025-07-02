@@ -39,9 +39,9 @@ arrow_state = None
 arrow_cooldown = 0
 
 def drive(steering_angle=0, speed=BASE_SPEED, timeout=0.05):
-    # steering.set_steering_angle(steering_angle-5)
-    # motor.forward(speed)
-    # time.sleep(timeout)
+    steering.set_steering_angle(steering_angle-5)
+    motor.forward(speed)
+    time.sleep(timeout)
     return
 
 def main_loop():
