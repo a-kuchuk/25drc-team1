@@ -19,7 +19,7 @@ from ArrowDetection import *
 # import RPi.GPIO as GPIO
 
 # --- Constants ---
-BASE_SPEED = 72
+BASE_SPEED = 70
 MIN_SPEED = 30
 FRAME_WIDTH = 480
 FRAME_HEIGHT = 240
@@ -85,31 +85,31 @@ def main_loop():
 
     fin_point = utils.get_lane_centroid_x(fin_mask[LOOKAHEAD_Y]) if object_mask is not None else None
 
-    if fin_point is not None:
-        slope = utils.is_lane_horizontal(fin_mask)
-        if slope > 0:
-            print("left fin")
-            time.sleep(2)
-            drive(timeout=0.1)
-            time.sleep(2)
-            motor.stop()
-            time.sleep(10)
-            return
-        elif slope < 0:
-            print("right fin")
-            drive(timeout=0.1)
-            time.sleep(2)
-            motor.stop()
-            time.sleep(10)
-            return
-        else:
-            print("straight fin")
-            drive(timeout=2)
-            time.sleep(2)
-            motor.stop()
-            time.sleep(10)
-            # time.sleep(1)
-            return
+    # if fin_point is not None:
+    #     slope = utils.is_lane_horizontal(fin_mask)
+    #     if slope > 0:
+    #         print("left fin")
+    #         time.sleep(2)
+    #         drive(timeout=0.1)
+    #         time.sleep(2)
+    #         motor.stop()
+    #         time.sleep(10)
+    #         return
+    #     elif slope < 0:
+    #         print("right fin")
+    #         drive(timeout=0.1)
+    #         time.sleep(2)
+    #         motor.stop()
+    #         time.sleep(10)
+    #         return
+    #     else:
+    #         print("straight fin")
+    #         drive(timeout=2)
+    #         time.sleep(2)
+    #         motor.stop()
+    #         time.sleep(10)
+    #         # time.sleep(1)
+    #         return
 
     
 
@@ -141,11 +141,11 @@ def main_loop():
         return
     elif left_points is not None:
         print("right")
-        drive_right(steering_angle=32)
+        drive_right(steering_angle=35)
         return
     elif right_points is not None:
         print("left")
-        drive_left(steering_angle=-32)
+        drive_left(steering_angle=-35)
         return
     
     if obj_x is not None:
