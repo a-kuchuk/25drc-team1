@@ -90,20 +90,20 @@ def main_loop():
         if slope > 0:
             print("left fin")
             drive(timeout=0.1,)
-            time.sleep(0.1)
+            time.sleep(2)
             motor.stop()
             time.sleep(10)
             return
         elif slope < 0:
             print("right fin")
             drive(timeout=0.1)
-            time.sleep(0.1)
+            time.sleep(2)
             motor.stop()
             time.sleep(10)
             return
         else:
             print("straight fin")
-            drive(timeout=0)
+            drive(timeout=2)
             motor.stop()
             time.sleep(10)
             # time.sleep(1)
