@@ -92,7 +92,7 @@ def main_loop():
         print(f"FIN TOP IS {fin_top}")
         print("fin")
         drive()
-        time.sleep(2)
+        time.sleep(0.5)
         motor.stop()
         time.sleep(10)
         return
