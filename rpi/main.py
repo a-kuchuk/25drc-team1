@@ -150,13 +150,13 @@ def main_loop():
     
     if obj_x is not None:
         if obj_x < FRAME_WIDTH // 2:
-            print("Object on left")
+            print("Object on left — turning right to avoid")
             time.sleep(0.2)
-            drive(-40, BASE_SPEED, 0.2)
+            drive(35, BASE_SPEED, 0.2)
         else:
-            print("Object on right")
+            print("Object on right — turning left to avoid")
             time.sleep(0.2)
-            drive(40, BASE_SPEED, 0.2)
+            drive(-35, BASE_SPEED, 0.2)
         return
 
 
