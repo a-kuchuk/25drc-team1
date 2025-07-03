@@ -73,7 +73,7 @@ def main_loop():
     # print(points)
     
     # best so far
-    # img_warp = utils.img_warp(img, np.float32([(0, 61), (480, 61), (0, 240), (480, 240)]), w, h) 
+    img_warp2 = utils.img_warp(img, np.float32([(0, 61), (480, 61), (0, 240), (480, 240)]), w, h) 
 
 
     img_warp = utils.img_warp(img, np.float32([(0, 80), (480, 80), (0, 240), (480, 240)]), w, h) 
@@ -83,7 +83,7 @@ def main_loop():
 
     left_mask = getLane(img_warp, left, "left", -1)
     right_mask = getLane(img_warp, right, "right", 1)
-    object_mask = getLane(img_warp, purple, "object")
+    object_mask = getLane(img_warp2, purple, "object")
     obj_x = utils.get_lane_centroid_x(object_mask[LOOKAHEAD_Y]) if object_mask is not None else None
     fin_mask = getLane(img_warp, finish, "finish")
     fin_top = utils.get_highest_lane_y(fin_mask)
