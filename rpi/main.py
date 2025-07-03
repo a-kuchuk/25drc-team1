@@ -19,7 +19,7 @@ from ArrowDetection import *
 # import RPi.GPIO as GPIO
 
 # --- Constants ---
-BASE_SPEED = 79
+BASE_SPEED = 77
 MIN_SPEED = 30
 FRAME_WIDTH = 480
 FRAME_HEIGHT = 240
