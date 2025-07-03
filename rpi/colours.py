@@ -93,11 +93,11 @@ class PaintPurple():
 
 class TapeGreen():
     h_min = 60
-    s_min = 59
-    v_min = 135
-    h_max = 82
-    s_max = 126
-    v_max = 204
+    s_min = 29
+    v_min = 150
+    h_max = 80
+    s_max = 84
+    v_max = 219
 
 class HighlighterPink():
     lower = np.array([146, 55, 0]) 
