@@ -19,7 +19,7 @@ from ArrowDetection import *
 # import RPi.GPIO as GPIO
 
 # --- Constants ---
-BASE_SPEED = 77
+BASE_SPEED = 70
 MIN_SPEED = 30
 FRAME_WIDTH = 480
 FRAME_HEIGHT = 240
@@ -73,7 +73,7 @@ def main_loop():
     # print(points)
     
     # best so far
-    img_warp2 = utils.img_warp(img, np.float32([(0, 61), (480, 61), (0, 240), (480, 240)]), w, h) 
+    # img_warp = utils.img_warp(img, np.float32([(0, 61), (480, 61), (0, 240), (480, 240)]), w, h) 
 
 
     img_warp = utils.img_warp(img, np.float32([(0, 80), (480, 80), (0, 240), (480, 240)]), w, h) 
@@ -83,7 +83,7 @@ def main_loop():
 
     left_mask = getLane(img_warp, left, "left", -1)
     right_mask = getLane(img_warp, right, "right", 1)
-    object_mask = getLane(img_warp2, purple, "object")
+    object_mask = getLane(img_warp, purple, "object")
     obj_x = utils.get_lane_centroid_x(object_mask[LOOKAHEAD_Y]) if object_mask is not None else None
     fin_mask = getLane(img_warp, finish, "finish")
     fin_top = utils.get_highest_lane_y(fin_mask)
@@ -92,14 +92,14 @@ def main_loop():
     MIN_Y_THRESHOLD = 150
     MIN_FINISH_AREA = 1000  
 
-    if fin_top is not None and fin_top > MIN_Y_THRESHOLD and fin_area > MIN_FINISH_AREA:
-        # print(f"FIN TOP IS {fin_top}, AREA IS {fin_area}")
-        print("fin")
-        drive()
-        time.sleep(0.5)
-        motor.stop()
-        time.sleep(10)
-        return
+    # if fin_top is not None and fin_top > MIN_Y_THRESHOLD and fin_area > MIN_FINISH_AREA:
+    #     # print(f"FIN TOP IS {fin_top}, AREA IS {fin_area}")
+    #     print("fin")
+    #     drive()
+    #     time.sleep(0.5)
+    #     motor.stop()
+    #     time.sleep(10)
+    #     return
 
     fin_point = utils.get_lane_centroid_x(fin_mask[LOOKAHEAD_Y]) if object_mask is not None else None
 
@@ -159,11 +159,11 @@ def main_loop():
         return
     elif left_points is not None:
         print("right")
-        drive_right(steering_angle=32)
+        drive_right(steering_angle=30)
         return
     elif right_points is not None:
         print("left")
-        drive_left(steering_angle=-32)
+        drive_left(steering_angle=-30)
         return
     
     if obj_x is not None:
