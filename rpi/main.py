@@ -73,10 +73,10 @@ def main_loop():
     # print(points)
     
     # best so far
-    img_warp = utils.img_warp(img, np.float32([(0, 61), (480, 61), (0, 240), (480, 240)]), w, h) 
+    # img_warp = utils.img_warp(img, np.float32([(0, 61), (480, 61), (0, 240), (480, 240)]), w, h) 
 
 
-    # img_warp = utils.img_warp(img, np.float32([(0, 80), (480, 80), (0, 240), (480, 240)]), w, h) 
+    img_warp = utils.img_warp(img, np.float32([(0, 80), (480, 80), (0, 240), (480, 240)]), w, h) 
 
     # img_warp = utils.img_warp(img, points, w, h)
     # cv2.imshow('warp', img_warp)
