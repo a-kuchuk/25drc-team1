@@ -87,9 +87,13 @@ def main_loop():
     obj_x = utils.get_lane_centroid_x(object_mask[LOOKAHEAD_Y]) if object_mask is not None else None
     fin_mask = getLane(img_warp, finish, "finish")
     fin_top = utils.get_highest_lane_y(fin_mask)
+    fin_area = cv2.countNonZero(fin_mask)
 
-    if fin_top is not None and fin_top > 150:
-        print(f"FIN TOP IS {fin_top}")
+    MIN_Y_THRESHOLD = 150
+    MIN_FINISH_AREA = 1000  
+
+    if fin_top is not None and fin_top > MIN_Y_THRESHOLD and fin_area > MIN_FINISH_AREA:
+        print(f"FIN TOP IS {fin_top}, AREA IS {fin_area}")
         print("fin")
         drive()
         time.sleep(0.5)
