@@ -19,7 +19,7 @@ from ArrowDetection import *
 # import RPi.GPIO as GPIO
 
 # --- Constants ---
-BASE_SPEED = 70
+BASE_SPEED = 72
 MIN_SPEED = 30
 FRAME_WIDTH = 480
 FRAME_HEIGHT = 240
@@ -139,13 +139,11 @@ def main_loop():
         return
     elif left_points is not None:
         print("right")
-        #drive(steering_angle=30)
-        drive_right(steering_angle=30)
+        drive_right(steering_angle=32)
         return
     elif right_points is not None:
         print("left")
-        # drive(steering_angle=-30)
-        drive_left(steering_angle=-30)
+        drive_left(steering_angle=-32)
         return
     
     if obj_x is not None:
