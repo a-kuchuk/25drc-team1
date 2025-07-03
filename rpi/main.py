@@ -86,6 +86,16 @@ def main_loop():
     object_mask = getLane(img_warp, purple, "object")
     obj_x = utils.get_lane_centroid_x(object_mask[LOOKAHEAD_Y]) if object_mask is not None else None
     fin_mask = getLane(img_warp, finish, "finish")
+    fin_top = utils.get_highest_lane_y(fin_mask)
+
+    print(f"FIN TOP IS {fin_top}")
+    if fin_top > 200:
+        print("fin")
+        drive()
+        time.sleep(2)
+        motor.stop()
+        time.sleep(10)
+        return
 
     fin_point = utils.get_lane_centroid_x(fin_mask[LOOKAHEAD_Y]) if object_mask is not None else None
 
