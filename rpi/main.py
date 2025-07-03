@@ -92,14 +92,14 @@ def main_loop():
     MIN_Y_THRESHOLD = 150
     MIN_FINISH_AREA = 1000  
 
-    if fin_top is not None and fin_top > MIN_Y_THRESHOLD and fin_area > MIN_FINISH_AREA:
-        print(f"FIN TOP IS {fin_top}, AREA IS {fin_area}")
-        print("fin")
-        drive()
-        time.sleep(0.5)
-        motor.stop()
-        time.sleep(10)
-        return
+    # if fin_top is not None and fin_top > MIN_Y_THRESHOLD and fin_area > MIN_FINISH_AREA:
+    #     # print(f"FIN TOP IS {fin_top}, AREA IS {fin_area}")
+    #     print("fin")
+    #     drive()
+    #     time.sleep(0.5)
+    #     motor.stop()
+    #     time.sleep(10)
+    #     return
 
     fin_point = utils.get_lane_centroid_x(fin_mask[LOOKAHEAD_Y]) if object_mask is not None else None
 
