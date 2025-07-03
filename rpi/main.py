@@ -89,7 +89,7 @@ def main_loop():
     fin_top = utils.get_highest_lane_y(fin_mask)
 
     print(f"FIN TOP IS {fin_top}")
-    if fin_top > 200:
+    if fin_top is not None and fin_top > 200:
         print("fin")
         drive()
         time.sleep(2)
