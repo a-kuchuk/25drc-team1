@@ -89,7 +89,8 @@ def main_loop():
         slope = utils.is_lane_horizontal(fin_mask)
         if slope > 0:
             print("left fin")
-            drive(timeout=0.1,)
+            time.sleep(2)
+            drive(timeout=0.1)
             time.sleep(2)
             motor.stop()
             time.sleep(10)
@@ -104,6 +105,7 @@ def main_loop():
         else:
             print("straight fin")
             drive(timeout=2)
+            time.sleep(2)
             motor.stop()
             time.sleep(10)
             # time.sleep(1)
