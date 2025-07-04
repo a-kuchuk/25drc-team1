@@ -19,7 +19,7 @@ from ArrowDetection import *
 # import RPi.GPIO as GPIO
 
 # --- Constants ---
-BASE_SPEED = 79
+BASE_SPEED = 75
 MIN_SPEED = 30
 FRAME_WIDTH = 480
 FRAME_HEIGHT = 240
@@ -107,11 +107,11 @@ def main_loop():
         if obj_x < FRAME_WIDTH // 2 or right_points:
             print("object turn left")
             # time.sleep(0.2)
-            drive(-40, BASE_SPEED, 0.2)
+            drive(-35, BASE_SPEED, 0.2)
         else:
             print("object turn right")
             # time.sleep(0.2)
-            drive(40, BASE_SPEED, 0.2)
+            drive(35, BASE_SPEED, 0.2)
         return
 
     if left_points is not None and right_points is not None:
