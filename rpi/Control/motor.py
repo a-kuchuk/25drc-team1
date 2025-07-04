@@ -102,7 +102,7 @@ class Motor:
             GPIO.output(DIR_LEFT, GPIO.LOW)
             GPIO.output(DIR_RIGHT, GPIO.LOW)
             self.left_pwm.ChangeDutyCycle(speed)
-            self.right_pwm.ChangeDutyCycle(speed-32)
+            self.right_pwm.ChangeDutyCycle(speed-30)
 
     
     def left(self, speed, reverse_flag=False):
@@ -118,7 +118,7 @@ class Motor:
             # Right forward, left slower forward
             GPIO.output(DIR_LEFT, GPIO.LOW)
             GPIO.output(DIR_RIGHT, GPIO.LOW)
-            self.left_pwm.ChangeDutyCycle(speed-32)
+            self.left_pwm.ChangeDutyCycle(speed-30)
             self.right_pwm.ChangeDutyCycle(speed)
 
 
