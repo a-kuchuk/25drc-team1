@@ -107,11 +107,11 @@ def main_loop():
         if obj_x < FRAME_WIDTH // 2 and right_points:
             print("object turn left")
             # time.sleep(0.2)
-            drive(-35, BASE_SPEED, 0.2)
+            drive_left(35, BASE_SPEED, 0.2)
         else:
             print("object turn right")
             # time.sleep(0.2)
-            drive(35, BASE_SPEED, 0.2)
+            drive_right(35, BASE_SPEED, 0.2)
         return
 
     if left_points is not None and right_points is not None:
