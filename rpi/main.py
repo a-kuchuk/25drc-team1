@@ -133,7 +133,7 @@ if __name__ == '__main__':
 
     motor = Motor(BASE_SPEED, MIN_SPEED)
     steering = SteeringController()
-    steering.set_steering_angle(0)
+    steering.set_steering_angle(-30)
     # motor.forward(BASE_SPEED)
     drive(speed=95)
 
