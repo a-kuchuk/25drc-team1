@@ -19,7 +19,7 @@ from ArrowDetection import *
 # import RPi.GPIO as GPIO
 
 # --- Constants ---
-BASE_SPEED = 80
+BASE_SPEED = 100
 MIN_SPEED = 30
 FRAME_WIDTH = 480
 FRAME_HEIGHT = 240
@@ -115,7 +115,7 @@ def main_loop():
 
     if left_points is not None and right_points is not None:
         print("forward")
-        drive(speed=90)
+        drive()
         return
     elif left_points is not None:
         print("right")
@@ -134,6 +134,7 @@ if __name__ == '__main__':
     steering = SteeringController()
     steering.set_steering_angle(0)
     # motor.forward(BASE_SPEED)
+    time.sleep(0.5)
     drive(speed=100)
 
     cap = cv2.VideoCapture(0)
