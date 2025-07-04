@@ -13,7 +13,8 @@ def main():
         max_angle = steering.max_steering_angle_deg 
 
         print("=== Driving forward with center steering ===")
-        steering.set_steering_angle(0)  # center
+        # steering.set_steering_angle(0)  # center
+        steering.set_steering_angle(-5) # center with offset
         # motor.move_scaled(0, max_angle)
         motor.forward(base_speed)
         time.sleep(1)
@@ -23,21 +24,20 @@ def main():
         print("=== Drive test with left turn ===")
         steering.set_steering_angle(-max_angle)
         # motor.move_scaled(-max_angle, max_angle)
-        motor.forward(base_speed)
+        motor.left(base_speed, False)
         time.sleep(2)
         motor.stop()
         time.sleep(1)
 
         print("=== Drive test with right turn ===")
         steering.set_steering_angle(max_angle)
-        # motor.move_scaled(max_angle, max_angle)
-        motor.forward(base_speed)
+        motor.right(base_speed, False)
         time.sleep(2)
         motor.stop()
         time.sleep(1)
 
         print("=== Driving forward with center steering ===")
-        steering.set_steering_angle(0)  # center
+        steering.set_steering_angle(-5)  # center with offset
         # motor.move_scaled(0, max_angle)
         motor.forward(base_speed)
         time.sleep(1)
