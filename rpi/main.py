@@ -104,7 +104,7 @@ def main_loop():
     right_points = utils.get_leftmost_lane_x(right_mask)
 
     if obj_x is not None:
-        if obj_x < FRAME_WIDTH // 2 or right_points:
+        if obj_x < FRAME_WIDTH // 2 and right_points:
             print("object turn left")
             # time.sleep(0.2)
             drive(-35, BASE_SPEED, 0.2)
