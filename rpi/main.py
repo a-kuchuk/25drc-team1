@@ -135,7 +135,7 @@ if __name__ == '__main__':
     steering = SteeringController()
     steering.set_steering_angle(0)
     # motor.forward(BASE_SPEED)
-    drive()
+    drive(speed=85)
 
     cap = cv2.VideoCapture(0)
     # init_trackbar_vals = [000, 157, 000, 155]
