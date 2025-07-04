@@ -83,21 +83,21 @@ class TapeYellow():
     s_max = 122
     v_max = 219
 
-# class PaintPurple():
-#     h_min = 144
-#     s_min = 46
-#     v_min = 70
-#     h_max = 179
-#     s_max = 255
-#     v_max = 145
-    
 class PaintPurple():
-    h_min = 0
-    s_min = 81
-    v_min = 32
+    h_min = 144
+    s_min = 46
+    v_min = 70
     h_max = 179
     s_max = 255
-    v_max = 255
+    v_max = 145
+    
+# class PaintPurple():
+#     h_min = 0
+#     s_min = 81
+#     v_min = 32
+#     h_max = 179
+#     s_max = 255
+#     v_max = 255
 
 class TapeGreen():
     h_min = 60
