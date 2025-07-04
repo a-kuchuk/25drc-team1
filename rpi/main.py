@@ -108,7 +108,7 @@ def main_loop():
             print("Object on left — turning right to avoid")
             # time.sleep(0.2)
             drive(-35, BASE_SPEED, 0.2)
-        else:
+        elif obj_x > FRAME_WIDTH // 2 and left_points:
             print("Object on right — turning left to avoid")
             # time.sleep(0.2)
             drive(35, BASE_SPEED, 0.2)
