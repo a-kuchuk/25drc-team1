@@ -19,7 +19,7 @@ from ArrowDetection import *
 # import RPi.GPIO as GPIO
 
 # --- Constants ---
-BASE_SPEED = 85
+BASE_SPEED = 90
 MIN_SPEED = 30
 FRAME_WIDTH = 480
 FRAME_HEIGHT = 240
@@ -133,7 +133,7 @@ if __name__ == '__main__':
 
     motor = Motor(BASE_SPEED, MIN_SPEED)
     steering = SteeringController()
-    steering.set_steering_angle(-30)
+    steering.set_steering_angle(0)
     # motor.forward(BASE_SPEED)
     drive(speed=95)
 
