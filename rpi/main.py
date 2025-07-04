@@ -93,7 +93,6 @@ def main_loop():
     MIN_FINISH_AREA = 1000  
 
     if fin_top is not None and fin_top > MIN_Y_THRESHOLD and fin_area > MIN_FINISH_AREA:
-        # print(f"FIN TOP IS {fin_top}, AREA IS {fin_area}")
         print("fin")
         drive()
         time.sleep(0.5)
@@ -101,55 +100,6 @@ def main_loop():
         time.sleep(10)
         return
 
-    fin_point = utils.get_lane_centroid_x(fin_mask[LOOKAHEAD_Y]) if object_mask is not None else None
-
-    # if fin_point is not None:
-    #     slope = utils.is_lane_horizontal(fin_mask)
-    #     if slope > 0:
-    #         print("left fin")
-    #         time.sleep(2)
-    #         drive(timeout=0.1)
-    #         time.sleep(2)
-    #         motor.stop()
-    #         time.sleep(10)
-    #         return
-    #     elif slope < 0:
-    #         print("right fin")
-    #         drive(timeout=0.1)
-    #         time.sleep(2)
-    #         motor.stop()
-    #         time.sleep(10)
-    #         return
-    #     else:
-    #         print("straight fin")
-    #         drive(timeout=2)
-    #         time.sleep(2)
-    #         motor.stop()
-    #         time.sleep(10)
-    #         # time.sleep(1)
-    #         return
-
-    
-
-    yellow_left = utils.get_leftmost_lane_x(left_mask)
-    blue_left = utils.get_leftmost_lane_x(right_mask)
-    yellow_right = utils.get_rightmost_lane_x(left_mask)
-    blue_right = utils.get_leftmost_lane_x(right_mask)
-
-    # # right pinhead (yellow outside)
-    # if yellow_left < blue_left < yellow_right:
-    #     print("right pinhead")
-    #     # go left (outside turn)
-    #     # turn rght sharp
-
-    
-    # # left pinhead (yellow outside)
-    # if blue_left < yellow_left < blue_right:
-    #     print("left pinhead")
-    #     # go right (outside turn)
-    #     # turn left sharp
-
-    
     left_points = utils.get_leftmost_lane_x(left_mask)
     right_points = utils.get_leftmost_lane_x(right_mask)
 
