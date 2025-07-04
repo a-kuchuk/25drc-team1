@@ -89,7 +89,7 @@ def main_loop():
     fin_top = utils.get_highest_lane_y(fin_mask)
     fin_area = cv2.countNonZero(fin_mask)
 
-    MIN_Y_THRESHOLD = 100
+    MIN_Y_THRESHOLD = 150
     MIN_FINISH_AREA = 1000  
 
     if fin_top is not None and fin_top > MIN_Y_THRESHOLD and fin_area > MIN_FINISH_AREA:
