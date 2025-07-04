@@ -12,6 +12,7 @@ def main():
         steering = SteeringController()
 
         max_angle = steering.max_steering_angle_deg 
+        steering.set_steering_angle(-5)
 
         print("=== 60 ===")
         motor.forward(60)
