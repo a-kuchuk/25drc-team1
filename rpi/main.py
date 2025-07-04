@@ -103,6 +103,16 @@ def main_loop():
     left_points = utils.get_leftmost_lane_x(left_mask)
     right_points = utils.get_leftmost_lane_x(right_mask)
 
+    if obj_x is not None:
+        if obj_x < FRAME_WIDTH // 2:
+            print("Object on left — turning right to avoid")
+            # time.sleep(0.2)
+            drive(35, BASE_SPEED, 0.2)
+        else:
+            print("Object on right — turning left to avoid")
+            # time.sleep(0.2)
+            drive(-35, BASE_SPEED, 0.2)
+        return
 
     if left_points is not None and right_points is not None:
         print("forward")
@@ -117,16 +127,6 @@ def main_loop():
         drive_left(steering_angle=-32)
         return
     
-    if obj_x is not None:
-        if obj_x < FRAME_WIDTH // 2:
-            print("Object on left — turning right to avoid")
-            # time.sleep(0.2)
-            drive(35, BASE_SPEED, 0.2)
-        else:
-            print("Object on right — turning left to avoid")
-            # time.sleep(0.2)
-            drive(-35, BASE_SPEED, 0.2)
-        return
 
 
 if __name__ == '__main__':
