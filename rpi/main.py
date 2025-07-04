@@ -115,7 +115,7 @@ def main_loop():
 
     if left_points is not None and right_points is not None:
         print("forward")
-        drive()
+        drive(speed=92)
         return
     elif left_points is not None:
         print("right")
