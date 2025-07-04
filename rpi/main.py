@@ -107,7 +107,7 @@ def main_loop():
         if obj_x < FRAME_WIDTH // 2 and right_points:
             print("object lane turn left")
             # time.sleep(0.2)
-            drive_left(-35, BASE_SPEED, 0.2)
+            drive_left(35, BASE_SPEED, 0.2)
         elif obj_x > FRAME_WIDTH // 2 and left_points:
             print("object lane turn right")
             # time.sleep(0.2)
@@ -115,7 +115,7 @@ def main_loop():
         elif obj_x > FRAME_WIDTH //2:
             print("object turn left")
             # time.sleep(0.2)
-            drive_left(-35, BASE_SPEED, 0.2)
+            drive_left(35, BASE_SPEED, 0.2)
         else:   
             print("object turn right")
             # time.sleep(0.2)
