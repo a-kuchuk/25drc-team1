@@ -120,11 +120,11 @@ def main_loop():
         return
     elif left_points is not None:
         print("right")
-        drive_right(steering_angle=33)
+        drive_right(steering_angle=35)
         return
     elif right_points is not None:
         print("left")
-        drive_left(steering_angle=-33)
+        drive_left(steering_angle=-35)
         return
     
 
@@ -134,7 +134,7 @@ if __name__ == '__main__':
     motor = Motor(BASE_SPEED, MIN_SPEED)
     steering = SteeringController()
     steering.set_steering_angle(0)
-    motor.forward(BASE_SPEED)
+    motor.forward(90)
 
     cap = cv2.VideoCapture(0)
     # init_trackbar_vals = [000, 157, 000, 155]
