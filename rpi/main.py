@@ -108,7 +108,15 @@ def main_loop():
             print("object turn left")
             # time.sleep(0.2)
             drive(-35, BASE_SPEED, 0.2)
-        else:
+        elif obj_x > FRAME_WIDTH // 2 and left_points:
+            print("object turn right")
+            # time.sleep(0.2)
+            drive(35, BASE_SPEED, 0.2)
+        elif obj_x > FRAME_WIDTH //2:
+            print("object turn left")
+            # time.sleep(0.2)
+            drive(-35, BASE_SPEED, 0.2)
+        else:   
             print("object turn right")
             # time.sleep(0.2)
             drive(35, BASE_SPEED, 0.2)
