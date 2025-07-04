@@ -103,6 +103,7 @@ def main_loop():
     left_points = utils.get_leftmost_lane_x(left_mask)
     right_points = utils.get_leftmost_lane_x(right_mask)
 
+
     if left_points is not None and right_points is not None:
         print("forward")
         drive()
@@ -129,14 +130,17 @@ def main_loop():
 
 
 if __name__ == '__main__':
+
+    motor = Motor(BASE_SPEED, MIN_SPEED)
+    steering = SteeringController()
+    steering.set_steering_angle(0)
+    motor.forward()
+
     cap = cv2.VideoCapture(0)
     # init_trackbar_vals = [000, 157, 000, 155]
     # utils.trackbar_init(init_trackbar_vals)
 
     try:
-        motor = Motor(BASE_SPEED, MIN_SPEED)
-        steering = SteeringController()
-        steering.set_steering_angle(0)
         while True:
             main_loop()
     except KeyboardInterrupt:
