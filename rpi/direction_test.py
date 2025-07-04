@@ -13,22 +13,23 @@ def main():
 
         max_angle = steering.max_steering_angle_deg 
 
-        print("=== forward ===")
+        print("=== 60 ===")
         motor.forward(60)
         time.sleep(2)
         motor.stop()
         time.sleep(1)
-
-        print("=== backward ===")
-        motor.reverse(60)
+        print("=== 70 ===")
+        motor.forward(70)
         time.sleep(2)
         motor.stop()
         time.sleep(1)
-
-        print("=== no sleep change ===")
-        motor.forward(60)
-        motor.reverse(60)
-        motor.forward(60)
+        print("=== 80 ===")
+        motor.forward(80)
+        time.sleep(2)
+        motor.stop()
+        time.sleep(1)
+        print("=== 40 ===")
+        motor.forward(40)
         time.sleep(2)
         motor.stop()
         time.sleep(1)
